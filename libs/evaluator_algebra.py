@@ -1,4 +1,4 @@
-from ievaluator import IEvaluator
+from libs.evaluator_base import IEvaluator
 
 class EvaluateAlgebra(IEvaluator):
 
