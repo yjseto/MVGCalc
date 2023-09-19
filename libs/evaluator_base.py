@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class IEvaluator(ABC):
+class EvaluatorBase(ABC):
 
     # Evaluate list items in userEntries list
     # Parameters:

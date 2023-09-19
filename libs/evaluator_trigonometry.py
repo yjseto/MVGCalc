@@ -1,6 +1,6 @@
-from libs.evaluator_base import IEvaluator
+from libs.evaluator_base import EvaluatorBase
 
-class EvaluateTrigonometry(IEvaluator):
+class EvaluateTrigonometry(EvaluatorBase):
 
     def evaluate(self):
         print("execute method: EvaluateTrigonometry")

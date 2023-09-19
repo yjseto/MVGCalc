@@ -1,6 +1,6 @@
-from libs.evaluator_base import IEvaluator
+from libs.evaluator_base import EvaluatorBase
 
-class EvaluateAlgebra(IEvaluator):
+class EvaluateAlgebra(EvaluatorBase):
 
     def evaluate(self):
         print("execute method: EvaluateAlgebra")
