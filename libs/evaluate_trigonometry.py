@@ -1,4 +1,4 @@
-from IEvaluator import IEvaluator
+from ievaluator import IEvaluator
 
 class EvaluateTrigonometry(IEvaluator):
 
