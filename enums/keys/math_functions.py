@@ -1,37 +1,16 @@
 from enum import Enum
+import math
 
 class MathFunction(Enum):
-    SIN      = 1
-    COS      = 2
-    TAN      = 3
-    INVSIN   = 4
-    INVCOS   = 5
-    INVTAN   = 6
-    SQRT     = 7
-    SQUARED  = 8
-    CUBERT   = 9
-    CUBED    = 10
-    EXP      = 11
-
-class Operation(Enum):
-    
-    SIN        = MathFunction.SIN
-    COS        = MathFunction.COS
-    TAN        = MathFunction.TAN
-    INVSIN     = MathFunction.INVSIN
-    INVCOS     = MathFunction.INVCOS
-    INVTAN     = MathFunction.INVTAN    
-
-    def perform(self, x : any):
-        if self == MathFunction.SIN:
-            return ""
-        elif self == MathFunction.COS:
-            return ""
-        elif self == MathFunction.TAN:
-            return ""
-        elif self == MathFunction.INVSIN:
-            return ""
-        elif self == MathFunction.INVCOS:
-            return ""
-        elif self == MathFunction.INVTAN:
-            return ""
+    SIN      = (1,"math.sin()")
+    COS      = (2,"math.cos()")
+    TAN      = (3,"math.tan()")
+    INVSIN   = (4,"math.asin()")
+    INVCOS   = (5,"math.acos()")
+    INVTAN   = (6,"math.atan()")
+    SQRT     = (7, "math.sqrt()")
+    SQUARED  = (8,"**2")
+    CUBERT   = (9) #Will need a function for higher order roots and exponents
+    CUBED    = (10,"**3")
+    EXP      = (11,"**x")
+    INVERSE  = (12,"**-1")

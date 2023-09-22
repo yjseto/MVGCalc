@@ -9,7 +9,7 @@ def evaluate(expr):
 
 
 if __name__ == '__main__':
-    expr = ""
+    expr = "math.pi"
     #input("Enter a math equation: ")
     result = evaluate(expr)
 

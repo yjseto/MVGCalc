@@ -1,5 +1,8 @@
 from enum import Enum
 
 class CharacterInput(Enum):
-    OPEN_PARENTHESIS    = 1
-    CLOSE_PARENTHESIS   = 2
+    XVAR                = (1,"x")
+    DECIMAL             = (2,".")
+    LEFTPARENTHESIS     = (3,"(")
+    RIGHTPARENTHESIS    = (4,")")
+    NEGATIVE            = (5,"-")
