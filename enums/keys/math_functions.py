@@ -2,15 +2,14 @@ from enum import Enum
 import math
 
 class MathFunction(Enum):
-    SIN      = (1,"math.sin()")
-    COS      = (2,"math.cos()")
-    TAN      = (3,"math.tan()")
-    INVSIN   = (4,"math.asin()")
-    INVCOS   = (5,"math.acos()")
-    INVTAN   = (6,"math.atan()")
-    SQRT     = (7, "math.sqrt()")
-    SQUARED  = (8,"**2")
-    CUBERT   = (9) #Will need a function for higher order roots and exponents
-    CUBED    = (10,"**3")
-    EXP      = (11,"**x")
-    INVERSE  = (12,"**-1")
+    SQRT            = (1, "math.sqrt")
+    SQUARED         = (2,"**2")
+    CUBERT          = (3,"math.cbrt") #Will need a function for higher order roots and exponents
+    CUBED           = (4,"**3")
+    EXP             = (6,"**x")
+    INVERSE         = (7,"**-1")
+    LOG             = (8,"math.log")
+    LOG_NATURAL     = (9,"math.ln")
+    LOGTEN          = (10,"math.log10")
+    FACTORIAL       = (11,"math.factorial")
+    EXPONENTIAL2    = (12,"math.exp2")

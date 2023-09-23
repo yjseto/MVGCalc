@@ -9,7 +9,7 @@ def evaluate(expr):
 
 
 if __name__ == '__main__':
-    expr = "math.pi"
+    expr = "math.log(10)"
     #input("Enter a math equation: ")
     result = evaluate(expr)
 
