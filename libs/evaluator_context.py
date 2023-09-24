@@ -1,7 +1,7 @@
 from libs.evaluator_arithmatic import EvaluateArithmatic
 from libs.evaluator_calculus import EvaluateCalculus
 
-class evalWorkflow():
+class EvaluatorContext():
     
     def __init__(self,mode):
         self.mode = mode

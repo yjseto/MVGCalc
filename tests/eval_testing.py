@@ -22,8 +22,5 @@ if __name__ == '__main__':
     #can evaluate linear equations by transforming them into a complex equation
     #https://www.geeksforgeeks.org/solve-linear-equations-using-eval-in-python/ 
     #i definetly think its possible to write our own code for arithmatic
-<<<<<<< HEAD
     #but if we want to do calculus its better to use a library
-=======
     #but if we want to do calculus its better to use a library
->>>>>>> eed3a064ed308a168328c71b0a6ab63cf0c88cd9

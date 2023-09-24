@@ -1,9 +1,11 @@
 from enum import Enum
 
 class ActionKey(Enum):
-    EQUAL       = 1
-    CLEAR       = 2
-    UP          = 3
-    DOWN        = 4
-    RIGHT       = 5
-    LEFT        = 6
+    BACKSPACE       = 1
+    UP              = 2
+    DOWN            = 3
+    RIGHT           = 4
+    LEFT            = 5
+    CLEAR           = 6
+    ENTER           = 7
+    #MODE?

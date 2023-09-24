@@ -3,7 +3,7 @@ import sympy as sp
 from sympy import *
 from sympy.parsing.sympy_parser import parse_expr
 
-class EvaluateCalculus(EvaluatorBase):
+class EvaluatorCalculus(EvaluatorBase):
 
     def evaluate(expression,operation,variable): 
         parsed_in = parse_expr(expression,transformations='all')
