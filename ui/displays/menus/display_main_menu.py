@@ -1,55 +1,60 @@
-from PyQt5.QtWidgets import *
+from PyQt5.QtWidgets import QMainWindow, QListWidget, QVBoxLayout, QWidget
 
-class PyQtModel:
-    main_menu_items = [
+class MenuListModel:
+    def __init__(self):
+        self.items = [
         "Calculator Display",
         "Calculus Display",
         "Graph Display",
         "Graph Coordinate Display",
         "Probability Display",
         "Tip Calculator Display",
-        "Unit Conversion Display"
+        "Unit Conversion Display"            
     ]
 
-# binds the model and the view
-class PyQtController:
+    def add_item(self, item_text):
+        self.items.append(item_text)
+
+    def get_items(self):
+        return self.items
+
+class MenuListView(QListWidget):
+    def __init__(self, model):
+        super().__init__()
+        self.model = model
+        self.update_view()
+
+    def update_view(self):
+        self.clear()
+        for item in self.model.get_items():
+            self.addItem(item)
+
+class MenuListController:
     def __init__(self, model, view):
         self.model = model
         self.view = view
 
-    def start(self):
-        self.view.setup(self)
+    def add_item(self, item_text):
+        self.model.add_item(item_text)
+        self.view.update_view()
 
-        self.list_widget.itemDoubleClicked.connect(self.item_double_clicked)
 
-    def item_double_clicked(self, item):
-        # Handle the item double-click event
-        print(f"Item Double-Clicked: {item.text()}")
-
-class PyQtView(QMainWindow):
-    def __init__(self, parent=None):
-        super(PyQtView, self).__init__(parent)  
-
-    def setup(self):
-
-        self.setWindowTitle('ListWidget Example')
+class MenuMenu(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Main Menu")
         self.setGeometry(100, 100, 400, 300)
 
         central_widget = QWidget(self)
         self.setCentralWidget(central_widget)
 
         layout = QVBoxLayout()
+        self.model = MenuListModel()
+        self.menu_list = MenuListView(self.model)
+        layout.addWidget(self.menu_list)
 
-        # Create a QListWidget
-        self.list_widget = QListWidget()
+        self.controller = MenuListController(self.model, self.menu_list)
 
-        # Add items to the list
-        items = PyQtModel.main_menu_items
-        for item_text in items:
-            item = QListWidgetItem(item_text)
-            self.list_widget.addItem(item)
-
-        layout.addWidget(self.list_widget)
         central_widget.setLayout(layout)
 
 
