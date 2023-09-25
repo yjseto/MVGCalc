@@ -8,7 +8,7 @@ class Trigonometry(Enum):
     INVSIN      = (4,"math.asin")
     INVCOS      = (5,"math.acos")
     INVTAN      = (6,"math.atan")
-    SINH        = (7,"math.sinh")
+    SINH        = (7,"math.sinh") #Hyperbolic functions
     COSH        = (8,"math.cosh")
     TANH        = (9,"math.tanh")
-    
+

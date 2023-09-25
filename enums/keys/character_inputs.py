@@ -6,3 +6,5 @@ class CharacterInput(Enum):
     LEFTPARENTHESIS     = (3,"(")
     RIGHTPARENTHESIS    = (4,")")
     NEGATIVE            = (5,"-")
+    YVAR                = (6,"y")
+    ZVAR                = (7,"z")
