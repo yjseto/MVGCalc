@@ -23,3 +23,4 @@ if __name__ == '__main__':
     #https://www.geeksforgeeks.org/solve-linear-equations-using-eval-in-python/ 
     #i definetly think its possible to write our own code for arithmatic
     #but if we want to do calculus its better to use a library
+    #but if we want to do calculus its better to use a library
