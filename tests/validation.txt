@@ -1,0 +1,17 @@
+syntax errors:
+missing/unmatched parentheses
+multiple decimal points in a single number
+placing a subtraction sign instead of a negative sign for the first input
+format errors
+
+range/precision error:
+calculation result outside of the allowable range
+round off error and limited precision  (10^ 15 + 7.2 − 10^ 15) * 100
+stack overflow
+insufficient memory errors
+
+illegal mathematical operation:
+divide by 0
+log(0)
+ln(0)
+

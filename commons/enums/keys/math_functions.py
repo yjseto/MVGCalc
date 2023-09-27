@@ -6,7 +6,7 @@ class MathFunction(Enum):
     SQUARED         = (2,"**2")
     CUBERT          = (3,"math.cbrt") #Will need a function for higher order roots and exponents
     CUBED           = (4,"**3")
-    TOTHEX             = (6,"**x")
+    TOTHEX          = (6,"**x")
     INVERSE         = (7,"**-1")
     LOG             = (8,"math.log") #customizable
     LOG_NATURAL     = (9,"math.ln")
@@ -16,3 +16,6 @@ class MathFunction(Enum):
     EXP             = (13,"math.exp") #e^x
     ABSOLUTE_VAL    = (14,"math.fabs")
     MODULP          = (15,"math.modf")
+    
+    def retrieve(self):
+        return self.value[1]

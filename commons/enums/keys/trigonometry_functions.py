@@ -12,3 +12,5 @@ class Trigonometry(Enum):
     COSH        = (8,"math.cosh")
     TANH        = (9,"math.tanh")
 
+    def retrieve(self):
+        return self.value[1]
