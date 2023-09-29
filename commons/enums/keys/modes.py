@@ -7,6 +7,8 @@ class Modes(Enum):
     CALCULUS            = 4 #differentiation and integration
     TIP_CALC            = 5
     EXPORT              = 6
-    POL_GRAPHING        = 7 #maybe?
-    DIFF_EQ             = 8 #If time permits I think I could have something do this
+    POL_GRAPHING        = 7 #maybe? likely not :(
+    DIFF_EQ             = 8 #If time permits I think I could have something do this likely not:(
 
+    def retrieve(self):
+        return self.value[1]

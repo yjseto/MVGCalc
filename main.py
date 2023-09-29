@@ -5,6 +5,7 @@ from commons.models.user_input import UserInput
 from commons.enums.keys.operators import Operator
 from commons.enums.keys.character_inputs import CharacterInput
 from commons.enums.keys.math_functions import MathFunction
+import math
 
 def main():
     #app = MvgCalcApplication(sys.argv)
@@ -17,7 +18,8 @@ def main():
     #This is how UserInput would take a list
     #test
     user_input = UserInput([2,Operator.EXPONENT,2,Operator.SUBTRACT,CharacterInput.LEFT_P,1,CharacterInput.RIGHT_P],[])
-    formatted_in = user_input.format_usr_inp_expr_as_str()
+    user_input2 = UserInput([MathFunction.ABSOLUTE_VAL,CharacterInput.LEFT_P,-2,CharacterInput.RIGHT_P],[])
+    formatted_in = user_input2.format_usr_inp_expr_as_str()
     print(formatted_in)
     print(eval(formatted_in))
 
