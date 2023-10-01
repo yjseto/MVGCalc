@@ -4,6 +4,9 @@ from commons.enums.keys.operators import Operator
 from commons.enums.keys.character_inputs import CharacterInput
 from commons.enums.keys.math_functions import MathFunction
 import math
+from utils.Util import evaluate,evaluate_to_str
+#pulling in the sympy evaluator for testing varibale
+
 
 class TestEvalOutput(unittest.TestCase):
 
@@ -15,7 +18,40 @@ class TestEvalOutput(unittest.TestCase):
         #can make tests better by writing several tests
         #test edge cases
 
+    def test_in_2(self):
+        user_input2 = UserInput([2,Operator.ADD,10,Operator.MULTIPLY,MathFunction.CUBERT,CharacterInput.LEFT_P,81,CharacterInput.RIGHT_P],[])
+        formatted_in = user_input2.format_usr_inp_expr_as_str()
+        result = eval(formatted_in)
+        self.assertAlmostEqual(result,45.26748711)
+        #can make tests better by writing several tests
+        #test edge cases
 
+
+    def test_in_3(self): #uses sympy evalutation 
+        user_input = UserInput([2,CharacterInput.XVAR,Operator.SUBTRACT,10,MathFunction.SQUARED],[]) #can add more parameters to test the input
+        formatted_in = user_input.format_usr_inp_expr_as_str()
+        result = evaluate_to_str(formatted_in)
+        self.assertEqual(result,"2.0*x - 100.0")
+        #can make tests better by writing several tests
+        #test edge cases
+
+    def test_in_4(self):
+        user_input = UserInput([1,Operator.DIVIDE,0],[])
+        formatted_in = user_input.format_usr_inp_expr_as_str()
+        result = eval(formatted_in)
+        self.assertEqual(result,0)
+
+    def test_in_5(self):
+        user_input = UserInput([MathFunction.LOG,CharacterInput.LEFT_P,0,CharacterInput.RIGHT_P],[])
+        formatted_in = user_input.format_usr_inp_expr_as_str()
+        result = eval(formatted_in)
+        self.assertEqual(result,0)
+
+    def test_in_5(self):
+        user_input = UserInput([MathFunction.LOG,CharacterInput.LEFT_P,10,CharacterInput.RIGHT_P],[])
+        formatted_in = user_input.format_usr_inp_expr_as_str()
+        result = eval(formatted_in)
+        self.assertEqual(result,2.302585092994046)
 #class TestEvalInput(unittest.TestCase): #could use this to test input assertions
 
     #def test_in_1(self):

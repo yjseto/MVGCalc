@@ -23,6 +23,8 @@ def main():
     print(formatted_in)
     print(eval(formatted_in))
 
+    print(eval("2(3(2))"))
+
 if __name__ == "__main__":
     main()
     
