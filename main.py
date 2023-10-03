@@ -1,15 +1,33 @@
 import sys
-from ui.state.mvgcalc_applicaton import MvgCalcApplication
-from ui.displays.menus.display_main_menu import MenuMenu
+#from ui.state.mvgcalc_applicaton import MvgCalcApplication
+#from ui.displays.menus.display_main_menu import MenuMenu
+from commons.models.user_input import UserInput
+from commons.enums.keys.operators import Operator
+from commons.enums.keys.character_inputs import CharacterInput
+from commons.enums.keys.math_functions import MathFunction
+import math
 
 def main():
-    app = MvgCalcApplication(sys.argv)
-    window = MenuMenu()
-    window.show()
-    sys.exit(app.exec_())
+    #app = MvgCalcApplication(sys.argv)
+    #window = MenuMenu()
+    #window.show()
+    #sys.exit(app.exec_())
+    
+
+
+    #This is how UserInput would take a list
+    #test
+    user_input = UserInput([2,Operator.EXPONENT,2,Operator.SUBTRACT,CharacterInput.LEFT_P,1,CharacterInput.RIGHT_P],[])
+    user_input2 = UserInput([MathFunction.ABSOLUTE_VAL,CharacterInput.LEFT_P,-2,CharacterInput.RIGHT_P],[])
+    formatted_in = user_input2.format_usr_inp_expr_as_str()
+    print(formatted_in)
+    print(eval(formatted_in))
+
+    print(eval("2(3(2))"))
 
 if __name__ == "__main__":
     main()
+    
 
 
 # from commons.util.evaluator.evaluator_context import EvaluatorContext

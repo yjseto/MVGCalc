@@ -12,5 +12,11 @@ def evaluate(expression):
     result = sp.sympify(parsed_expr).evalf()
     return result
 
+def evaluate_to_str(expression):
+    parsed_expr = parse_expr(expression,transformations='all')
+    result = sp.sympify(parsed_expr).evalf()
+    return str(result)
+
 #utility class - user input validation (maybe create a new class for validation), formatting, etc...
+
 

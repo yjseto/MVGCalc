@@ -9,3 +9,6 @@ class ActionKey(Enum):
     CLEAR           = 6
     ENTER           = 7
     #MODE?
+    
+    def retrieve(self):
+        return self.value[1]

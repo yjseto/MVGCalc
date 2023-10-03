@@ -1,4 +1,5 @@
 import math
+from commons.models.user_input import UserInput
 
 def evaluate(expr):
     try:
@@ -11,9 +12,8 @@ def evaluate(expr):
 if __name__ == '__main__':
     expr = ""
     #input("Enter a math equation: ")
-    result = evaluate(expr)
-
-    print(f"Result: {result}")
+    user_input = UserInput([1,"Operator.ADD",2],1,"")
+    print(user_input.format_usr_inp_expr_as_str())
 
     #can evaluate with letters like x if it is defined as some number
     #eval can take global and local parameters
