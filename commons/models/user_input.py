@@ -11,7 +11,7 @@ class UserInput:
     def format_usr_inp_expr_as_str(self) -> str:
         for item in self.user_input:
             if isinstance(item, Enum): #if item is of type Enum, retrieve what is at said Enumeration
-                self.output_expr.append(item.retrieve())
+                self.output_expr.append(item.value[1])
             else:
                 self.output_expr.append(str(item))
   
