@@ -16,8 +16,16 @@ class EvaluatorCalculus(EvaluatorBase):
 
     # I kept this here so your test harness still works remove it when you implement evaluate
     # using UserInput- joel
-    def evaluate(expression,operation,variable): 
+    def differentiate(expression,variable,degree): 
         parsed_in = parse_expr(expression,transformations='all')
-        if operation == 1: #differentiation
-            return diff(sp.sympify(parsed_in),variable) #degree of differentation possibly too
+        return diff(sp.sympify(parsed_in),variable,degree) #degree of differentation possibly too
         #operation 2 integration?
+
+    def integrate_indefinite(expression,variable):
+        parsed_in = parse_expr(expression,transformations='all')
+        return integrate(sp.sympify(parsed_in),variable)
+    
+    def integrate_definite(expression,definite_tuple):
+        parsed_in = parse_expr(expression,transformations='all')
+        return integrate(sp.sympify(parsed_in),definite_tuple)
+    
