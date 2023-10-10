@@ -1,3 +1,9 @@
 # Ignore __pycache__ directories and .pyc files
 __pycache__/
 *.pyc
+
+# Ignore dev environment specific settings for vscode
+.vscode/
+
+# Ignore source file generated after resolving conflicts with mergetool
+*.orig
