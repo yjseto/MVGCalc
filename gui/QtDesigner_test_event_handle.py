@@ -99,23 +99,24 @@ class Ui_MainWindow(object):
         MainWindow.resize(375, 812)
         MainWindow.setLayoutDirection(QtCore.Qt.LeftToRight)
         MainWindow.setStyleSheet("QWidget {\n"
-"background-color: #161A20;\n"
-"}")
+                "background-color: #161A20;\n"
+        "}")
         MainWindow.setProperty("operands", "")
         self.Operands = QtWidgets.QWidget(MainWindow)
         self.Operands.setObjectName("Operands")
+
         self.division = QtWidgets.QPushButton(self.Operands)
         self.division.setGeometry(QtCore.QRect(277, 351, 83, 79))
         self.division.setStyleSheet("QPushButton {\n"
-"    background-color: #0060E5;\n"
-"    color: #CBE1FF;\n"
-"    border-radius: 2px;\n"
-"    border-top-right-radius: 8px;\n"
-"    font-family: roboto;\n"
-"    font-size: 38px;\n"
-"   }\n"
-"\n"
-"")
+                "    background-color: #0060E5;\n"
+                "    color: #CBE1FF;\n"
+                "    border-radius: 2px;\n"
+                "    border-top-right-radius: 8px;\n"
+                "    font-family: roboto;\n"
+                "    font-size: 38px;\n"
+                "   }\n"
+                "\n"
+                "")
         self.division.setProperty("operands", "")
         self.division.setObjectName("division")
         self.equal = QtWidgets.QPushButton(self.Operands)
