@@ -1,19 +1,20 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import QRect
 
-from gui.components.button import MvgCalcKeyButton
+from gui.components.button import MvgCalcKeyButton, EnterButton, ClearInputButton, PercentButton
 from lib.enums.keys import *
 
 class BasicKeyboard(QWidget):
     def __init__(self, _user_input):
         super().__init__()
-
+        
+        
         grid = QGridLayout()
 
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
         FIRST ROW
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        clear = MvgCalcKeyButton(
+        clear = ClearInputButton(
              ActionKey.CLEAR.textSymbol,        # character displayed on button
              ActionKey.CLEAR,                   # value added to array
              _user_input,                       # user input array
@@ -32,7 +33,7 @@ class BasicKeyboard(QWidget):
         grid.addWidget(parethesis,0,1)        
 
         #need to add to enum
-        percent = MvgCalcKeyButton(
+        percent = PercentButton(
              "%",       
              CharacterInput.LEFT_P,                  
              _user_input,                     
@@ -159,8 +160,8 @@ class BasicKeyboard(QWidget):
         grid.addWidget(three,3,2) 
 
         subtract = MvgCalcKeyButton(
-             Operator.SUBTRACT.textSymbol,      
-             Operator.SUBTRACT,                 
+             Operator.ADD.textSymbol,      
+             Operator.ADD,                 
              _user_input,                       
              QRect(277, 351, 83, 79),           
              self)   
@@ -197,7 +198,7 @@ class BasicKeyboard(QWidget):
 
         grid.addWidget(decimal_point,4,2) 
 
-        enter = MvgCalcKeyButton(
+        enter = EnterButton(
              ActionKey.ENTER.textSymbol,      
              ActionKey.ENTER,                 
              _user_input,                       

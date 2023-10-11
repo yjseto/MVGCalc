@@ -53,6 +53,20 @@ class UserInput:
     # def format_usr_inp_expr_as_latex(self) -> str:
     #     return f"idk this may be cool too one day"
     #i agree!
+    def validate_user_input(self) -> bool: #lets not use this now
+        operand_count = 0
+        for item in self.user_input:
+            if isinstance(item, Enum):
+                operand_count += 1
+            else:
+                operand_count = 0
+
+            if operand_count == 2:
+                return False
+        return True
+         
+                
+
 
 
 

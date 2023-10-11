@@ -2,6 +2,7 @@
 # because it will execute python code.
 import sympy as sp
 from sympy.parsing.sympy_parser import parse_expr, transformations
+from sympy import *
 
 def evaluate(expression):
     #takes a string as an input
@@ -13,10 +14,13 @@ def evaluate(expression):
     return result
 
 def evaluate_to_str(expression):
-
-
     parsed_expr = parse_expr(expression,transformations='all')
-    result = sp.sympify(parsed_expr).evalf()
+    result = N(parsed_expr,10)
+    return str(result)
+
+def evaluate_percentage(expression):
+    parsed_expr = parse_expr(expression,transformations='all')
+    result = N(parsed_expr/100,10)
     return str(result)
 
 #utility class - user input validation (maybe create a new class for validation), formatting, etc...
