@@ -3,9 +3,10 @@ from PyQt5.QtCore import QRect
 
 from gui.components.button import MvgCalcKeyButton, EnterButton, ClearInputButton, PercentButton
 from lib.enums.keys import *
+from lib.models.user_input import UserInput
 
 class BasicKeyboard(QWidget):
-    def __init__(self, _user_input):
+    def __init__(self, _user_input : UserInput):
         super().__init__()
         
         

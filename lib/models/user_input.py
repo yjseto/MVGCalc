@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 from typing import List
 from io import StringIO
@@ -6,7 +6,8 @@ from io import StringIO
 @dataclass
 class UserInput:
     
-    user_input: List[str | Enum]
+    user_input_list: list = field(default_factory=list)
+    current_numeric_input: str = field(default="")
 
     # output_expr: List [str] #good to hold onto in the class object for splicing equations together
     # #takes an output expr list as a string
@@ -34,7 +35,7 @@ class UserInput:
         try: 
             outputExprBuffer = StringIO()
 
-            for item in self.user_input:
+            for item in self.user_input_list:
 
                 #if item is of type Enum append textEval property value
                 if isinstance(item, Enum): 
@@ -53,9 +54,11 @@ class UserInput:
     # def format_usr_inp_expr_as_latex(self) -> str:
     #     return f"idk this may be cool too one day"
     #i agree!
-    def validate_user_input(self) -> bool: #lets not use this now
+
+    #lets not use this now
+    def validate_user_input(self) -> bool: 
         operand_count = 0
-        for item in self.user_input:
+        for item in self.user_input_list:
             if isinstance(item, Enum):
                 operand_count += 1
             else:

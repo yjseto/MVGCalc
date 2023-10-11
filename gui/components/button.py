@@ -3,10 +3,10 @@ from lib.models.user_input import UserInput
 from utils.Util import evaluate_percentage,evaluate_to_str
 
 class MvgCalcKeyButton(QPushButton):
-    def __init__(self, text, _value, _list : list, _dim, parent=None):
+    def __init__(self, text, _value, _user_input : UserInput, _dim, parent=None):
         super().__init__(text, parent)
 
-        self.list = _list
+        self.user_input = _user_input
         self.value = _value
         self.setGeometry(_dim)
         
@@ -24,16 +24,16 @@ class MvgCalcKeyButton(QPushButton):
         )      
 
     def mousePressEvent(self, event):
-        self.list.append(self.value)
-        print(self.list)
+        self.user_input.user_input_list.append(self.value)
+        print(self.user_input.user_input_list)
 
 
 
 class EnterButton(QPushButton):
-    def __init__(self, text, _value, _list : list, _dim, parent=None):
+    def __init__(self, text, _value, _user_input : UserInput, _dim, parent=None):
         super().__init__(text, parent)
 
-        self.list = _list
+        self.user_input = _user_input
         self.value = _value
         self.setGeometry(_dim)
         
@@ -51,17 +51,15 @@ class EnterButton(QPushButton):
         )      
 
     def mousePressEvent(self, event):
-        user_input = UserInput(self.list)
-        format_user_input = user_input.format_usr_inp_expr_as_str()
-        result = evaluate_to_str(format_user_input) 
-        self.list.clear() #clears the list ready for a new calculation
+        result = evaluate_to_str(self.user_input.format_usr_inp_expr_as_str()) 
+        self.user_input.user_input_list.clear() #clears the list ready for a new calculation
         print(result)
 
 class ClearInputButton(QPushButton):
-    def __init__(self, text, _value, _list : list, _dim, parent=None):
+    def __init__(self, text, _value, _user_input : UserInput, _dim, parent=None):
         super().__init__(text, parent)
 
-        self.list = _list
+        self.user_input = _user_input
         self.value = _value
         self.setGeometry(_dim)
         
@@ -79,14 +77,14 @@ class ClearInputButton(QPushButton):
         )      
 
     def mousePressEvent(self, event):
-        self.list.clear()
-        print(self.list)
+        self.user_input.user_input_list.clear()
+        print(self.user_input.user_input_list)
 
 class PercentButton(QPushButton):
-    def __init__(self, text, _value, _list : list, _dim, parent=None):
+    def __init__(self, text, _value, _user_input : UserInput, _dim, parent=None):
         super().__init__(text, parent)
 
-        self.list = _list
+        self.user_input = _user_input
         self.value = _value
         self.setGeometry(_dim)
         
@@ -104,10 +102,8 @@ class PercentButton(QPushButton):
         )      
 
     def mousePressEvent(self, event):
-        user_input = UserInput(self.list)
-        format_user_input = user_input.format_usr_inp_expr_as_str()
-        result = evaluate_percentage(format_user_input)
-        self.list.clear() #clears the list ready for a new calculation
-        self.list.append(result)
+        result = evaluate_percentage(self.user_input.format_usr_inp_expr_as_str())
+        self.user_input.user_input_list.clear() #clears the list ready for a new calculation
+        self.user_input.user_input_list.append(result)
         print(result)            
             
