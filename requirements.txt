@@ -1,5 +1,6 @@
 sympy==1.12
-matplotlib==3.7.3
-pandas==2.1
-change here
-pyqt5==5.15.9
+joel change here
+moro change here
+hiro change here
+youji change here
+
