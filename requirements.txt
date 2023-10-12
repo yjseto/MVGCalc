@@ -1,5 +1,5 @@
 sympy==1.12
 matplotlib==3.7.3
 pandas==2.1
-pyqt5-tools~=5.15
+change here
 pyqt5==5.15.9
