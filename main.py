@@ -1,5 +1,5 @@
 import sys
-from commons.util.evaluator.evaluator_calculus import EvaluatorCalculus
+#from commons.util.evaluator.evaluator_calculus import EvaluatorCalculus
 from gui.app import MvgCalcApplication
 from gui.displays.basic import BasicCalcDisplay
 
