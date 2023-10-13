@@ -24,7 +24,7 @@ class MvgCalcKeyButton(QPushButton):
         )      
 
     def mousePressEvent(self, event):
-        self.user_input.user_input_list.append(self.value)
+        self.user_input.add_to_list(self.value)
         print(self.user_input.user_input_list)
 
 
@@ -52,7 +52,7 @@ class EnterButton(QPushButton):
 
     def mousePressEvent(self, event):
         result = evaluate_to_str(self.user_input.format_usr_inp_expr_as_str()) 
-        self.user_input.user_input_list.clear() #clears the list ready for a new calculation
+        self.user_input.clear_list() #clears the list ready for a new calculation
         print(result)
 
 class ClearInputButton(QPushButton):
