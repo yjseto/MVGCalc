@@ -10,90 +10,8 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-list_arr = []
 
 class Ui_MainWindow(object):
-    def __init__(self):
-        super().__init__()
- 
-# Button Press Event 
-##########################################################################################################               
-    def click_zero(self):
-        list_arr.append("0")
-        print(list_arr)
-            
-    def click_one(self):
-        list_arr.append("1")
-        print(list_arr)
-
-    def click_two(self):
-        list_arr.append("2")
-        print(list_arr)
-        
-    def click_three(self):
-        list_arr.append("3")
-        print(list_arr)
-        
-    def click_four(self):
-        list_arr.append("4")
-        print(list_arr)
-        
-    def click_five(self):
-        list_arr.append("5")
-        print(list_arr)
-        
-    def click_six(self):
-        list_arr.append("6")
-        print(list_arr)
-        
-    def click_seven(self):
-        list_arr.append("7")
-        print(list_arr)
-
-    def click_eight(self):
-        list_arr.append("8")
-        print(list_arr)
-
-    def click_nine(self):
-        list_arr.append("9")
-        print(list_arr)
-        
-    def click_AC(self):
-        list_arr.clear()
-        print(list_arr)
-        
-    def click_plus(self):
-        if list_arr != []:
-                if (48 <= ord(list_arr[len(list_arr)-1]) <= 57):
-                        list_arr.append("+")
-        print(list_arr)
-            
-    def click_minus(self):
-        if list_arr != []:
-                if (48 <= ord(list_arr[len(list_arr)-1]) <= 57):
-                        list_arr.append("-")
-        print(list_arr)
-
-    def click_multiplication(self):
-        if list_arr != []:
-                if (48 <= ord(list_arr[len(list_arr)-1]) <= 57):
-                        list_arr.append("*")
-        print(list_arr)
-        
-    def click_division(self):
-        if list_arr != []:
-                if (48 <= ord(list_arr[len(list_arr)-1]) <= 57):
-                        list_arr.append("/")
-        print(list_arr)
-        
-    def click_dot(self):
-        if list_arr != []:
-                if (48 <= ord(list_arr[len(list_arr)-1]) <= 57):
-                        list_arr.append(".")
-        print(list_arr)
-        
-##########################################################################################################           
-        
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(375, 812)
@@ -541,28 +459,6 @@ class Ui_MainWindow(object):
         self.output.setText(_translate("MainWindow", "19,134"))
         self.toolBar.setWindowTitle(_translate("MainWindow", "toolBar"))
 
-        # Button Press Event 
-##########################################################################################################    
-
-        self.zero.clicked.connect(self.click_zero)
-        self.one.clicked.connect(self.click_one)
-        self.two.clicked.connect(self.click_two)
-        self.three.clicked.connect(self.click_three)
-        self.four.clicked.connect(self.click_four)
-        self.five.clicked.connect(self.click_five)
-        self.six.clicked.connect(self.click_six)
-        self.seven.clicked.connect(self.click_seven)
-        self.eight.clicked.connect(self.click_eight)
-        self.nine.clicked.connect(self.click_nine)
-        
-        self.AC.clicked.connect(self.click_AC)
-        self.plus.clicked.connect(self.click_plus)
-        self.minus.clicked.connect(self.click_minus)
-        self.multiplication.clicked.connect(self.click_multiplication)
-        self.division.clicked.connect(self.click_division)
-        self.dot.clicked.connect(self.click_dot)
-        
-##########################################################################################################    
 
 if __name__ == "__main__":
     import sys

@@ -1,6 +1,6 @@
 sympy==1.12
-Change Joel Wants In Dev
-moro change here 2
-hiro change here
-youji change here
-
+matplotlib==3.7.3
+pandas==2.1
+pyqt5-tools~=5.15
+matplotlib==3.7.3
+pyqt5==5.15.9

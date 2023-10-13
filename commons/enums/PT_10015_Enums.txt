@@ -1,0 +1,57 @@
+Enums
+
+	Keys
+
+		Action Keys
+
+			backspace 	= 1
+			up		= 2
+			down		= 3 etc...
+			right
+			left
+			clear
+			enter
+			
+		Character Inputs
+
+			xvar			= (1, "x")
+			decimalpoint		= (2, ".")
+			leftparenthesis 	etc...
+			rightparenthesis
+			negative		= (5, "-")
+		
+		#Delete Operation class
+		
+		Math Functions
+
+			inverse			= (1, "syntax for how eval() method evaluates inverse")
+			sininv			= (2, "syntax for how eval() method evaluates inverse sin")
+			cosinv
+			taninv
+			sin			= (5, "Math.sin")
+			cos			= (6, "Math.cos")
+			tan
+			sqrt
+			square
+			log
+			ln
+			10totheX
+			etotheX
+		
+		#Delete Operation class
+		
+		Operators
+			#(^ on the calc)
+			exponent 		= (1, "^ or **"
+			add			= (2, "+")
+			subtract		= (3, "-")
+			multiply        etc...
+			divide
+
+
+		#You need to create new python package for constants make a new folder with __init__.py in it then create new python module math_constants below.
+		Constants
+			math_constants.py
+				pi = (1, "pi", value of pi import from math package)
+				e  = (2, "e" , value of e import from math package)
+
