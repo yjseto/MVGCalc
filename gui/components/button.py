@@ -3,12 +3,11 @@ from lib.models.user_input import UserInput
 from utils.Util import evaluate_percentage,evaluate_to_str
 
 class MvgCalcKeyButton(QPushButton):
-    def __init__(self, text, _value, _user_input : UserInput, _dim, parent=None):
+    def __init__(self, text, _value, _user_input : UserInput, parent=None):
         super().__init__(text, parent)
 
         self.user_input = _user_input
         self.value = _value
-        self.setGeometry(_dim)
         
         self.setStyleSheet(
             """
@@ -25,17 +24,17 @@ class MvgCalcKeyButton(QPushButton):
 
     def mousePressEvent(self, event):
         self.user_input.add_to_list(self.value)
-        print(self.user_input.user_input_list)
-
+        print(self.user_input.user_input_list)    
+        print(self.user_input.__str__)
 
 
 class EnterButton(QPushButton):
-    def __init__(self, text, _value, _user_input : UserInput, _dim, parent=None):
+    def __init__(self, text, _value, _user_input : UserInput,  parent=None):
         super().__init__(text, parent)
 
         self.user_input = _user_input
         self.value = _value
-        self.setGeometry(_dim)
+        
         
         self.setStyleSheet(
             """
@@ -56,12 +55,12 @@ class EnterButton(QPushButton):
         print(result)
 
 class ClearInputButton(QPushButton):
-    def __init__(self, text, _value, _user_input : UserInput, _dim, parent=None):
+    def __init__(self, text, _value, _user_input : UserInput,  parent=None):
         super().__init__(text, parent)
 
         self.user_input = _user_input
         self.value = _value
-        self.setGeometry(_dim)
+        
         
         self.setStyleSheet(
             """
@@ -81,12 +80,12 @@ class ClearInputButton(QPushButton):
         print(self.user_input.user_input_list)
 
 class PercentButton(QPushButton):
-    def __init__(self, text, _value, _user_input : UserInput, _dim, parent=None):
+    def __init__(self, text, _value, _user_input : UserInput,  parent=None):
         super().__init__(text, parent)
 
         self.user_input = _user_input
         self.value = _value
-        self.setGeometry(_dim)
+        
         
         self.setStyleSheet(
             """

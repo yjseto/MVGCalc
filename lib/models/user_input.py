@@ -52,7 +52,6 @@ class UserInput:
 
         return out_expr    
 
-
     # def format_usr_inp_expr_as_latex(self) -> str:
     #     return f"idk this may be cool too one day"
     #i agree!
@@ -63,6 +62,9 @@ class UserInput:
         self.user_input_list.clear()            
 
     def add_to_list(self,value):
+        if not self.user_input_list and isinstance(value,Operator):
+            return
+        
         if isinstance(value, str) and isinstance(self.get_prev(),str): 
             value = self.get_prev() + value
             self.user_input_list.pop()
@@ -74,6 +76,7 @@ class UserInput:
             self.user_input_list.append(value)
         else:
             self.user_input_list.append(value)
+        
 
     def pop_from_list(self):
         self.user_input_list.pop()
