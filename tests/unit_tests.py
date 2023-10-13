@@ -11,6 +11,9 @@ import math
         root of the project.
 
         Ex. /path/to/your/directory/mvgcalc
+        
+        Also
+        Deactivate Virtual Environment, Close VSCode, Open VSCode, Activate Virtual Environment
 """
 
 class TestEvalOutput(unittest.TestCase):

@@ -1,12 +1,15 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 from typing import List
 from io import StringIO
+from lib.enums.keys import Operator
 
 @dataclass
 class UserInput:
     
-    user_input: List[str | Enum]
+    user_input_list: list = field(default_factory=list)
+    current_numeric_input: str = field(default="")
+
 
     # output_expr: List [str] #good to hold onto in the class object for splicing equations together
     # #takes an output expr list as a string
@@ -34,7 +37,7 @@ class UserInput:
         try: 
             outputExprBuffer = StringIO()
 
-            for item in self.user_input:
+            for item in self.user_input_list:
 
                 #if item is of type Enum append textEval property value
                 if isinstance(item, Enum): 
@@ -49,11 +52,36 @@ class UserInput:
 
         return out_expr    
 
-
     # def format_usr_inp_expr_as_latex(self) -> str:
     #     return f"idk this may be cool too one day"
     #i agree!
 
+    #lets not use this now
 
+    def clear_list(self):
+        self.user_input_list.clear()            
 
+    def add_to_list(self,value):
+        if not self.user_input_list and isinstance(value,Operator):
+            return
+        
+        if isinstance(value, str) and isinstance(self.get_prev(),str): 
+            value = self.get_prev() + value
+            self.user_input_list.pop()
+            self.user_input_list.append(value)
+            return
+
+        if isinstance(self.get_prev(),Operator) and isinstance(value,Operator):
+            self.user_input_list.pop()
+            self.user_input_list.append(value)
+        else:
+            self.user_input_list.append(value)
+        
+
+    def pop_from_list(self):
+        self.user_input_list.pop()
     
+    def get_prev(self):
+        if not self.user_input_list:
+            return
+        return self.user_input_list[-1]
