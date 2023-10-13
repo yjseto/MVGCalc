@@ -2,12 +2,14 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import List
 from io import StringIO
+from lib.enums.keys import Operator
 
 @dataclass
 class UserInput:
     
     user_input_list: list = field(default_factory=list)
     current_numeric_input: str = field(default="")
+
 
     # output_expr: List [str] #good to hold onto in the class object for splicing equations together
     # #takes an output expr list as a string
@@ -56,21 +58,27 @@ class UserInput:
     #i agree!
 
     #lets not use this now
-    def validate_user_input(self) -> bool: 
-        operand_count = 0
-        for item in self.user_input_list:
-            if isinstance(item, Enum):
-                operand_count += 1
-            else:
-                operand_count = 0
 
-            if operand_count == 2:
-                return False
-        return True
-         
-                
+    def clear_list(self):
+        self.user_input_list.clear()            
 
+    def add_to_list(self,value):
+        if isinstance(value, str) and isinstance(self.get_prev(),str): 
+            value = self.get_prev() + value
+            self.user_input_list.pop()
+            self.user_input_list.append(value)
+            return
 
+        if isinstance(self.get_prev(),Operator) and isinstance(value,Operator):
+            self.user_input_list.pop()
+            self.user_input_list.append(value)
+        else:
+            self.user_input_list.append(value)
 
-
+    def pop_from_list(self):
+        self.user_input_list.pop()
     
+    def get_prev(self):
+        if not self.user_input_list:
+            return
+        return self.user_input_list[-1]

@@ -191,8 +191,8 @@ class BasicKeyboard(QWidget):
         grid.addWidget(zero,4,1)        
 
         decimal_point = MvgCalcKeyButton(
-             CharacterInput.DECIMAL_POINT.textSymbol,                               
-             CharacterInput.DECIMAL_POINT,                       
+             ".",                               
+             ".",                       
              _user_input,                       
              QRect(277, 351, 83, 79),          
              self)   
