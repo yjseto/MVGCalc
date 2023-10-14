@@ -4,6 +4,7 @@ import sympy as sp
 from sympy.parsing.sympy_parser import parse_expr, transformations
 from sympy import *
 
+
 def evaluate(expression):
     #takes a string as an input
     #puts it into sympy readable language
@@ -15,14 +16,25 @@ def evaluate(expression):
 
 def evaluate_to_str(expression):
     parsed_expr = parse_expr(expression,transformations='all')
-    result = N(parsed_expr,10)
-    return str(result)
+    result = N(parsed_expr)
+    result_str = str(result)
+
+    if '.' in result_str:
+        result_str = result_str.rstrip('0').rstrip('.')
+
+    return result_str
+
 
 def evaluate_percentage(expression):
     parsed_expr = parse_expr(expression,transformations='all')
     result = N(parsed_expr/100,10)
-    return str(result)
+    
+    result_str = str(result)
 
+    if '.' in result_str:
+        result_str = result_str.rstrip('0').rstrip('.')
+
+    return result_str
 #utility class - user input validation (maybe create a new class for validation), formatting, etc...
 
 
