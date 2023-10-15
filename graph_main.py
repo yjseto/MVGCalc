@@ -6,10 +6,25 @@ import sys  # We need sys so that we can pass argv to QApplication
 import os
 import sympy as sp
 import math
+import numpy as np
+import sys
+from PyQt5.QtWidgets import *
+from gui.app import MvgCalcApplication
+from gui.components.keyboard import BasicKeyboard
+from gui.app import MvgCalcApplication
+
+def function_to_plot(x):
+    return 5 * x**2
+
+def main():
+    app = MvgCalcApplication(sys.argv)
+    window = CustomMainWindow(app)
+    window.show()
+    sys.exit(app.exec_())
 
 class CustomMainWindow(QtWidgets.QMainWindow):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, _app,*args, **kwargs):
         super(CustomMainWindow, self).__init__(*args, **kwargs)
         
         '''
@@ -19,19 +34,35 @@ class CustomMainWindow(QtWidgets.QMainWindow):
         subplot.plot('sin(x)')
         mw.draw()
         '''
+        self.app = _app
+
+
+        self.centralWidget = QWidget()
+        self.setCentralWidget(self.centralWidget)
+        self.layout = QVBoxLayout()
+        self.setWindowTitle("Custom MainWindow with graph Example")
+
+        #widget 1
+        custom_widget = BasicKeyboard(self.app.user_input)
+        custom_widget.setGeometry(400, 400, 400, 400)
         
-        self.graphWidget = MatplotlibWidget()
-        self.setCentralWidget(self.graphWidget)
+        #widget 2
+        graph_widget = PlotWidget()
+        graph_widget.setGeometry(400, 400, 400, 400)
+        
+        #create x and y values to plot
+        #this way gives a good amount of control over how to plot
+        x = np.linspace(0,20,1000)
+        y = function_to_plot(x)
+        graph_widget.plot(x,y)
 
-        subplot = self.graphWidget.getFigure().add_subplot(111)
-        subplot.plot('sin(x)')
-        self.graphWidget.draw()
+        self.layout.addWidget(custom_widget)
+        self.layout.addWidget(graph_widget)
 
-def main():
-    app = QtWidgets.QApplication(sys.argv)
-    main = CustomMainWindow()
-    main.show()
-    sys.exit(app.exec_())
+        self.centralWidget.setLayout(self.layout)
+
+
+        
 
 
 if __name__ == '__main__':
