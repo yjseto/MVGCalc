@@ -3,3 +3,4 @@ matplotlib==3.7.3
 pandas==2.1
 pyqt5-tools~=5.15
 pyqt5==5.15.9
+pyqtgraph==0.13.3
