@@ -39,7 +39,7 @@ class TestEvalOutput(unittest.TestCase):
         user_input = UserInput([2,CharacterInput.XVAR,Operator.SUBTRACT,10,MathFunction.SQUARED]) #can add more parameters to test the input
         formatted_in = user_input.format_usr_inp_expr_as_str()
         result = evaluate_to_str(formatted_in) 
-        self.assertEqual(result,"2.0*x - 100.0")
+        self.assertEqual(result,"2.0*x - 100") #TODO: ask moro about removed decimal
         #can make tests better by writing several tests
         #test edge cases
 

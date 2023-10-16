@@ -5,9 +5,12 @@ from sympy.parsing.sympy_parser import parse_expr
 
 class EvaluatorArithmatic(EvaluatorBase):
 
-    def evaluate(user_input : UserInput):
+
+
+    def evaluate(self, user_input : UserInput):
         try:
             parsed_in = parse_expr(user_input.format_usr_inp_expr_as_str,transformations='all')
+            self.clean_up
             return sp.sympify(parsed_in).evalf()
         except Exception as e:
             raise e
