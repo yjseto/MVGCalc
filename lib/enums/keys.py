@@ -33,6 +33,7 @@ class ActionKey(Enum):
     LEFT            = (5, "")
     CLEAR           = (6, "AC")
     ENTER           = (7, "=")
+    PLOT            = (8,"PLOT")
 
     def __init__ (self, index, textSymbol):
         self.index = index
@@ -46,6 +47,7 @@ class CharacterInput(Enum):
     XVAR                = (5,"XVAR",               "x",    "X")
     YVAR                = (6,"YVAR",               "y",    "Y")
     ZVAR                = (7,"ZVAR",               "z",    "Z")
+    
 
     
     def __init__ (self, index, textId, textEval, textSymbol):

@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import *
 from gui.components.keyboard import BasicKeyboard
 from lib.models.user_input import UserInput
 
+
 class BasicCalcDisplay(QMainWindow):
     def __init__(self, app):
         super().__init__()
