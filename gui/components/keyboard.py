@@ -1,223 +1,152 @@
+import sys
+from functools import partial
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import QRect
+from PyQt5.QtCore import pyqtSignal
 
-from gui.components.button import MvgCalcKeyButton, EnterButton, ClearInputButton, PercentButton
+from utils.Util import evaluate_to_str
+
+from gui.components.button import MvgCalcButton
 from lib.enums.keys import *
 from lib.models.user_input import UserInput
 
 class BasicKeyboard(QWidget):
-    def __init__(self, _user_input : UserInput):
+
+    #after button click return display text including updated inputs
+    updated_user_input_obj_signal = pyqtSignal(UserInput)
+
+    def __init__(self, user_input : UserInput):
         super().__init__()
-        
-        
+
+        self.user_input = user_input
+
         grid = QGridLayout()
 
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
         FIRST ROW
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        clear = ClearInputButton(
-             ActionKey.CLEAR.textSymbol,        # character displayed on button
-             ActionKey.CLEAR,                   # value added to array
-             _user_input,                       # user input array
-          # button dimensions
-             self)                                              
-
+        clear = MvgCalcButton(ActionKey.CLEAR.textSymbol, self.user_input, self) 
         grid.addWidget(clear,0,0)
+        clear.button_click_signal.connect(partial(self.handle_button_click, ActionKey.CLEAR))       
 
-        left_parethesis = MvgCalcKeyButton(
-             CharacterInput.LEFT_P.textSymbol,       
-             CharacterInput.LEFT_P.textEval,                  
-             _user_input,                     
-        
-             self)       
-        
-        right_parethesis = MvgCalcKeyButton(
-             CharacterInput.RIGHT_P.textSymbol,       
-             CharacterInput.RIGHT_P.textEval,                  
-             _user_input,                     
-        
-             self)                                              
+        left_parethesis = MvgCalcButton(CharacterInput.LEFT_P.textSymbol, self.user_input,self)       
+        left_parethesis.button_click_signal.connect(partial(self.handle_button_click, CharacterInput.LEFT_P.textEval))
 
-        parenthesis_layout = QHBoxLayout()
-        
+        right_parethesis = MvgCalcButton(CharacterInput.RIGHT_P.textSymbol, self.user_input, self)                                              
+        right_parethesis.button_click_signal.connect(partial(self.handle_button_click, CharacterInput.RIGHT_P.textEval))
+
+        parenthesis_layout = QHBoxLayout()       
         parenthesis_layout.addWidget(left_parethesis)
         parenthesis_layout.addWidget(right_parethesis)
-
         grid.addLayout(parenthesis_layout,0,1)        
 
-        #need to add to enum
-        percent = PercentButton(
-             "%",       
-             CharacterInput.LEFT_P,                  
-             _user_input,                     
-        
-             self)                                              
 
-        grid.addWidget(percent,0,2)          
+        # TODO replaced with X var for moro's testing need to add % enum
+        # percent = MvgCalcButton("%",self.user_input,self)                                              
+        # grid.addWidget(percent,0,2)          
+        # right_parethesis.button_click_signal.connect(partial(self.handle_button_click, '%'))
         
-        division = MvgCalcKeyButton(
-             Operator.DIVIDE.textSymbol,        
-             Operator.DIVIDE,                   
-             _user_input,                       
-          
-             self)                                              
+        x_var = MvgCalcButton(CharacterInput.XVAR.textSymbol,self.user_input,self)                                              
+        grid.addWidget(x_var,0,2)
+        x_var.button_click_signal.connect(partial(self.handle_button_click, CharacterInput.XVAR.textEval))
 
+        division = MvgCalcButton(Operator.DIVIDE.textSymbol,self.user_input,self)                                              
         grid.addWidget(division,0,3)
+        division.button_click_signal.connect(partial(self.handle_button_click, Operator.DIVIDE))
 
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
         SECOND ROW
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        seven = MvgCalcKeyButton(
-             "7",                               
-             "7",                       
-             _user_input,                       
-         
-             self)   
-
+        seven = MvgCalcButton("7", self.user_input, self)   
         grid.addWidget(seven,1,0)
+        seven.button_click_signal.connect(partial(self.handle_button_click, "7"))
 
-        eight = MvgCalcKeyButton(
-             "8",                               
-             "8",                       
-             _user_input,                       
-         
-             self)   
-
+        eight = MvgCalcButton("8", self.user_input,self)   
         grid.addWidget(eight,1,1)        
+        eight.button_click_signal.connect(partial(self.handle_button_click, "8"))
 
-        nine = MvgCalcKeyButton(
-             "9",                               
-             "9",                       
-             _user_input,                       
-         
-             self)   
-
+        nine = MvgCalcButton("9",self.user_input,self)   
         grid.addWidget(nine,1,2) 
+        nine.button_click_signal.connect(partial(self.handle_button_click, "9"))
 
-        multiplication = MvgCalcKeyButton(
-             Operator.MULTIPLY.textSymbol,      
-             Operator.MULTIPLY,                 
-             _user_input,                       
-          
-             self)   
-
+        multiplication = MvgCalcButton(Operator.MULTIPLY.textSymbol, self.user_input, self)   
         grid.addWidget(multiplication,1,3)
+        multiplication.button_click_signal.connect(partial(self.handle_button_click, Operator.MULTIPLY))
 
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
            THIRD ROW
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        four = MvgCalcKeyButton(
-             "4",                               
-             "4",                       
-             _user_input,                       
-         
-             self)   
-
+        four = MvgCalcButton("4",self.user_input, self)   
         grid.addWidget(four,2,0)
+        four.button_click_signal.connect(partial(self.handle_button_click, "4"))
 
-        five = MvgCalcKeyButton(
-             "5",                               
-             "5",                       
-             _user_input,                       
-         
-             self)   
+        five = MvgCalcButton("5", self.user_input, self)   
+        grid.addWidget(five,2,1)   
+        five.button_click_signal.connect(partial(self.handle_button_click, "5"))
 
-        grid.addWidget(five,2,1)        
-
-        six = MvgCalcKeyButton(
-             "6",                               
-             "6",                       
-             _user_input,                       
-         
-             self)   
-
+        six = MvgCalcButton("6", self.user_input, self)   
         grid.addWidget(six,2,2) 
+        six.button_click_signal.connect(partial(self.handle_button_click, "6"))
 
-        subtract = MvgCalcKeyButton(
-             Operator.SUBTRACT.textSymbol,      
-             Operator.SUBTRACT,                 
-             _user_input,                       
-          
-             self)   
-
+        subtract = MvgCalcButton(Operator.SUBTRACT.textSymbol, self.user_input, self)   
         grid.addWidget(subtract,2,3)        
+        subtract.button_click_signal.connect(partial(self.handle_button_click, Operator.SUBTRACT))
 
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
         FOURTH ROW
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        one = MvgCalcKeyButton(
-             "1",                               
-             "1",                       
-             _user_input,                       
-         
-             self)   
-
+        one = MvgCalcButton("1",self.user_input,self)   
         grid.addWidget(one,3,0)
+        one.button_click_signal.connect(partial(self.handle_button_click, "1"))
 
-        two = MvgCalcKeyButton(
-             "2",                               
-             "2",                       
-             _user_input,                       
-         
-             self)   
-
+        two = MvgCalcButton("2",self.user_input,self)   
         grid.addWidget(two,3,1)        
+        two.button_click_signal.connect(partial(self.handle_button_click, "2"))
 
-        three = MvgCalcKeyButton(
-             "3",                               
-             "3",                       
-             _user_input,                       
-         
-             self)   
-
+        three = MvgCalcButton("3",self.user_input,self)   
         grid.addWidget(three,3,2) 
+        three.button_click_signal.connect(partial(self.handle_button_click, "3"))
 
-        subtract = MvgCalcKeyButton(
-             Operator.ADD.textSymbol,      
-             Operator.ADD,                 
-             _user_input,                       
-          
-             self)   
-
-        grid.addWidget(subtract,3,3)
+        add = MvgCalcButton(Operator.ADD.textSymbol,self.user_input,self)   
+        grid.addWidget(add,3,3)
+        add.button_click_signal.connect(partial(self.handle_button_click, Operator.ADD))
 
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
         FIFTH ROW
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        negitive = MvgCalcKeyButton(
-             CharacterInput.NEGATIVE.textSymbol,                               
-             CharacterInput.NEGATIVE,                       
-             _user_input,                       
-         
-             self)   
-
+        negitive = MvgCalcButton(CharacterInput.NEGATIVE.textSymbol,self.user_input, self)  
         grid.addWidget(negitive,4,0)
+        negitive.button_click_signal.connect(partial(self.handle_button_click, CharacterInput.NEGATIVE))
 
-        zero = MvgCalcKeyButton(
-             "0",                               
-             "0",                       
-             _user_input,                       
-         
-             self)   
-
+        zero = MvgCalcButton("0",self.user_input,self)   
         grid.addWidget(zero,4,1)        
+        zero.button_click_signal.connect(partial(self.handle_button_click, "0"))
 
-        decimal_point = MvgCalcKeyButton(
-             ".",                               
-             ".",                       
-             _user_input,                       
-         
-             self)   
-
+        decimal_point = MvgCalcButton(".", self.user_input, self)   
         grid.addWidget(decimal_point,4,2) 
+        decimal_point.button_click_signal.connect(partial(self.handle_button_click, "."))
 
-        enter = EnterButton(
-             ActionKey.ENTER.textSymbol,      
-             ActionKey.ENTER,                 
-             _user_input,                       
-          
-             self)   
-
+        enter = MvgCalcButton(ActionKey.ENTER.textSymbol, self.user_input, self)   
         grid.addWidget(enter,4,3)
+        enter.button_click_signal.connect(partial(self.handle_button_click, ActionKey.ENTER))
 
         self.setLayout(grid)
+
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    click handler functions
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    def handle_button_click(self, key_type : Enum | str):
+
+        if key_type == ActionKey.CLEAR:
+            self.user_input.clear_list()
+
+        elif key_type == ActionKey.ENTER:
+            result = evaluate_to_str(self.user_input.format_usr_inp_expr_as_str()) 
+            self.user_input.clear_list()        #clears the list ready for a new calculation
+            self.user_input.result = result  
+
+        elif isinstance(key_type, Enum) or  isinstance(key_type, str):
+            self.user_input.clear_result()
+            self.user_input.add_to_list(key_type)         
+
+        self.updated_user_input_obj_signal.emit(self.user_input)
+            
