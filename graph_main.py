@@ -1,17 +1,15 @@
 from PyQt5 import QtWidgets
 from pyqtgraph import PlotWidget, plot
 import pyqtgraph as pg
-from pyqtgraph.widgets.MatplotlibWidget import MatplotlibWidget
 import sys  # We need sys so that we can pass argv to QApplication
 import os
 import sympy as sp
 import math
 import numpy as np
-import sys
 from PyQt5.QtWidgets import *
 from gui.app import MvgCalcApplication
 from gui.components.keyboard import BasicKeyboard
-from gui.app import MvgCalcApplication
+
 
 def function_to_plot(x):
     return 5 * x**2

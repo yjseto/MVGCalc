@@ -27,7 +27,7 @@ def evaluate_to_str(expression):
 
 def evaluate_percentage(expression):
     parsed_expr = parse_expr(expression,transformations='all')
-    result = N(parsed_expr/100,10)
+    result = N(parsed_expr/100)
     
     result_str = str(result)
 
