@@ -11,3 +11,7 @@ class EvaluatorBase(ABC):
     @abstractmethod
     def evaluate(self, user_input : UserInput):
         pass
+    
+    def clean_up(self, user_input : UserInput):
+            user_input.clear_list
+        

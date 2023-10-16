@@ -8,27 +8,14 @@ from lib.enums.keys import Operator
 class UserInput:
     
     user_input_list: list = field(default_factory=list)
-    current_numeric_input: str = field(default="")
+    result: str = field(default="")
 
+    def format_usr_inp_expr_as_str(self, display_to_user=False) -> str:
 
-    # output_expr: List [str] #good to hold onto in the class object for splicing equations together
-    # #takes an output expr list as a string
-    # def format_usr_inp_expr_as_str(self) -> str:
-    #     for item in self.user_input:
-    #         if isinstance(item, Enum): #if item is of type Enum, retrieve what is at said Enumeration
-    #             self.output_expr.append(item.value[1])
-    #         else:
-    #             self.output_expr.append(str(item))
-  
-    #     out_expr = "".join(self.output_expr)
-
-    #     return out_expr
-    
-
-    def format_usr_inp_expr_as_str(self) -> str:
-
-        """ Builds string from a list of user inputs specifically 
-            formatted for evaluation using pythons math library eval() function.
+        """ Builds string from a list of user inputs formatted for evaluation 
+            using pythons math library eval() function by default when display_to_user=False.
+            If display_to_user indicator set to True then format and return a string that 
+            is readable by the user
 
         Returns:
             String: formatted string
@@ -39,9 +26,8 @@ class UserInput:
 
             for item in self.user_input_list:
 
-                #if item is of type Enum append textEval property value
                 if isinstance(item, Enum): 
-                    outputExprBuffer.write(item.textEval)
+                    outputExprBuffer.write(item.textSymbol if display_to_user else item.textEval)
                 else:
                     outputExprBuffer.write(str(item))
     
@@ -56,7 +42,8 @@ class UserInput:
     #     return f"idk this may be cool too one day"
     #i agree!
 
-    #lets not use this now
+    def clear_result(self):
+        self.result = ""
 
     def clear_list(self):
         self.user_input_list.clear()            
@@ -77,7 +64,6 @@ class UserInput:
         else:
             self.user_input_list.append(value)
         
-
     def pop_from_list(self):
         self.user_input_list.pop()
     
