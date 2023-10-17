@@ -21,13 +21,13 @@ class BasicGrapingKeyboard(QWidget):
 
     #after button click return display text including updated inputs
     updated_user_input_obj_signal = pyqtSignal(UserInput)
-    plot_request_signal = pyqtSignal()#GraphDisplay
+    plot_request_signal = pyqtSignal(GraphDisplay)#GraphDisplay
 
-    def __init__(self, user_input : UserInput):
+    def __init__(self, user_input : UserInput, graph_display: GraphDisplay):
         super().__init__()
         #self.graph_display = GraphDisplay(user_input)
         self.user_input = user_input
-
+        self.graph_display = graph_display
         grid = QGridLayout()
 
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -156,8 +156,14 @@ class BasicGrapingKeyboard(QWidget):
             self.user_input.result = result  
 
         elif key_type == ActionKey.PLOT:
-            self.plot_request_signal.emit()
-            self.graph_display.trigger_plot_request()
+            self.plot_request_signal.emit(self.graph_display) 
+            '''
+            ahhhhhhhhhhhhhhhhhhhhhhhh
+            '''
+            result = evaluate_to_str(self.user_input.format_usr_inp_expr_as_str()) 
+            self.user_input.clear_result()
+            self.user_input.result = result 
+            #self.graph_display.trigger_plot_request()
 
         elif isinstance(key_type, Enum) or  isinstance(key_type, str):
             self.user_input.clear_result()

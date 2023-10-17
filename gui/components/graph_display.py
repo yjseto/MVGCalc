@@ -14,9 +14,9 @@ import math
 import numpy as np
 import sys
 from PyQt5.QtWidgets import *
-from gui.app import MvgCalcApplication
+#from gui.app import MvgCalcApplication
 from gui.components.keyboard import BasicKeyboard
-from gui.app import MvgCalcApplication
+#from gui.app import MvgCalcApplication
 import sys
 from PyQt5.QtWidgets import *
 #from gui.components.graphing_keyboard import BasicGrapingKeyboard
@@ -51,7 +51,6 @@ class GraphDisplay(QWidget):
         self.y = function
         self.graph_widget.plot(self.x,self.y)     
         
-        pass
 
     #def update_graph(self,function):
         #pass

@@ -36,7 +36,7 @@ class BasicGraphDisplay(QMainWindow):
         self.graph_display.plot_request_signal.connect(self.handle_plot_request)
 
         self.display_expression_text = QTextEdit()
-        self.keyboard = BasicGrapingKeyboard(self.app.user_input)
+        self.keyboard = BasicGrapingKeyboard(self.app.user_input,self.app.graph_display) #might not work
         """
             IMPORTANT: reciever for signal from keyboard when signal is returned the  
             retrieve_updated_user_input_object method is involked.
