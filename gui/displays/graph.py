@@ -33,6 +33,7 @@ class BasicGraphDisplay(QMainWindow):
         layout_main = QVBoxLayout()
 
         self.graph_display = GraphDisplay(self.app.user_input)
+        self.graph_display.plot_request_signal.connect(self.handle_plot_request)
 
         self.display_expression_text = QTextEdit()
         self.keyboard = BasicGrapingKeyboard(self.app.user_input)
@@ -40,7 +41,11 @@ class BasicGraphDisplay(QMainWindow):
             IMPORTANT: reciever for signal from keyboard when signal is returned the  
             retrieve_updated_user_input_object method is involked.
         """
-        self.keyboard.updated_user_input_obj_signal.connect(self.retrieve_updated_user_input_object)  
+        self.keyboard.updated_user_input_obj_signal.connect(self.retrieve_updated_user_input_object) 
+        
+        #Connect plot request
+        
+    
 
         layout_main.addWidget(self.graph_display)
         layout_main.addWidget(self.display_expression_text)
@@ -62,4 +67,6 @@ class BasicGraphDisplay(QMainWindow):
         #self.display_result_text.setText(updated_user_input.result)
         self.display_expression_text.setText(updated_user_input.format_usr_inp_expr_as_str(True))
 
+    def handle_plot_request(self,updated_user_input: UserInput):
+        self.graph_display.trigger_plot_request()
 #wait on Joel

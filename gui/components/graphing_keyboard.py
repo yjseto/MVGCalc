@@ -9,6 +9,8 @@ from gui.components.button import MvgCalcButton
 from lib.enums.keys import *
 from lib.models.user_input import UserInput
 
+from gui.components.graph_display import GraphDisplay
+
 
 '''
 Made this as a separate class in order to add a Plot button, obviusoly we will want to have
@@ -19,10 +21,11 @@ class BasicGrapingKeyboard(QWidget):
 
     #after button click return display text including updated inputs
     updated_user_input_obj_signal = pyqtSignal(UserInput)
+    plot_request_signal = pyqtSignal()#GraphDisplay
 
     def __init__(self, user_input : UserInput):
         super().__init__()
-
+        #self.graph_display = GraphDisplay(user_input)
         self.user_input = user_input
 
         grid = QGridLayout()
@@ -122,6 +125,7 @@ class BasicGrapingKeyboard(QWidget):
         plot = MvgCalcButton(ActionKey.PLOT.textSymbol,self.user_input, self)  
         grid.addWidget(plot,4,0)
         plot.button_click_signal.connect(partial(self.handle_button_click, ActionKey.PLOT))
+        # In your button's click event handler function
 
         zero = MvgCalcButton("0",self.user_input,self)   
         grid.addWidget(zero,4,1)        
@@ -152,14 +156,13 @@ class BasicGrapingKeyboard(QWidget):
             self.user_input.result = result  
 
         elif key_type == ActionKey.PLOT:
-            graph_func_result = self.user_input.convert_usr_inp_exp_as_func() #send this to the graph_display class for plotting
-            self.user_input.update_graph(graph_func_result) #graph function idk
-            self.user_input.clear_list()        #clears the list ready for a new calculation
-            self.user_input.result = result
+            self.plot_request_signal.emit()
+            self.graph_display.trigger_plot_request()
 
         elif isinstance(key_type, Enum) or  isinstance(key_type, str):
             self.user_input.clear_result()
             self.user_input.add_to_list(key_type)         
 
         self.updated_user_input_obj_signal.emit(self.user_input)
+        
             
