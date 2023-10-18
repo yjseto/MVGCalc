@@ -1,12 +1,12 @@
 import sys
 from gui.app import MvgCalcApplication
 from gui.displays.basic import BasicCalcDisplay
-from gui.displays.graph import BasicGraphDisplay
+from gui.displays.graph import GraphDisplay
 
 def main():
     try:
         app = MvgCalcApplication(sys.argv)
-        window = BasicGraphDisplay(app)
+        window = GraphDisplay(app)
         window.show()
         sys.exit(app.exec_())
     except Exception as e:

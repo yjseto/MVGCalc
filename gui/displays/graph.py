@@ -8,13 +8,14 @@ import math
 import numpy as np
 from PyQt5.QtWidgets import *
 from gui.app import MvgCalcApplication
-from gui.components.keyboard import BasicKeyboard
-from gui.components.graphing_keyboard import BasicGrapingKeyboard
-from gui.components.graph_display import GraphDisplay
+#from gui.components.graphing_keyboard import BasicGrapingKeyboard
+#from gui.components.graph_display import GraphDisplay
 import sys
 from PyQt5.QtWidgets import *
-from gui.components.keyboard import BasicKeyboard
+from gui.components.keyboard import BasicKeyboard, GrapingKeyboard
 from lib.models.user_input import UserInput
+from gui.screen.graph import GraphScreen
+from utils.Util import evaluate_graph
 
 
 '''
@@ -22,8 +23,8 @@ Similar to basic But i just replaced the top with the graph instead of the resul
 just for now
 '''
 
-class BasicGraphDisplay(QMainWindow):
-    def __init__(self, app):
+class GraphDisplay(QMainWindow):
+    def __init__(self,app):
         super().__init__()
         self.app = app
 
@@ -32,11 +33,14 @@ class BasicGraphDisplay(QMainWindow):
         #create vertical box structure to place widget components
         layout_main = QVBoxLayout()
 
-        self.graph_display = GraphDisplay(self.app.user_input)
-        self.graph_display.plot_request_signal.connect(self.handle_plot_request)
+        self.graph_screen = GraphScreen()
+        
 
         self.display_expression_text = QTextEdit()
-        self.keyboard = BasicGrapingKeyboard(self.app.user_input) #might not work
+        self.keyboard = GrapingKeyboard(self.app.user_input) #might not work
+        
+        self.keyboard.plot_request_signal.connect(self.handle_plot_request)
+
         """
             IMPORTANT: reciever for signal from keyboard when signal is returned the  
             retrieve_updated_user_input_object method is involked.
@@ -47,7 +51,7 @@ class BasicGraphDisplay(QMainWindow):
         
     
 
-        layout_main.addWidget(self.graph_display)
+        layout_main.addWidget(self.graph_screen)
         layout_main.addWidget(self.display_expression_text)
         layout_main.addWidget(self.keyboard)
 
@@ -68,5 +72,17 @@ class BasicGraphDisplay(QMainWindow):
         self.display_expression_text.setText(updated_user_input.format_usr_inp_expr_as_str(True))
 
     def handle_plot_request(self,updated_user_input: UserInput):
+
+        x = np.linspace(-20,20,1000)
+        #function = evaluate_graph('2 * x')
+        #print(function)
+        y = eval("x**2")
+        #print(print("Data type of y:", y.dtype))
+        self.graph_screen.plot(x,y)
+        #self.plot_request_signal.emit(self.graph_display)
+
+
+
+
         self.graph_display.trigger_plot_request()
 #wait on Joel

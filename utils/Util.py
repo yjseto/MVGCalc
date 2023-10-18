@@ -37,4 +37,7 @@ def evaluate_percentage(expression):
     return result_str
 #utility class - user input validation (maybe create a new class for validation), formatting, etc...
 
+def evaluate_graph(string):
+    return eval(string)
+
 

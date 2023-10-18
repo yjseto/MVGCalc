@@ -9,10 +9,17 @@ import numpy as np
 from PyQt5.QtWidgets import *
 from gui.app import MvgCalcApplication
 from gui.components.keyboard import BasicKeyboard
+from sympy.parsing.sympy_parser import parse_expr
 
 
 def function_to_plot(x):
-    return 5 * x**2
+    return 2 * x
+
+def convert_usr_inp_exp_as_func(string):
+    #func = self.format_usr_inp_expr_as_str()
+    parsed_expr = parse_expr(string,transformations='all')
+    result = sp.sympify(parsed_expr)
+    return result
 
 def main():
     app = MvgCalcApplication(sys.argv)
@@ -50,8 +57,11 @@ class CustomMainWindow(QtWidgets.QMainWindow):
         
         #create x and y values to plot
         #this way gives a good amount of control over how to plot
-        x = np.linspace(0,20,1000)
-        y = function_to_plot(x)
+        x = np.linspace(-20,20,1000)
+        function = convert_usr_inp_exp_as_func('2 * x')
+        print(function)
+        y = eval("x**2")
+        #print(print("Data type of y:", y.dtype))
         graph_widget.plot(x,y)
 
         self.layout.addWidget(custom_widget)
