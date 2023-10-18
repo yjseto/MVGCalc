@@ -76,13 +76,11 @@ class GraphDisplay(QMainWindow):
         x = np.linspace(-20,20,1000)
         #function = evaluate_graph('2 * x')
         #print(function)
-        y = eval("x**2")
+        #update eval
+        y = eval(updated_user_input.format_usr_inp_expr_as_str())
         #print(print("Data type of y:", y.dtype))
         self.graph_screen.plot(x,y)
         #self.plot_request_signal.emit(self.graph_display)
 
-
-
-
-        self.graph_display.trigger_plot_request()
+        #self.graph_display.trigger_plot_request()
 #wait on Joel
