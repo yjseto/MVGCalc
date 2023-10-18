@@ -9,6 +9,8 @@ from gui.components.button import MvgCalcButton
 from lib.enums.keys import *
 from lib.models.user_input import UserInput
 
+from gui.util.css import build_css_string
+
 class BasicKeyboard(QWidget):
 
     #after button click return display text including updated inputs
@@ -25,8 +27,28 @@ class BasicKeyboard(QWidget):
         FIRST ROW
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
         clear = MvgCalcButton(ActionKey.CLEAR.textSymbol, self.user_input, self) 
+        
+        clear.setStyleSheet(build_css_string(
+            "QPushButton", 
+            background_color="#363E4D", 
+            color="#CBE1FF", 
+            border_radius="2px",
+            font_family = "roboto", 
+            font_size = "28px" 
+            ))
+        
         grid.addWidget(clear,0,0)
         clear.button_click_signal.connect(partial(self.handle_button_click, ActionKey.CLEAR))       
+
+
+#         QPushButton {\n"
+# "    background-color: #363E4D;\n"
+# "    color: #CBE1FF;\n"
+# "    border-radius: 2px;\n"
+# "    font-family: roboto;\n"
+# "    font-size: 28px;\n"
+# "   }\n"
+
 
         left_parethesis = MvgCalcButton(CharacterInput.LEFT_P.textSymbol, self.user_input,self)       
         left_parethesis.button_click_signal.connect(partial(self.handle_button_click, CharacterInput.LEFT_P.textEval))
@@ -138,7 +160,7 @@ class BasicKeyboard(QWidget):
 
         if key_type == ActionKey.CLEAR:
             self.user_input.clear_list()
-
+            self.user_input.result = ""
         elif key_type == ActionKey.ENTER:
             result = evaluate_to_str(self.user_input.format_usr_inp_expr_as_str()) 
             self.user_input.clear_list()        #clears the list ready for a new calculation

@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import *
 from gui.components.keyboard import BasicKeyboard
 from lib.models.user_input import UserInput
 
+from gui.util.css import build_css_string
 class BasicCalcDisplay(QMainWindow):
     def __init__(self, app):
         super().__init__()
@@ -15,7 +16,12 @@ class BasicCalcDisplay(QMainWindow):
         layout_main = QVBoxLayout()
 
         self.display_result_text = QTextEdit()
-
+        self.display_result_text.setStyleSheet(build_css_string(
+            "QTextEdit",
+            background_color= "#161A20",
+            color= "#FFFFFF"
+            ))
+        
         self.display_expression_text = QTextEdit()
         self.keyboard = BasicKeyboard(self.app.user_input)
         """
