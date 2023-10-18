@@ -16,7 +16,7 @@ def evaluate(expression):
 
 def evaluate_to_str(expression):
     parsed_expr = parse_expr(expression,transformations='all')
-    result = N(parsed_expr)
+    result = N(parsed_expr) #evalf
     result_str = str(result)
 
     if '.' in result_str:
