@@ -3,12 +3,16 @@ from enum import Enum
 from typing import List
 from io import StringIO
 from lib.enums.keys import Operator
+import sympy as sp
+from sympy.parsing.sympy_parser import parse_expr, transformations
 
 @dataclass
 class UserInput:
     
     user_input_list: list = field(default_factory=list)
     result: str = field(default="")
+    function = None
+    to_plot = False
 
     def format_usr_inp_expr_as_str(self, display_to_user=False) -> str:
 
@@ -37,6 +41,23 @@ class UserInput:
             outputExprBuffer.close()
 
         return out_expr    
+    
+    def convert_usr_inp_exp_as_func(self):
+        func = self.format_usr_inp_expr_as_str()
+        parsed_expr = parse_expr(func,transformations='all')
+        result = sp.sympify(parsed_expr)
+        return result
+    
+    def update_function(self,expression):
+        '''
+        work in progress, not sure how to write this yet
+        but the idea is to let the graphDisplay wdiget that we are ready to plot something
+        '''
+        self.function = expression
+        self.to_plot = True
+    
+    def set_to_plot_false(self):
+        self.to_plot = False
 
     # def format_usr_inp_expr_as_latex(self) -> str:
     #     return f"idk this may be cool too one day"
