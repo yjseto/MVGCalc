@@ -280,6 +280,26 @@ class GrapingKeyboard(QWidget):
         grid.addWidget(enter,4,3)
         enter.button_click_signal.connect(partial(self.handle_button_click, ActionKey.ENTER))
 
+        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+        SIXTH ROW
+        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+        to_the = MvgCalcButton(Operator.EXPONENT.textSymbol,self.user_input, self)  
+        grid.addWidget(to_the,5,0)
+        to_the.button_click_signal.connect(partial(self.handle_button_click, Operator.EXPONENT))
+        # In your button's click event handler function
+
+        sqrt = MvgCalcButton(MathFunction.SQRT.textSymbol,self.user_input,self)   
+        grid.addWidget(sqrt,5,1)        
+        sqrt.button_click_signal.connect(partial(self.handle_button_click, MathFunction.SQRT))
+
+        squared = MvgCalcButton(MathFunction.SQUARED.textSymbol, self.user_input, self)   
+        grid.addWidget(squared,5,2) 
+        squared.button_click_signal.connect(partial(self.handle_button_click, MathFunction.SQUARED))
+
+        sin = MvgCalcButton(Trigonometry.SIN.textSymbol, self.user_input, self)   
+        grid.addWidget(sin,5,3)
+        sin.button_click_signal.connect(partial(self.handle_button_click, Trigonometry.SIN))
+
         self.setLayout(grid)
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -291,6 +311,10 @@ class GrapingKeyboard(QWidget):
         if key_type == ActionKey.CLEAR:
             self.user_input.clear_list()
 
+        elif key_type == ActionKey.ENTER:
+            result = evaluate_to_str(self.user_input.format_usr_inp_expr_as_str()) 
+            self.user_input.clear_list()        #clears the list ready for a new calculation
+            self.user_input.result = result
         
         elif key_type == ActionKey.PLOT:
 
