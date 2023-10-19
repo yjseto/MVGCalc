@@ -1,15 +1,5 @@
-class ClearInputButton():
-    def __init__(self, **kwargs):
+from gui.util.css import build_css_string
 
-        self.kwargs = kwargs
-
-        #tempString match string below
-        #replace underscore with - in key value
-        # for key, value in kwargs.items():
-        #         print(f"{key}: {value}")  
-
-    def build_css_string(self):
-        return self.kwargs
 
 #expected
 print(
@@ -26,6 +16,7 @@ print(
 )   
 
 #actual
-testObj = ClearInputButton(background_color="value1", arg2="value2", arg3="value3")
+testObj = build_css_string("QPushButton", background_color="#0060E5", color="#CBE1FF", border_radius="2px",
+                           border_top_right_radius = "8px", font_family = "roboto", font_size = "38px" )
 
-print(testObj.build_css_string())
+print(testObj)
