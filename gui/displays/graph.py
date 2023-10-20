@@ -15,7 +15,7 @@ from PyQt5.QtWidgets import *
 from gui.components.keyboard import BasicKeyboard, GrapingKeyboard
 from lib.models.user_input import UserInput
 from gui.screen.graph import GraphScreen
-from utils.Util import evaluate_graph
+from utils.Util import evaluate_graph, evaluate_to_str
 
 
 '''
@@ -72,14 +72,16 @@ class GraphDisplay(QMainWindow):
         self.display_expression_text.setText(updated_user_input.format_usr_inp_expr_as_str(True))
 
     def handle_plot_request(self,updated_user_input: UserInput):
-
-        x = np.linspace(-20,20,1000)
+        to_graph = updated_user_input.format_usr_inp_expr_as_str()
+        result = evaluate_to_str(to_graph)
+        x = np.linspace(-100,100,3000)
         #function = evaluate_graph('2 * x')
         #print(function)
         #update eval
-        y = eval(updated_user_input.format_usr_inp_expr_as_str())
+        y = eval(result)
         #print(print("Data type of y:", y.dtype))
-        self.graph_screen.plot(x,y)
+        #self.graph_screen.plot(x,y)
+        self.graph_screen.plot(x,y,pen = self.graph_screen.pen)
         #self.plot_request_signal.emit(self.graph_display)
 
         #self.graph_display.trigger_plot_request()
