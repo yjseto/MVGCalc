@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets
-from pyqtgraph import PlotWidget, plot
+from pyqtgraph import PlotWidget, plot, GraphicsLayoutWidget
 import pyqtgraph as pg
 import sys  # We need sys so that we can pass argv to QApplication
 import os
@@ -25,4 +25,17 @@ just for now
 class GraphScreen(PlotWidget):
     def __init__(self):
         super().__init__()
+        #I hope to be able to do most of the graph styling here
+        #can customize look here?
+        styles = {'color':'white', 'font-size':'20px'}
+        self.setBackground('#00193f')
+        self.showGrid(x = True, y =True)
+        self.pen = pg.mkPen(color = 'w', width = 1.5)
+        #self.plot(y=0,pen = self.pen) trying to draw axis lines
+        self.setLabel('left','y',**styles)
+        self.setLabel('bottom','x',**styles)
+        self.setXRange(-30, 30, padding=0)
+        self.setYRange(-30, 30, padding=0)
+
+        
         

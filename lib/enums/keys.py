@@ -58,7 +58,7 @@ class CharacterInput(Enum):
     
 
 class MathFunction(Enum):
-    SQRT            = (1,"SQRT",                    "sqrt",    "sqrt")
+    SQRT            = (1,"SQRT",                    "sqrt(",    "sqrt(")
     SQUARED         = (2,"SQUARED",                 "**2",          "^2")
     CUBERT          = (3,"CUBERT",                  "math.cbrt",    "") #Will need a function for higher order roots and exponents
     CUBED           = (4,"CUBED",                   "**3",          "")
@@ -102,8 +102,8 @@ class Operator(Enum):
 # result = operation.perform(5, 3)
 
 class Trigonometry(Enum):
-    SIN         = (1,"SIN",     "math.sin",     "sin")
-    COS         = (2,"COS",     "math.cos",     "")
+    SIN         = (1,"SIN",     "math.sin(",     "sin(")
+    COS         = (2,"COS",     "math.cos(",     "")
     TAN         = (3,"TAN",     "math.tan",     "")
     INVSIN      = (4,"INVSIN",  "math.asin",    "")
     INVCOS      = (5,"INVCOS",  "math.acos",    "")

@@ -74,13 +74,14 @@ class GraphDisplay(QMainWindow):
     def handle_plot_request(self,updated_user_input: UserInput):
         to_graph = updated_user_input.format_usr_inp_expr_as_str()
         result = evaluate_to_str(to_graph)
-        x = np.linspace(-20,20,1000)
+        x = np.linspace(-100,100,3000)
         #function = evaluate_graph('2 * x')
         #print(function)
         #update eval
         y = eval(result)
         #print(print("Data type of y:", y.dtype))
-        self.graph_screen.plot(x,y)
+        #self.graph_screen.plot(x,y)
+        self.graph_screen.plot(x,y,pen = self.graph_screen.pen)
         #self.plot_request_signal.emit(self.graph_display)
 
         #self.graph_display.trigger_plot_request()
