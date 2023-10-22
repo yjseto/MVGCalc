@@ -1,12 +1,19 @@
 from enum import Enum
 
 class DisplayModes(Enum):
-    ARITHMATIC          = 1 #do we want to add (1,"evaluator_algebra.py") or something like that?
-    GRAPHING            = 2
-    ALGEBRA             = 3 #solve algebraic equations and trigonometric identities
-    CALCULUS            = 4 #differentiation and integration
-    TIP_CALC            = 5
-    EXPORT              = 6
-
-    def retrieve(self):
-        return self.value[1]
+    BASIC               = (0, "Calculator") #do we want to add (1,"evaluator_algebra.py") or something like that?
+    GRAPH               = (1, "Graph")
+    MENU                = (2, "Menu")
+    ALGEBRA             = (4, "") #solve algebraic equations and trigonometric identities
+    CALCULUS            = (5, "") #differentiation and integration
+    TIP_CALC            = (6, "")
+    EXPORT              = (7, "")
+    def __init__ (self, index, textSymbol):
+        self.index = index
+        self.textSymbol = textSymbol  
+        
+class KeyboardDisplayMode(Enum):
+    FUNCTIONS               = (0, "Functions") #do we want to add (1,"evaluator_algebra.py") or something like that?
+    def __init__ (self, index, textSymbol):
+        self.index = index
+        self.textSymbol = textSymbol  

@@ -1,11 +1,11 @@
 import sys
-from gui.app import MvgCalcApplication
-from gui.displays.basic import BasicCalcDisplay
+from gui.containers.app import MvgCalcApplication
+from gui.containers.window import MvgCalcMainWindow
 
 def main():
     try:
         app = MvgCalcApplication(sys.argv)
-        window = BasicCalcDisplay(app)
+        window = MvgCalcMainWindow(app)
         window.show()
         sys.exit(app.exec_())
     except Exception as e:
@@ -14,3 +14,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+ 

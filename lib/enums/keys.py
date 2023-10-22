@@ -26,14 +26,17 @@ Please see how to do output in unit_tests.py
     #object.value[1] = "x",".""()"etc..
 
 class ActionKey(Enum):
-    BACKSPACE       = (1, "")
-    UP              = (2, "")
-    DOWN            = (3, "")
-    RIGHT           = (4, "")
-    LEFT            = (5, "")
+    BACKSPACE       = (1, "del")
+    UP              = (2, "\u2191")
+    DOWN            = (3, "\u2193")
+    RIGHT           = (4, "\u2192")
+    LEFT            = (5, "\u2190")
     CLEAR           = (6, "AC")
     ENTER           = (7, "=")
     PLOT            = (8,"PLOT")
+
+    
+    
 
     def __init__ (self, index, textSymbol):
         self.index = index
@@ -43,7 +46,7 @@ class CharacterInput(Enum):
     DECIMAL_POINT       = (1,"DECIMAL_POINT",      ".",    ".")
     LEFT_P              = (2,"LEFT_P",             "(",    "(")
     RIGHT_P             = (3,"RIGHT_P",            ")",    ")")
-    NEGATIVE            = (4,"NEGITIVE",           "-",    "-")
+    NEGATIVE            = (4,"NEGITIVE",           "-",    "\u207A\u2215\u208B")
     XVAR                = (5,"XVAR",               "x",    "X")
     YVAR                = (6,"YVAR",               "y",    "Y")
     ZVAR                = (7,"ZVAR",               "z",    "Z")
@@ -58,8 +61,8 @@ class CharacterInput(Enum):
     
 
 class MathFunction(Enum):
-    SQRT            = (1,"SQRT",                    "sqrt(",    "sqrt(")
-    SQUARED         = (2,"SQUARED",                 "**2",          "^2")
+    SQRT            = (1,"SQRT",                    "sqrt(",    "\u221A")
+    SQUARED         = (2,"SQUARED",                 "**2",          "x\u00b2")
     CUBERT          = (3,"CUBERT",                  "math.cbrt",    "") #Will need a function for higher order roots and exponents
     CUBED           = (4,"CUBED",                   "**3",          "")
     POW             = (6,"POW",                     "math.pow",     "")
