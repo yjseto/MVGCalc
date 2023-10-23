@@ -3,17 +3,15 @@ from functools import partial
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import pyqtSignal
 
-from utils.Util import evaluate_to_str,evaluate_graph
-import numpy as np
 from gui.components.button import MvgCalcButton
+from gui.components.navigation import NavBar
 from lib.enums.keys import *
 from lib.models.user_input import UserInput
 
 from gui.util.css import build_css_string
 
-from gui.components.navigation import NavBar
-from lib.enums.modes import KeyboardDisplayMode
-from lib.enums.keys import MathFunction, ActionKey
+from lib.enums.modes import *
+from lib.util.evaluator import context
 
 
 # class DirectionalButtons(QWidget):
@@ -418,7 +416,7 @@ class BasicKeyboard(QWidget):
             self.user_input.clear_list()
             self.user_input.result = ""
         elif key_type == ActionKey.ENTER:
-            result = evaluate_to_str(self.user_input.format_usr_inp_expr_as_str()) 
+            result = context(DisplayMode.BASIC, self.user_input) 
             self.user_input.clear_list()        #clears the list ready for a new calculation
             self.user_input.result = result  
 
@@ -590,7 +588,7 @@ class GrapingKeyboard(QWidget):
             self.user_input.clear_list()
 
         elif key_type == ActionKey.ENTER:
-            result = evaluate_to_str(self.user_input.format_usr_inp_expr_as_str()) 
+            result = context(DisplayMode.BASIC, self.user_input) 
             self.user_input.clear_list()        #clears the list ready for a new calculation
             self.user_input.result = result
         

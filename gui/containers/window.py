@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import (
     QWidget,
 )
 
-from lib.enums.modes import DisplayModes
+from lib.enums.modes import DisplayMode
 
 from gui.view.displays import BasicCalcDisplay, GraphDisplay
 from gui.components.navigation import NavBar
@@ -24,7 +24,7 @@ class MvgCalcMainWindow(QMainWindow):
         central_widget.setLayout(self.main_layout)
 
         #add nav bar button group to top of calculator
-        self.navbar = NavBar(DisplayModes.BASIC, DisplayModes.GRAPH)
+        self.navbar = NavBar(DisplayMode.BASIC, DisplayMode.GRAPH)
         self.navbar.clicked_display_signal.connect(self.activate_tab)
         self.main_layout.addLayout(self.navbar)
 
@@ -34,5 +34,6 @@ class MvgCalcMainWindow(QMainWindow):
 
         self.main_layout.addWidget(self.stack_layout)
 
-    def activate_tab(self, display_type : DisplayModes):
-        self.stack_layout.setCurrentIndex(display_type.index)
+    def activate_tab(self, display_mode : DisplayMode):
+        self.app.display_mode = display_mode
+        self.stack_layout.setCurrentIndex(display_mode.index)

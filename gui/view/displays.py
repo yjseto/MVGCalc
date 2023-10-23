@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import *
 import numpy as np
 
 from lib.models.user_input import UserInput
+from lib.util.evaluator import context
 
 from gui.components.keyboard import BasicKeyboard, GrapingKeyboard
 from gui.screen.graph import GraphScreen
@@ -96,13 +97,12 @@ class GraphDisplay(QWidget):
         self.display_expression_text.setText(updated_user_input.format_usr_inp_expr_as_str(True))
 
     def handle_plot_request(self,updated_user_input: UserInput):
-        to_graph = updated_user_input.format_usr_inp_expr_as_str()
-        result = evaluate_to_str(to_graph)
+        
         x = np.linspace(-100,100,3000)
         #function = evaluate_graph('2 * x')
         #print(function)
         #update eval
-        y = eval(result)
+        y = eval(context(self.app.display_mode, updated_user_input))
         #print(print("Data type of y:", y.dtype))
         #self.graph_screen.plot(x,y)
         self.graph_screen.plot(x,y,pen = self.graph_screen.pen)
