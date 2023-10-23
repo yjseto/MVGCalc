@@ -1,18 +1,22 @@
 from dataclasses import dataclass, field
-from abc import ABC, abstractmethod
 from lib.models.user_input import UserInput
+from typing import Protocol
 
-class ResultBase(ABC):
-
-    error_msg: str = field(default="")
+class IResult(Protocol):
+    error_msgs: [str]
     success: bool
-    
-    def clean_up(self, user_input : UserInput):
-            user_input.clear_list
+    #add value and expression in the future?
 
-@dataclass
-class ArithmeticResult(ResultBase):
-    result = "" 
+
+# A structural subtype of IShape
+# Not a nominal subtype of IShape
+
+class BasicResult(IResult):
+    def __init__(self):
+        self.value : str = ""
+        self.error_msgs = []
+        self.success = False
+        self.expression: str = ""
 
 @dataclass
 class GraphResult(ResultBase):

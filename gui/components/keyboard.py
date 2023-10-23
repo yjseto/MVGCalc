@@ -6,6 +6,7 @@ from PyQt5.QtCore import pyqtSignal
 from gui.components.button import MvgCalcButton
 from gui.components.navigation import NavBar
 from lib.enums.keys import *
+from lib.models.result import IResult
 from lib.models.user_input import UserInput
 
 from gui.util.css import build_css_string
@@ -40,7 +41,7 @@ class BasicKeyboard(QWidget):
 
 
     #after button click return display text including updated inputs
-    updated_user_input_obj_signal = pyqtSignal(UserInput)
+    return_result = pyqtSignal(IResult)
 
     def __init__(self, user_input : UserInput):
         super().__init__()
@@ -411,20 +412,20 @@ class BasicKeyboard(QWidget):
     # click handler functions
     # """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def handle_button_click(self, key_type : Enum | str):
-
+        #result: IResult
         if key_type == ActionKey.CLEAR:
             self.user_input.clear_list()
             self.user_input.result = ""
         elif key_type == ActionKey.ENTER:
             result = context(DisplayMode.BASIC, self.user_input) 
             self.user_input.clear_list()        #clears the list ready for a new calculation
-            self.user_input.result = result  
+            self.return_result.emit(result)
+            #self.user_input.result = result  
 
         elif isinstance(key_type, Enum) or  isinstance(key_type, str):
             self.user_input.clear_result()
             self.user_input.add_to_list(key_type)         
 
-        self.updated_user_input_obj_signal.emit(self.user_input)
             
 
 
