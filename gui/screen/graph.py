@@ -30,8 +30,6 @@ class GraphScreen(PlotWidget):
         self.showGrid(x = True, y =True)
         self.pen = pg.mkPen(color = 'w', width = 1.5)
         #self.plot(y=0,pen = self.pen) trying to draw axis lines
-        self.setLabel('left','y',**styles)
-        self.setLabel('bottom','x',**styles)
         self.setXRange(-30, 30, padding=0)
         self.setYRange(-30, 30, padding=0)
 
