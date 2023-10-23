@@ -18,6 +18,7 @@ class BasicResult(IResult):
         self.success = False
         self.expression: str = ""
 
+'''
 @dataclass
 class GraphResult(ResultBase):
     result = "?"
@@ -29,3 +30,5 @@ class CalculusResult(ResultBase):
 @dataclass
 class CalculusResult(ResultBase):
      result = "? we may want to return two results for each side of the conversion"
+
+'''     

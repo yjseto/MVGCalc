@@ -48,13 +48,11 @@ class BasicKeyboard(QWidget):
 
         self.user_input = user_input
 
-        main_layout = QVBoxLayout()
-        self.NavBar = NavBar(KeyboardDisplayMode.FUNCTIONS)
-        main_layout.addLayout(self.NavBar)
+        grid = QGridLayout()
+
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
         FIRST ROW
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        row1 = QHBoxLayout()
         clear = MvgCalcButton(ActionKey.CLEAR.textSymbol, self.user_input, self) 
         
         clear.setStyleSheet(build_css_string(
@@ -67,8 +65,18 @@ class BasicKeyboard(QWidget):
             font_size = "28px" 
             ))
         
-        row1.addWidget(clear)
+        grid.addWidget(clear,0,0)
         clear.button_click_signal.connect(partial(self.handle_button_click, ActionKey.CLEAR))       
+
+
+#         QPushButton {\n"
+# "    background-color: #363E4D;\n"
+# "    color: #CBE1FF;\n"
+# "    border-radius: 2px;\n"
+# "    font-family: roboto;\n"
+# "    font-size: 28px;\n"
+# "   }\n"
+
 
         left_parethesis = MvgCalcButton(CharacterInput.LEFT_P.textSymbol, self.user_input,self)       
         
@@ -99,12 +107,12 @@ class BasicKeyboard(QWidget):
         parenthesis_layout = QHBoxLayout()       
         parenthesis_layout.addWidget(left_parethesis)
         parenthesis_layout.addWidget(right_parethesis)
-        row1.addLayout(parenthesis_layout)        
+        grid.addLayout(parenthesis_layout,0,1)        
 
-        main_layout.addLayout(row1)
-    #     # TODO replaced with X var for moro's testing need to add % enum
+
+        # TODO replaced with X var for moro's testing need to add % enum
         # percent = MvgCalcButton("%",self.user_input,self)                                              
-        # row1.addWidget(percent)          
+        # grid.addWidget(percent,0,2)          
         # right_parethesis.button_click_signal.connect(partial(self.handle_button_click, '%'))
         
         x_var = MvgCalcButton(CharacterInput.XVAR.textSymbol,self.user_input,self)                                              
@@ -118,29 +126,27 @@ class BasicKeyboard(QWidget):
             font_size = "28px" 
             ))
         
-        row1.addWidget(x_var)
+        grid.addWidget(x_var,0,2)
         x_var.button_click_signal.connect(partial(self.handle_button_click, CharacterInput.XVAR.textEval))
 
-        # division = MvgCalcButton(Operator.DIVIDE.textSymbol,self.user_input,self)                                              
+        division = MvgCalcButton(Operator.DIVIDE.textSymbol,self.user_input,self)                                              
         
-        # division.setStyleSheet(build_css_string(
-        #     "QPushButton",
-        #     background_color="#0060E5", 
-        #     color="#CBE1FF", 
-        #     border_radius="2px",
-        #     font_family = "roboto", 
-        #     border_top_right_radius= "8px",
-        #     font_size = "28px" 
-        #     ))
+        division.setStyleSheet(build_css_string(
+            "QPushButton",
+            background_color="#0060E5", 
+            color="#CBE1FF", 
+            border_radius="2px",
+            font_family = "roboto", 
+            border_top_right_radius= "8px",
+            font_size = "28px" 
+            ))
     
-        # grid.addWidget(division,0,3)
-        # division.button_click_signal.connect(partial(self.handle_button_click, Operator.DIVIDE))
+        grid.addWidget(division,0,3)
+        division.button_click_signal.connect(partial(self.handle_button_click, Operator.DIVIDE))
 
-    #     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    #     SECOND ROW
-    #     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        row2 = QHBoxLayout()
-        
+        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+        SECOND ROW
+        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
         seven = MvgCalcButton("7", self.user_input, self)   
         
         seven.setStyleSheet(build_css_string(
@@ -152,7 +158,7 @@ class BasicKeyboard(QWidget):
             font_size = "28px"
             ))
         
-        row2.addWidget(seven)
+        grid.addWidget(seven,1,0)
         seven.button_click_signal.connect(partial(self.handle_button_click, "7"))
 
         eight = MvgCalcButton("8", self.user_input,self)   
@@ -166,7 +172,7 @@ class BasicKeyboard(QWidget):
             font_size = "28px"
             ))
         
-        row2.addWidget(eight)        
+        grid.addWidget(eight,1,1)        
         eight.button_click_signal.connect(partial(self.handle_button_click, "8"))
 
         nine = MvgCalcButton("9",self.user_input,self)
@@ -180,233 +186,201 @@ class BasicKeyboard(QWidget):
             font_size = "28px"
         ))   
         
-        row2.addWidget(nine) 
+        grid.addWidget(nine,1,2) 
         nine.button_click_signal.connect(partial(self.handle_button_click, "9"))
+
+        multiplication = MvgCalcButton(Operator.MULTIPLY.textSymbol, self.user_input, self)   
         
-        sqrt = MvgCalcButton(MathFunction.SQRT.textSymbol,self.user_input,self)
+        multiplication.setStyleSheet(build_css_string(
+            "QPushButton",
+            background_color="#0060E5", 
+            color="#CBE1FF", 
+            border_radius="2px",
+            font_family = "roboto", 
+            font_size = "28px"
+        ))
         
-        sqrt.setStyleSheet(build_css_string(
+        grid.addWidget(multiplication,1,3)
+        multiplication.button_click_signal.connect(partial(self.handle_button_click, Operator.MULTIPLY))
+
+        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+           THIRD ROW
+        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+        four = MvgCalcButton("4",self.user_input, self)   
+        
+        four.setStyleSheet(build_css_string(
             "QPushButton", 
             background_color = "#242933",
             color = "#CBE1FF",
             border_radius = "2px",
             font_family = "roboto",
             font_size = "28px"
-        ))   
+        ))
         
-        row2.addWidget(sqrt) 
-        sqrt.button_click_signal.connect(partial(self.handle_button_click, "sqrt"))
+        grid.addWidget(four,2,0)
+        four.button_click_signal.connect(partial(self.handle_button_click, "4"))
+
+        five = MvgCalcButton("5", self.user_input, self) 
         
-        
-        backspace = MvgCalcButton(ActionKey.BACKSPACE.textSymbol,self.user_input,self)
-        
-        backspace.setStyleSheet(build_css_string(
+        five.setStyleSheet(build_css_string(
             "QPushButton", 
             background_color = "#242933",
             color = "#CBE1FF",
             border_radius = "2px",
             font_family = "roboto",
             font_size = "28px"
-        ))   
-        
-        row2.addWidget(backspace) 
-        backspace.button_click_signal.connect(partial(self.handle_button_click, "sqrt"))
-        main_layout.addLayout(row2)
-        
-        row3 = QHBoxLayout()
-        # row3.addWidget(DirectionalButtons)
-        # main_layout.addLayout(row3)
-        # multiplication = MvgCalcButton(Operator.MULTIPLY.textSymbol, self.user_input, self)   
-        
-        # multiplication.setStyleSheet(build_css_string(
-        #     "QPushButton",
-        #     background_color="#0060E5", 
-        #     color="#CBE1FF", 
-        #     border_radius="2px",
-        #     font_family = "roboto", 
-        #     font_size = "28px"
-        # ))
-        
-        # grid.addWidget(multiplication,1,3)
-        # multiplication.button_click_signal.connect(partial(self.handle_button_click, Operator.MULTIPLY))
-
-    #     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    #        THIRD ROW
-    #     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    #     four = MvgCalcButton("4",self.user_input, self)   
-        
-    #     four.setStyleSheet(build_css_string(
-    #         "QPushButton", 
-    #         background_color = "#242933",
-    #         color = "#CBE1FF",
-    #         border_radius = "2px",
-    #         font_family = "roboto",
-    #         font_size = "28px"
-    #     ))
-        
-    #     grid.addWidget(four,2,0)
-    #     four.button_click_signal.connect(partial(self.handle_button_click, "4"))
-
-    #     five = MvgCalcButton("5", self.user_input, self) 
-        
-    #     five.setStyleSheet(build_css_string(
-    #         "QPushButton", 
-    #         background_color = "#242933",
-    #         color = "#CBE1FF",
-    #         border_radius = "2px",
-    #         font_family = "roboto",
-    #         font_size = "28px"
-    #     ))
+        ))
           
-    #     grid.addWidget(five,2,1)   
-    #     five.button_click_signal.connect(partial(self.handle_button_click, "5"))
+        grid.addWidget(five,2,1)   
+        five.button_click_signal.connect(partial(self.handle_button_click, "5"))
 
-    #     six = MvgCalcButton("6", self.user_input, self) 
+        six = MvgCalcButton("6", self.user_input, self) 
         
-    #     six.setStyleSheet(build_css_string(
-    #         "QPushButton", 
-    #         background_color = "#242933",
-    #         color = "#CBE1FF",
-    #         border_radius = "2px",
-    #         font_family = "roboto",
-    #         font_size = "28px"
-    #     ))
+        six.setStyleSheet(build_css_string(
+            "QPushButton", 
+            background_color = "#242933",
+            color = "#CBE1FF",
+            border_radius = "2px",
+            font_family = "roboto",
+            font_size = "28px"
+        ))
           
-    #     grid.addWidget(six,2,2) 
-    #     six.button_click_signal.connect(partial(self.handle_button_click, "6"))
+        grid.addWidget(six,2,2) 
+        six.button_click_signal.connect(partial(self.handle_button_click, "6"))
 
-    #     subtract = MvgCalcButton(Operator.SUBTRACT.textSymbol, self.user_input, self)   
-    #     subtract.setStyleSheet(build_css_string(
-    #         "QPushButton",
-    #         background_color="#0060E5", 
-    #         color="#CBE1FF", 
-    #         border_radius="2px",
-    #         font_family = "roboto", 
-    #         font_size = "28px"
-    #     ))
-    #     grid.addWidget(subtract,2,3)        
-    #     subtract.button_click_signal.connect(partial(self.handle_button_click, Operator.SUBTRACT))
+        subtract = MvgCalcButton(Operator.SUBTRACT.textSymbol, self.user_input, self)   
+        subtract.setStyleSheet(build_css_string(
+            "QPushButton",
+            background_color="#0060E5", 
+            color="#CBE1FF", 
+            border_radius="2px",
+            font_family = "roboto", 
+            font_size = "28px"
+        ))
+        grid.addWidget(subtract,2,3)        
+        subtract.button_click_signal.connect(partial(self.handle_button_click, Operator.SUBTRACT))
 
-    #     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    #     FOURTH ROW
-    #     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    #     one = MvgCalcButton("1",self.user_input,self)   
+        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+        FOURTH ROW
+        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+        one = MvgCalcButton("1",self.user_input,self)   
         
-    #     one.setStyleSheet(build_css_string(
-    #         "QPushButton", 
-    #         background_color = "#242933",
-    #         color = "#CBE1FF",
-    #         border_radius = "2px",
-    #         font_family = "roboto",
-    #         font_size = "28px"
-    #     ))
+        one.setStyleSheet(build_css_string(
+            "QPushButton", 
+            background_color = "#242933",
+            color = "#CBE1FF",
+            border_radius = "2px",
+            font_family = "roboto",
+            font_size = "28px"
+        ))
         
-    #     grid.addWidget(one,3,0)
-    #     one.button_click_signal.connect(partial(self.handle_button_click, "1"))
+        grid.addWidget(one,3,0)
+        one.button_click_signal.connect(partial(self.handle_button_click, "1"))
 
-    #     two = MvgCalcButton("2",self.user_input,self)   
-    #     two.setStyleSheet(build_css_string(
-    #         "QPushButton", 
-    #         background_color = "#242933",
-    #         color = "#CBE1FF",
-    #         border_radius = "2px",
-    #         font_family = "roboto",
-    #         font_size = "28px"
-    #     ))
+        two = MvgCalcButton("2",self.user_input,self)   
+        two.setStyleSheet(build_css_string(
+            "QPushButton", 
+            background_color = "#242933",
+            color = "#CBE1FF",
+            border_radius = "2px",
+            font_family = "roboto",
+            font_size = "28px"
+        ))
         
-    #     grid.addWidget(two,3,1)        
-    #     two.button_click_signal.connect(partial(self.handle_button_click, "2"))
+        grid.addWidget(two,3,1)        
+        two.button_click_signal.connect(partial(self.handle_button_click, "2"))
 
-    #     three = MvgCalcButton("3",self.user_input,self) 
+        three = MvgCalcButton("3",self.user_input,self) 
         
-    #     three.setStyleSheet(build_css_string(
-    #         "QPushButton", 
-    #         background_color = "#242933",
-    #         color = "#CBE1FF",
-    #         border_radius = "2px",
-    #         font_family = "roboto",
-    #         font_size = "28px"
-    #     ))
+        three.setStyleSheet(build_css_string(
+            "QPushButton", 
+            background_color = "#242933",
+            color = "#CBE1FF",
+            border_radius = "2px",
+            font_family = "roboto",
+            font_size = "28px"
+        ))
           
-    #     grid.addWidget(three,3,2) 
-    #     three.button_click_signal.connect(partial(self.handle_button_click, "3"))
+        grid.addWidget(three,3,2) 
+        three.button_click_signal.connect(partial(self.handle_button_click, "3"))
 
-    #     add = MvgCalcButton(Operator.ADD.textSymbol,self.user_input,self)   
+        add = MvgCalcButton(Operator.ADD.textSymbol,self.user_input,self)   
         
-    #     add.setStyleSheet(build_css_string(
-    #         "QPushButton",
-    #         background_color="#0060E5", 
-    #         color="#CBE1FF", 
-    #         border_radius="2px",
-    #         font_family = "roboto", 
-    #         font_size = "28px"
-    #     ))
+        add.setStyleSheet(build_css_string(
+            "QPushButton",
+            background_color="#0060E5", 
+            color="#CBE1FF", 
+            border_radius="2px",
+            font_family = "roboto", 
+            font_size = "28px"
+        ))
         
-    #     grid.addWidget(add,3,3)
-    #     add.button_click_signal.connect(partial(self.handle_button_click, Operator.ADD))
+        grid.addWidget(add,3,3)
+        add.button_click_signal.connect(partial(self.handle_button_click, Operator.ADD))
 
-    #     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    #     FIFTH ROW
-    #     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    #     negitive = MvgCalcButton(CharacterInput.NEGATIVE.textSymbol,self.user_input, self)  
+        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+        FIFTH ROW
+        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+        negitive = MvgCalcButton(CharacterInput.NEGATIVE.textSymbol,self.user_input, self)  
         
-    #     negitive.setStyleSheet(build_css_string(
-    #         "QPushButton", 
-    #         background_color="#363E4D", 
-    #         color="#CBE1FF", 
-    #         border_radius="2px",
-    #         border_bottom_left_radius = "8px",
-    #         font_family = "roboto", 
-    #         font_size = "28px" 
-    #     ))
+        negitive.setStyleSheet(build_css_string(
+            "QPushButton", 
+            background_color="#363E4D", 
+            color="#CBE1FF", 
+            border_radius="2px",
+            border_bottom_left_radius = "8px",
+            font_family = "roboto", 
+            font_size = "28px" 
+        ))
         
-    #     grid.addWidget(negitive,4,0)
-    #     negitive.button_click_signal.connect(partial(self.handle_button_click, CharacterInput.NEGATIVE))
+        grid.addWidget(negitive,4,0)
+        negitive.button_click_signal.connect(partial(self.handle_button_click, CharacterInput.NEGATIVE))
 
-    #     zero = MvgCalcButton("0",self.user_input,self)
+        zero = MvgCalcButton("0",self.user_input,self)
         
-    #     zero.setStyleSheet(build_css_string(
-    #         "QPushButton", 
-    #         background_color = "#242933",
-    #         color = "#CBE1FF",
-    #         border_radius = "2px",
-    #         font_family = "roboto",
-    #         font_size = "28px"
-    #     ))
+        zero.setStyleSheet(build_css_string(
+            "QPushButton", 
+            background_color = "#242933",
+            color = "#CBE1FF",
+            border_radius = "2px",
+            font_family = "roboto",
+            font_size = "28px"
+        ))
            
-    #     grid.addWidget(zero,4,1)        
-    #     zero.button_click_signal.connect(partial(self.handle_button_click, "0"))
+        grid.addWidget(zero,4,1)        
+        zero.button_click_signal.connect(partial(self.handle_button_click, "0"))
 
-    #     decimal_point = MvgCalcButton(".", self.user_input, self)   
+        decimal_point = MvgCalcButton(".", self.user_input, self)   
         
-    #     decimal_point.setStyleSheet(build_css_string(
-    #         "QPushButton", 
-    #         background_color = "#242933",
-    #         color = "#CBE1FF",
-    #         border_radius = "2px",
-    #         font_family = "roboto",
-    #         font_size = "28px"
-    #     ))
+        decimal_point.setStyleSheet(build_css_string(
+            "QPushButton", 
+            background_color = "#242933",
+            color = "#CBE1FF",
+            border_radius = "2px",
+            font_family = "roboto",
+            font_size = "28px"
+        ))
         
-    #     grid.addWidget(decimal_point,4,2) 
-    #     decimal_point.button_click_signal.connect(partial(self.handle_button_click, "."))
+        grid.addWidget(decimal_point,4,2) 
+        decimal_point.button_click_signal.connect(partial(self.handle_button_click, "."))
 
-    #     enter = MvgCalcButton(ActionKey.ENTER.textSymbol, self.user_input, self)   
+        enter = MvgCalcButton(ActionKey.ENTER.textSymbol, self.user_input, self)   
         
-    #     enter.setStyleSheet(build_css_string(
-    #         "QPushButton",
-    #         background_color="#0060E5", 
-    #         color="#CBE1FF", 
-    #         border_radius="2px",
-    #         border_bottom_right_radius = "8px",
-    #         font_family = "roboto", 
-    #         font_size = "28px"
-    #     ))
+        enter.setStyleSheet(build_css_string(
+            "QPushButton",
+            background_color="#0060E5", 
+            color="#CBE1FF", 
+            border_radius="2px",
+            border_bottom_right_radius = "8px",
+            font_family = "roboto", 
+            font_size = "28px"
+        ))
         
-    #     grid.addWidget(enter,4,3)
-    #     enter.button_click_signal.connect(partial(self.handle_button_click, ActionKey.ENTER))
+        grid.addWidget(enter,4,3)
+        enter.button_click_signal.connect(partial(self.handle_button_click, ActionKey.ENTER))
 
-        self.setLayout(main_layout)
+        self.setLayout(grid)
+
         
     # """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     # click handler functions
