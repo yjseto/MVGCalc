@@ -2,7 +2,7 @@
 # because it will execute python code.
 import sympy as sp
 from sympy.parsing.sympy_parser import parse_expr, transformations
-from sympy import *
+from sympy import N
 
 
 def evaluate(expression):

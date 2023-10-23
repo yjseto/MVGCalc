@@ -1,6 +1,6 @@
 from enum import Enum
 
-class DisplayModes(Enum):
+class DisplayMode(Enum):
     BASIC               = (0, "Calculator") #do we want to add (1,"evaluator_algebra.py") or something like that?
     GRAPH               = (1, "Graph")
     MENU                = (2, "Menu")
