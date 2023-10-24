@@ -5,6 +5,7 @@ from typing import Protocol
 class IResult(Protocol):
     error_msgs: [str]
     success: bool
+    value: str = ""
     #add value and expression in the future?
 
 
@@ -13,7 +14,14 @@ class IResult(Protocol):
 
 class BasicResult(IResult):
     def __init__(self):
-        self.value : str = ""
+        self.value : str
+        self.error_msgs = []
+        self.success = False
+        self.expression: str = ""
+
+class GraphResult(IResult):
+    def __init__(self):
+        self.value : str
         self.error_msgs = []
         self.success = False
         self.expression: str = ""

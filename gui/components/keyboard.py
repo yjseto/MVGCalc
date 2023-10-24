@@ -42,6 +42,7 @@ class BasicKeyboard(QWidget):
 
     #after button click return display text including updated inputs
     return_result = pyqtSignal(IResult)
+    updated_user_input_obj_signal = pyqtSignal(UserInput)
 
     def __init__(self, user_input : UserInput):
         super().__init__()
@@ -398,8 +399,9 @@ class BasicKeyboard(QWidget):
 
         elif isinstance(key_type, Enum) or  isinstance(key_type, str):
             self.user_input.clear_result()
-            self.user_input.add_to_list(key_type)         
+            self.user_input.add_to_list(key_type)
 
+        self.updated_user_input_obj_signal.emit(self.user_input)
             
 
 

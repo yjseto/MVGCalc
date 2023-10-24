@@ -69,7 +69,7 @@ class GraphDisplay(QWidget):
         layout_main = QVBoxLayout()
 
         self.display_expression_text = QTextEdit()
-        self.keyboard = GrapingKeyboard(self.app.user_input) #might not work
+        self.keyboard = GrapingKeyboard(self.app.user_input)
         
         self.keyboard.plot_request_signal.connect(self.handle_plot_request)
 
