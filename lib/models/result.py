@@ -1,11 +1,13 @@
 from dataclasses import dataclass, field
+
+import numpy as np
 from lib.models.user_input import UserInput
 from typing import Protocol
 
 class IResult(Protocol):
     error_msgs: [str]
     success: bool
-    value: str = ""
+    value: any
     #add value and expression in the future?
 
 
@@ -25,6 +27,8 @@ class GraphResult(IResult):
         self.error_msgs = []
         self.success = False
         self.expression: str = ""
+        self.x = np.linspace(-100,100,3000)
+        #self.y = self.value
 
 '''
 @dataclass

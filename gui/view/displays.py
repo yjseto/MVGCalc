@@ -29,7 +29,7 @@ class BasicCalcDisplay(QWidget):
             ))
         
         self.display_expression_text = QTextEdit()
-        self.keyboard = BasicKeyboard(self.app.user_input)
+        self.keyboard = BasicKeyboard(self.app)
         """
             IMPORTANT: reciever for signal from keyboard when signal is returned the  
             retrieve_updated_user_input_object method is involked.
@@ -51,8 +51,14 @@ class BasicCalcDisplay(QWidget):
         keyboard component you can pass any type back from emitter except functions
     """
     def retrieve_result_object(self, result : IResult):
-        self.display_result_text.setText(result.value)
-        self.display_expression_text.setText(result.expression)
+        if result.success == False:
+            error_str = ""
+            for error in result.error_msgs:
+                error_str = error_str + str(error) + '\n'    
+            self.display_result_text.setText(error_str)
+        else:
+            self.display_result_text.setText(result.value)
+            self.display_expression_text.setText(result.expression)
 
 '''
 Similar to basic But i just replaced the top with the graph instead of the resulting string

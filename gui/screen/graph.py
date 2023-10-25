@@ -32,6 +32,7 @@ class GraphScreen(PlotWidget):
         #self.plot(y=0,pen = self.pen) trying to draw axis lines
         self.setXRange(-30, 30, padding=0)
         self.setYRange(-30, 30, padding=0)
+        
 
         
         

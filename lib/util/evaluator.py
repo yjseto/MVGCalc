@@ -37,7 +37,12 @@ def evaluate_basic(user_input : UserInput) -> IResult:
             result.error_msgs.append(f"Not implemented error: {nie}")
         except Exception as e:
             raise e
-
+        
+        result.error_msgs.append(f"TESTING1")
+        result.error_msgs.append(f"TESTING2")
+        result.error_msgs.append(f"TESTING3")
+        
+        result.success = len(result.error_msgs) == 0
         return result
 
 def evaluate_graph(user_input : UserInput):
