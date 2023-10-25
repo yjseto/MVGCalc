@@ -12,7 +12,7 @@ class MvgCalcButton(QPushButton):
     def __init__(self, text, user_input : Optional[UserInput] = UserInput(), parent=None):
         super().__init__(text, parent)
 
-        self.user_input = user_input   
+        #self.user_input = user_input   
 
         #attach click listener to button click event
         self.clicked.connect(self.handle_button_click)

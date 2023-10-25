@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import *
 
 import numpy as np
+from lib.models.result import IResult
 
 from lib.models.user_input import UserInput
 from lib.util.evaluator import context
@@ -28,12 +29,12 @@ class BasicCalcDisplay(QWidget):
             ))
         
         self.display_expression_text = QTextEdit()
-        self.keyboard = BasicKeyboard(self.app.user_input)
+        self.keyboard = BasicKeyboard(self.app)
         """
             IMPORTANT: reciever for signal from keyboard when signal is returned the  
             retrieve_updated_user_input_object method is involked.
         """
-        self.keyboard.updated_user_input_obj_signal.connect(self.retrieve_updated_user_input_object)  
+        self.keyboard.return_result.connect(self.retrieve_result_object)  
 
         layout_main.addWidget(self.display_result_text)
         layout_main.addWidget(self.display_expression_text)
@@ -49,9 +50,15 @@ class BasicCalcDisplay(QWidget):
         NOTE currently the UserInput object is being passed back from the
         keyboard component you can pass any type back from emitter except functions
     """
-    def retrieve_updated_user_input_object(self, updated_user_input : UserInput):
-        self.display_result_text.setText(updated_user_input.result)
-        self.display_expression_text.setText(updated_user_input.format_usr_inp_expr_as_str(True))
+    def retrieve_result_object(self, result : IResult):
+        if result.success == False:
+            error_str = ""
+            for error in result.error_msgs:
+                error_str = error_str + str(error) + '\n'    
+            self.display_result_text.setText(error_str)
+        else:
+            self.display_result_text.setText(result.value)
+            self.display_expression_text.setText(result.expression)
 
 '''
 Similar to basic But i just replaced the top with the graph instead of the resulting string
@@ -68,7 +75,7 @@ class GraphDisplay(QWidget):
         layout_main = QVBoxLayout()
 
         self.display_expression_text = QTextEdit()
-        self.keyboard = GrapingKeyboard(self.app.user_input) #might not work
+        self.keyboard = GrapingKeyboard(self.app.user_input)
         
         self.keyboard.plot_request_signal.connect(self.handle_plot_request)
 

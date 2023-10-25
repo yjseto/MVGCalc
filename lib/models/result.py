@@ -1,19 +1,36 @@
 from dataclasses import dataclass, field
-from abc import ABC, abstractmethod
+
+import numpy as np
 from lib.models.user_input import UserInput
+from typing import Protocol
 
-class ResultBase(ABC):
-
-    error_msg: str = field(default="")
+class IResult(Protocol):
+    error_msgs: [str]
     success: bool
-    
-    def clean_up(self, user_input : UserInput):
-            user_input.clear_list
+    value: any
+    #add value and expression in the future?
 
-@dataclass
-class ArithmeticResult(ResultBase):
-    result = "" 
 
+# A structural subtype of IShape
+# Not a nominal subtype of IShape
+
+class BasicResult(IResult):
+    def __init__(self):
+        self.value : str
+        self.error_msgs = []
+        self.success = False
+        self.expression: str = ""
+
+class GraphResult(IResult):
+    def __init__(self):
+        self.value : str
+        self.error_msgs = []
+        self.success = False
+        self.expression: str = ""
+        self.x = np.linspace(-100,100,3000)
+        #self.y = self.value
+
+'''
 @dataclass
 class GraphResult(ResultBase):
     result = "?"
@@ -25,3 +42,5 @@ class CalculusResult(ResultBase):
 @dataclass
 class CalculusResult(ResultBase):
      result = "? we may want to return two results for each side of the conversion"
+
+'''     
