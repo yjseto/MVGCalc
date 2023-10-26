@@ -61,7 +61,7 @@ class CharacterInput(Enum):
     
 
 class MathFunction(Enum):
-    SQRT            = (1,"SQRT",                    "sqrt(",    "\u221A")
+    SQRT            = (1,"SQRT",                    "sqrt(",        "\u221A")
     SQUARED         = (2,"SQUARED",                 "**2",          "x\u00b2")
     CUBERT          = (3,"CUBERT",                  "math.cbrt",    "") #Will need a function for higher order roots and exponents
     CUBED           = (4,"CUBED",                   "**3",          "")

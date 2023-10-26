@@ -6,7 +6,7 @@ from lib.models.result import IResult
 from lib.models.user_input import UserInput
 from lib.util.evaluator import context
 
-from gui.components.keyboard import BasicKeyboard, GrapingKeyboard
+from gui.components.keyboard import BasicKeyboard
 from gui.screen.graph import GraphScreen
 from gui.util.css import build_css_string
 
@@ -35,6 +35,7 @@ class BasicCalcDisplay(QWidget):
             retrieve_updated_user_input_object method is involked.
         """
         self.keyboard.return_result.connect(self.retrieve_result_object)  
+        self.keyboard.refresh_expr_screen.connect(self.refresh_expr_screen)  
 
         layout_main.addWidget(self.display_result_text)
         layout_main.addWidget(self.display_expression_text)
@@ -47,8 +48,6 @@ class BasicCalcDisplay(QWidget):
         1. copy the function below into the new display component
         2. make sure the QTextEdit fields are set to self.text_field_name
         3. call setText(...) for test you would like to display
-        NOTE currently the UserInput object is being passed back from the
-        keyboard component you can pass any type back from emitter except functions
     """
     def retrieve_result_object(self, result : IResult):
         if result.success == False:
@@ -59,6 +58,10 @@ class BasicCalcDisplay(QWidget):
         else:
             self.display_result_text.setText(result.value)
             self.display_expression_text.setText(result.expression)
+
+    def refresh_expr_screen(self):
+        self.display_expression_text.setText(
+            self.app.user_input.format_usr_inp_expr_as_str(True))
 
 '''
 Similar to basic But i just replaced the top with the graph instead of the resulting string
@@ -75,9 +78,9 @@ class GraphDisplay(QWidget):
         layout_main = QVBoxLayout()
 
         self.display_expression_text = QTextEdit()
-        self.keyboard = GrapingKeyboard(self.app)
+        self.keyboard = BasicKeyboard(self.app)
         
-        self.keyboard.return_plot.connect(self.handle_plot_request)
+        #self.keyboard.return_plot.connect(self.handle_plot_request)
 
         """
             IMPORTANT: reciever for signal from keyboard when signal is returned the  
