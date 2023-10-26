@@ -417,27 +417,29 @@ like a small keyboard for this display
 class GrapingKeyboard(QWidget):
 
     #after button click return display text including updated inputs
-    updated_user_input_obj_signal = pyqtSignal(UserInput)
-    plot_request_signal = pyqtSignal(UserInput)#pass up a value
+    #updated_user_input_obj_signal = pyqtSignal(UserInput)
+    #plot_request_signal = pyqtSignal(UserInput)#pass up a value
+    return_plot = pyqtSignal(IResult)
 
-    def __init__(self, user_input : UserInput):
+    def __init__(self, app : MvgCalcApplication):
         super().__init__()
         #self.graph_display = GraphDisplay(user_input)
-        self.user_input = user_input
+        #self.user_input = user_input
+        self.app = app
         
         grid = QGridLayout()
 
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
         FIRST ROW
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        clear = MvgCalcButton(ActionKey.CLEAR.textSymbol, self.user_input, self) 
+        clear = MvgCalcButton(ActionKey.CLEAR.textSymbol, self) 
         grid.addWidget(clear,0,0)
         clear.button_click_signal.connect(partial(self.handle_button_click, ActionKey.CLEAR))       
 
-        left_parethesis = MvgCalcButton(CharacterInput.LEFT_P.textSymbol, self.user_input,self)       
+        left_parethesis = MvgCalcButton(CharacterInput.LEFT_P.textSymbol,self)       
         left_parethesis.button_click_signal.connect(partial(self.handle_button_click, CharacterInput.LEFT_P.textEval))
 
-        right_parethesis = MvgCalcButton(CharacterInput.RIGHT_P.textSymbol, self.user_input, self)                                              
+        right_parethesis = MvgCalcButton(CharacterInput.RIGHT_P.textSymbol, self)                                              
         right_parethesis.button_click_signal.connect(partial(self.handle_button_click, CharacterInput.RIGHT_P.textEval))
 
         parenthesis_layout = QHBoxLayout()       
@@ -447,112 +449,112 @@ class GrapingKeyboard(QWidget):
 
 
         # TODO replaced with X var for moro's testing need to add % enum
-        # percent = MvgCalcButton("%",self.user_input,self)                                              
+        # percent = MvgCalcButton("%",self)                                              
         # grid.addWidget(percent,0,2)          
         # right_parethesis.button_click_signal.connect(partial(self.handle_button_click, '%'))
         
-        x_var = MvgCalcButton(CharacterInput.XVAR.textSymbol,self.user_input,self)                                              
+        x_var = MvgCalcButton(CharacterInput.XVAR.textSymbol,self)                                              
         grid.addWidget(x_var,0,2)
         x_var.button_click_signal.connect(partial(self.handle_button_click, CharacterInput.XVAR.textEval))
 
-        division = MvgCalcButton(Operator.DIVIDE.textSymbol,self.user_input,self)                                              
+        division = MvgCalcButton(Operator.DIVIDE.textSymbol,self)                                              
         grid.addWidget(division,0,3)
         division.button_click_signal.connect(partial(self.handle_button_click, Operator.DIVIDE))
 
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
         SECOND ROW
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        seven = MvgCalcButton("7", self.user_input, self)   
+        seven = MvgCalcButton("7", self)   
         grid.addWidget(seven,1,0)
         seven.button_click_signal.connect(partial(self.handle_button_click, "7"))
 
-        eight = MvgCalcButton("8", self.user_input,self)   
+        eight = MvgCalcButton("8",self)   
         grid.addWidget(eight,1,1)        
         eight.button_click_signal.connect(partial(self.handle_button_click, "8"))
 
-        nine = MvgCalcButton("9",self.user_input,self)   
+        nine = MvgCalcButton("9",self)   
         grid.addWidget(nine,1,2) 
         nine.button_click_signal.connect(partial(self.handle_button_click, "9"))
 
-        multiplication = MvgCalcButton(Operator.MULTIPLY.textSymbol, self.user_input, self)   
+        multiplication = MvgCalcButton(Operator.MULTIPLY.textSymbol, self)   
         grid.addWidget(multiplication,1,3)
         multiplication.button_click_signal.connect(partial(self.handle_button_click, Operator.MULTIPLY))
 
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
            THIRD ROW
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        four = MvgCalcButton("4",self.user_input, self)   
+        four = MvgCalcButton("4", self)   
         grid.addWidget(four,2,0)
         four.button_click_signal.connect(partial(self.handle_button_click, "4"))
 
-        five = MvgCalcButton("5", self.user_input, self)   
+        five = MvgCalcButton("5", self)   
         grid.addWidget(five,2,1)   
         five.button_click_signal.connect(partial(self.handle_button_click, "5"))
 
-        six = MvgCalcButton("6", self.user_input, self)   
+        six = MvgCalcButton("6", self)   
         grid.addWidget(six,2,2) 
         six.button_click_signal.connect(partial(self.handle_button_click, "6"))
 
-        subtract = MvgCalcButton(Operator.SUBTRACT.textSymbol, self.user_input, self)   
+        subtract = MvgCalcButton(Operator.SUBTRACT.textSymbol, self)   
         grid.addWidget(subtract,2,3)        
         subtract.button_click_signal.connect(partial(self.handle_button_click, Operator.SUBTRACT))
 
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
         FOURTH ROW
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        one = MvgCalcButton("1",self.user_input,self)   
+        one = MvgCalcButton("1",self)   
         grid.addWidget(one,3,0)
         one.button_click_signal.connect(partial(self.handle_button_click, "1"))
 
-        two = MvgCalcButton("2",self.user_input,self)   
+        two = MvgCalcButton("2",self)   
         grid.addWidget(two,3,1)        
         two.button_click_signal.connect(partial(self.handle_button_click, "2"))
 
-        three = MvgCalcButton("3",self.user_input,self)   
+        three = MvgCalcButton("3",self)   
         grid.addWidget(three,3,2) 
         three.button_click_signal.connect(partial(self.handle_button_click, "3"))
 
-        add = MvgCalcButton(Operator.ADD.textSymbol,self.user_input,self)   
+        add = MvgCalcButton(Operator.ADD.textSymbol,self)   
         grid.addWidget(add,3,3)
         add.button_click_signal.connect(partial(self.handle_button_click, Operator.ADD))
 
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
         FIFTH ROW
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        plot = MvgCalcButton(ActionKey.PLOT.textSymbol,self.user_input, self)  
+        plot = MvgCalcButton(ActionKey.PLOT.textSymbol, self)  
         grid.addWidget(plot,4,0)
         plot.button_click_signal.connect(partial(self.handle_button_click, ActionKey.PLOT))
         # In your button's click event handler function
 
-        zero = MvgCalcButton("0",self.user_input,self)   
+        zero = MvgCalcButton("0",self)   
         grid.addWidget(zero,4,1)        
         zero.button_click_signal.connect(partial(self.handle_button_click, "0"))
 
-        decimal_point = MvgCalcButton(".", self.user_input, self)   
+        decimal_point = MvgCalcButton(".", self)   
         grid.addWidget(decimal_point,4,2) 
         decimal_point.button_click_signal.connect(partial(self.handle_button_click, "."))
 
-        enter = MvgCalcButton(ActionKey.ENTER.textSymbol, self.user_input, self)   
+        enter = MvgCalcButton(ActionKey.ENTER.textSymbol, self)   
         grid.addWidget(enter,4,3)
         enter.button_click_signal.connect(partial(self.handle_button_click, ActionKey.ENTER))
 
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
         SIXTH ROW
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        to_the = MvgCalcButton(Operator.EXPONENT.textSymbol,self.user_input, self)  
+        to_the = MvgCalcButton(Operator.EXPONENT.textSymbol, self)  
         grid.addWidget(to_the,5,0)
         to_the.button_click_signal.connect(partial(self.handle_button_click, Operator.EXPONENT))
         # In your button's click event handler function
 
-        sqrt = MvgCalcButton(MathFunction.SQRT.textSymbol,self.user_input,self)   
+        sqrt = MvgCalcButton(MathFunction.SQRT.textSymbol,self)   
         grid.addWidget(sqrt,5,1)        
         sqrt.button_click_signal.connect(partial(self.handle_button_click, MathFunction.SQRT))
 
-        squared = MvgCalcButton(MathFunction.SQUARED.textSymbol, self.user_input, self)   
+        squared = MvgCalcButton(MathFunction.SQUARED.textSymbol, self)   
         grid.addWidget(squared,5,2) 
         squared.button_click_signal.connect(partial(self.handle_button_click, MathFunction.SQUARED))
 
-        sin = MvgCalcButton(Trigonometry.SIN.textSymbol, self.user_input, self)   
+        sin = MvgCalcButton(Trigonometry.SIN.textSymbol, self)   
         grid.addWidget(sin,5,3)
         sin.button_click_signal.connect(partial(self.handle_button_click, Trigonometry.SIN))
 
@@ -565,17 +567,21 @@ class GrapingKeyboard(QWidget):
     def handle_button_click(self, key_type : Enum | str):
 
         if key_type == ActionKey.CLEAR:
-            self.user_input.clear_list()
+            #esult = context(DisplayMode.BASIC, self.app.app.user_input)
+            #result.
+            #check with Joel on this one
+            #self.return_plot.emit(result)
+            self.app.user_input.clear_list()
 
         elif key_type == ActionKey.ENTER:
-            result = context(DisplayMode.BASIC, self.user_input) 
-            self.user_input.clear_list()        #clears the list ready for a new calculation
-            self.user_input.result = result
+            result = context(DisplayMode.BASIC, self.app.app.user_input) 
+            self.app.user_input.clear_list()        #clears the list ready for a new calculation
+            self.app.user_input.result = result
         
         elif key_type == ActionKey.PLOT:
-            
-            self.plot_request_signal.emit(self.user_input)
-             
+            result = context(DisplayMode.GRAPH, self.app.user_input)
+            self.return_plot.emit(result)
+            #self.app.user_input.clear_list()
             
             #result = evaluate_to_str(self.user_input.format_usr_inp_expr_as_str()) 
             #self.user_input.clear_result()
@@ -583,11 +589,11 @@ class GrapingKeyboard(QWidget):
             #self.graph_display.trigger_plot_request()
 
         elif isinstance(key_type, Enum) or  isinstance(key_type, str):
-            self.user_input.clear_result()
-            self.user_input.add_to_list(key_type)  
+            self.app.user_input.clear_result()
+            self.app.user_input.add_to_list(key_type)  
             
                    
-        self.updated_user_input_obj_signal.emit(self.user_input)
+        #self.updated_user_input_obj_signal.emit(self.user_input)
         
         
 

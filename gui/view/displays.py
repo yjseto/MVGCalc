@@ -75,15 +75,15 @@ class GraphDisplay(QWidget):
         layout_main = QVBoxLayout()
 
         self.display_expression_text = QTextEdit()
-        self.keyboard = GrapingKeyboard(self.app.user_input)
+        self.keyboard = GrapingKeyboard(self.app)
         
-        self.keyboard.plot_request_signal.connect(self.handle_plot_request)
+        self.keyboard.return_plot.connect(self.handle_plot_request)
 
         """
             IMPORTANT: reciever for signal from keyboard when signal is returned the  
             retrieve_updated_user_input_object method is involked.
         """
-        self.keyboard.updated_user_input_obj_signal.connect(self.retrieve_updated_user_input_object) 
+        #self.keyboard.updated_user_input_obj_signal.connect(self.retrieve_updated_user_input_object) 
 
         layout_main.addWidget(self.graph_screen)
         layout_main.addWidget(self.display_expression_text)
@@ -99,21 +99,27 @@ class GraphDisplay(QWidget):
         NOTE currently the UserInput object is being passed back from the
         keyboard component you can pass any type back from emitter except functions
     """
-    def retrieve_updated_user_input_object(self, updated_user_input : UserInput):
+    #def retrieve_updated_user_input_object(self, updated_user_input : UserInput):
         #self.display_result_text.setText(updated_user_input.result)
-        self.display_expression_text.setText(updated_user_input.format_usr_inp_expr_as_str(True))
+        #self.display_expression_text.setText(updated_user_input.format_usr_inp_expr_as_str(True))
 
-    def handle_plot_request(self,updated_user_input: UserInput):
-        
+    def handle_plot_request(self,result : IResult):
+        '''
+        if result.clear_graph == True:
+            self.graph_screen.clear()
+            result.clear_graph = False
+        else:
+        '''
         x = np.linspace(-100,100,3000)
         #function = evaluate_graph('2 * x')
         #print(function)
         #update eval
-        y = eval(context(self.app.display_mode, updated_user_input))
+        y = eval(result.value)
         #print(print("Data type of y:", y.dtype))
         #self.graph_screen.plot(x,y)
         self.graph_screen.plot(x,y,pen = self.graph_screen.pen)
-        #self.plot_request_signal.emit(self.graph_display)
+        
+            #self.plot_request_signal.emit(self.graph_display)
 
         #self.graph_display.trigger_plot_request()
 #wait on Joel
