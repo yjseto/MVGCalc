@@ -50,15 +50,28 @@ class CharacterInput(Enum):
     XVAR                = (5,"XVAR",               "x",    "X")
     YVAR                = (6,"YVAR",               "y",    "Y")
     ZVAR                = (7,"ZVAR",               "z",    "Z")
-    
-
-    
     def __init__ (self, index, textId, textEval, textSymbol):
         self.index = index
         self.textId = textId
         self.textEval = textEval
         self.textSymbol = textSymbol
-    
+
+class NumericInput(Enum):
+    ONE     = (1,   "1","1","1")
+    TWO     = (2,   "2","2","2")
+    THREE   = (3,   "3","3","3")
+    FOUR    = (4,   "4","4","4")
+    FIVE    = (5,   "5","5","5")
+    SIX     = (6,   "6","6","6")
+    SEVEN   = (7,   "7","7","7")    
+    EIGHT   = (8,   "8","8","8")
+    NINE    = (9,   "9","9","9")      
+    ZERO    = (10,  "0","0","0")
+    def __init__ (self, index, textId, textEval, textSymbol):
+        self.index = index
+        self.textId = textId
+        self.textEval = textEval
+        self.textSymbol = textSymbol  
 
 class MathFunction(Enum):
     SQRT            = (1,"SQRT",                    "sqrt(",        "\u221A")

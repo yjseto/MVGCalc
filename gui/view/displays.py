@@ -3,18 +3,21 @@ from PyQt5.QtWidgets import *
 import numpy as np
 from lib.models.result import IResult
 
-from lib.models.user_input import UserInput
-from lib.util.evaluator import context
-
-from gui.components.keyboard import BasicKeyboard
+from gui.containers.app import MvgCalcApplication
+from gui.components.keyboard import Keyboard
 from gui.screen.graph import GraphScreen
 from gui.util.css import build_css_string
 
 # remove after evaluator linked to displays
 from utils.Util import evaluate_graph, evaluate_to_str
 
+"""
+    IMPORTANT: reciever for signal from keyboard when signal is returned the  
+    retrieve_updated_user_input_object method is involked.
+"""
+
 class BasicCalcDisplay(QWidget):
-    def __init__(self, app):
+    def __init__(self, app : MvgCalcApplication):
         super().__init__()
         self.app = app
 
@@ -29,11 +32,8 @@ class BasicCalcDisplay(QWidget):
             ))
         
         self.display_expression_text = QTextEdit()
-        self.keyboard = BasicKeyboard(self.app)
-        """
-            IMPORTANT: reciever for signal from keyboard when signal is returned the  
-            retrieve_updated_user_input_object method is involked.
-        """
+        self.keyboard = Keyboard(self.app)
+
         self.keyboard.return_result.connect(self.retrieve_result_object)  
         self.keyboard.refresh_expr_screen.connect(self.refresh_expr_screen)  
 
@@ -43,12 +43,6 @@ class BasicCalcDisplay(QWidget):
 
         self.setLayout(layout_main)
 
-    """
-        IMPORTANT: Create a new display that uses the keyboard component 
-        1. copy the function below into the new display component
-        2. make sure the QTextEdit fields are set to self.text_field_name
-        3. call setText(...) for test you would like to display
-    """
     def retrieve_result_object(self, result : IResult):
         if result.success == False:
             error_str = ""
@@ -78,15 +72,7 @@ class GraphDisplay(QWidget):
         layout_main = QVBoxLayout()
 
         self.display_expression_text = QTextEdit()
-        self.keyboard = BasicKeyboard(self.app)
-        
-        #self.keyboard.return_plot.connect(self.handle_plot_request)
-
-        """
-            IMPORTANT: reciever for signal from keyboard when signal is returned the  
-            retrieve_updated_user_input_object method is involked.
-        """
-        #self.keyboard.updated_user_input_obj_signal.connect(self.retrieve_updated_user_input_object) 
+        self.keyboard = Keyboard(self.app)
 
         layout_main.addWidget(self.graph_screen)
         layout_main.addWidget(self.display_expression_text)
@@ -94,14 +80,6 @@ class GraphDisplay(QWidget):
 
         self.setLayout(layout_main)
 
-    """
-        IMPORTANT: Create a new display that uses the keyboard component 
-        1. copy the function below into the new display component
-        2. make sure the QTextEdit fields are set to self.text_field_name
-        3. call setText(...) for test you would like to display
-        NOTE currently the UserInput object is being passed back from the
-        keyboard component you can pass any type back from emitter except functions
-    """
     #def retrieve_updated_user_input_object(self, updated_user_input : UserInput):
         #self.display_result_text.setText(updated_user_input.result)
         #self.display_expression_text.setText(updated_user_input.format_usr_inp_expr_as_str(True))

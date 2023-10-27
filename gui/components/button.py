@@ -9,7 +9,7 @@ class MvgCalcButton(QPushButton):
 
     button_click_signal = pyqtSignal()
 
-    def __init__(self, text, user_input : Optional[UserInput] = UserInput(), parent=None):
+    def __init__(self, text, parent=None):
         super().__init__(text, parent) 
 
         #attach click listener to button click event

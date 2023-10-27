@@ -13,7 +13,8 @@ class DisplayMode(Enum):
         self.textSymbol = textSymbol  
         
 class KeyboardDisplayMode(Enum):
-    FUNCTIONS               = (0, "Functions") #do we want to add (1,"evaluator_algebra.py") or something like that?
+    BASIC                   = (0, "Basic") #do we want to add (1,"evaluator_algebra.py") or something like that?
+    FUNCTIONS               = (1, "Functions") #do we want to add (1,"evaluator_algebra.py") or something like that?
     def __init__ (self, index, textSymbol):
         self.index = index
         self.textSymbol = textSymbol  
