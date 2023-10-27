@@ -1,7 +1,8 @@
+import math
 from PyQt5.QtWidgets import *
 
 import numpy as np
-from lib.models.result import IResult
+from lib.models.result import GraphResult, IResult
 
 from gui.containers.app import MvgCalcApplication
 from gui.components.keyboard import Keyboard
@@ -74,6 +75,9 @@ class GraphDisplay(QWidget):
         self.display_expression_text = QTextEdit()
         self.keyboard = Keyboard(self.app)
 
+        self.keyboard.return_result.connect(self.retrieve_result_object)
+        self.keyboard.refresh_expr_screen.connect(self.refresh_expr_screen)
+
         layout_main.addWidget(self.graph_screen)
         layout_main.addWidget(self.display_expression_text)
         layout_main.addWidget(self.keyboard)
@@ -83,24 +87,14 @@ class GraphDisplay(QWidget):
     #def retrieve_updated_user_input_object(self, updated_user_input : UserInput):
         #self.display_result_text.setText(updated_user_input.result)
         #self.display_expression_text.setText(updated_user_input.format_usr_inp_expr_as_str(True))
+    def refresh_expr_screen(self):
+        self.display_expression_text.setText(
+            self.app.user_input.format_usr_inp_expr_as_str(True))
 
-    def handle_plot_request(self,result : IResult):
-        '''
-        if result.clear_graph == True:
-            self.graph_screen.clear()
-            result.clear_graph = False
+    def retrieve_result_object(self,result : GraphResult):
+        if result.success == False:
+            print('NOT IMPLEMENTED')
         else:
-        '''
-        x = np.linspace(-100,100,3000)
-        #function = evaluate_graph('2 * x')
-        #print(function)
-        #update eval
-        y = eval(result.value)
-        #print(print("Data type of y:", y.dtype))
-        #self.graph_screen.plot(x,y)
-        self.graph_screen.plot(x,y,pen = self.graph_screen.pen)
-        
-            #self.plot_request_signal.emit(self.graph_display)
-
-        #self.graph_display.trigger_plot_request()
-#wait on Joel
+            x = result.x
+            y = eval(result.y)
+            self.graph_screen.plot(x,y,pen = self.graph_screen.pen)

@@ -27,9 +27,9 @@ class GraphResult(IResult):
         self.error_msgs = []
         self.success = False
         self.expression: str = ""
-        self.clear_graph == False
+        #self.clear_graph == False
         self.x = np.linspace(-100,100,3000)
-        #self.y = self.value
+        self.y: str
 
 '''
 @dataclass

@@ -58,7 +58,7 @@ class Keyboard(QWidget):
             self.app.user_input.clear_list()
             self.refresh_expr_screen.emit()
         elif key_type == ActionKey.ENTER:
-            result = context(DisplayMode.BASIC, self.app.user_input) 
+            result = context(self.app.display_mode, self.app.user_input) 
             self.app.user_input.clear_list()
             self.return_result.emit(result) 
         elif isinstance(key_type, Enum):
