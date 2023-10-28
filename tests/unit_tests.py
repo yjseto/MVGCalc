@@ -1,5 +1,5 @@
 from lib.models.user_input import UserInput
-from lib.enums.keys import Trigonometry,MathFunction,CharacterInput,Operator,SympyTrig
+from lib.enums.keys import *
 from utils.Util import evaluate,evaluate_to_str
 import unittest
 import math
@@ -44,7 +44,7 @@ class TestEvalOutput(unittest.TestCase):
         #test edge cases
 
     def test_in_sympy_2(self):
-        user_input = UserInput([SympyTrig.SIN,CharacterInput.LEFT_P,CharacterInput.XVAR,CharacterInput.RIGHT_P,Operator.ADD,SympyTrig.COS,CharacterInput.LEFT_P,CharacterInput.XVAR,CharacterInput.RIGHT_P])
+        user_input = UserInput([TRIGONOMETRY_FUNCTION.SIN,CharacterInput.LEFT_P,CharacterInput.XVAR,CharacterInput.RIGHT_P,Operator.ADD,TRIGONOMETRY_FUNCTION.COS,CharacterInput.LEFT_P,CharacterInput.XVAR,CharacterInput.RIGHT_P])
         formatted_in = user_input.format_usr_inp_expr_as_str()
         result = evaluate_to_str(formatted_in) 
         self.assertEqual(result,"sin(x) + cos(x)")

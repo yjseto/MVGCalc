@@ -3,602 +3,556 @@ from functools import partial
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import pyqtSignal
 
-from gui.components.button import MvgCalcButton
-from gui.components.navigation import NavBar
 from lib.enums.keys import *
+from lib.enums.constants import *
 from lib.models.result import IResult
-from lib.models.user_input import UserInput
-
-from gui.util.css import build_css_string
-
 from lib.enums.modes import *
 from lib.util.evaluator import context
 
 from gui.containers.app import MvgCalcApplication
+from gui.components.button import MvgCalcButton
+from gui.components.navigation import NavBar
+from gui.util.css import *
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Keyboard
 
-# class DirectionalButtons(QWidget):
-#     def __init__(self):
-#         super().__init__()
-        
-#     main_layout = QVBoxLayout()
-#     up_arrow = QPushButton(ActionKey.UP.textSymbol)  
-#     main_layout.addWidget(up_arrow)
-    
-#     # horizontal_layout = QHBoxLayout()
-#     # left_arrow = MvgCalcButton(ActionKey.LEFT.textSymbol)  
-#     # horizontal_layout.addWidget(left_arrow)
-    
-#     # right_arrow = MvgCalcButton(ActionKey.RIGHT.textSymbol)  
-#     # horizontal_layout.addWidget(right_arrow)
-#     # main_layout.addLayout(horizontal_layout)
-    
-#     # down_arrow = MvgCalcButton(ActionKey.DOWN.textSymbol)  
-#     # main_layout.addWidget(down_arrow)
-    
-#     self.addLayout(main_layout)
-    
-    
-class BasicKeyboard(QWidget):
+Container component for keyboard button navigation component,
+basic keyboard, and functions keyboard.
 
+This keyboard component acts as the controller for user keyboard input.
+All signals from child components are recieved and the either a request 
+to the evaluator service made or the user_input model is updated.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+class Keyboard(QWidget):
 
     #after button click return display text including updated inputs
     return_result = pyqtSignal(IResult)
-    #updated_user_input_obj_signal = pyqtSignal(UserInput)
+    refresh_expr_screen = pyqtSignal()
 
     def __init__(self, app : MvgCalcApplication):
         super().__init__()
 
         self.app = app
-        #self.user_input = user_input
+        self.main_layout = QVBoxLayout()
+        self.setLayout(self.main_layout)
+        self.stack_layout = QStackedWidget()
 
-        grid = QGridLayout()
-
+        self.key_display = KeyboardDisplayMode.BASIC
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        FIRST ROW
+        Navbar
+        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""        
+        self.navbar = NavBar(KeyboardDisplayMode.BASIC,KeyboardDisplayMode.FUNCTIONS)
+        self.navbar.clicked_display_signal.connect(self.activate_tab)
+        self.main_layout.addLayout(self.navbar)
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        clear = MvgCalcButton(ActionKey.CLEAR.textSymbol,  self) 
-        
-        clear.setStyleSheet(build_css_string(
-            "QPushButton", 
-            background_color="#363E4D", 
-            color="#CBE1FF", 
-            border_radius="2px",
-            border_top_left_radius = "8px",
-            font_family = "roboto", 
-            font_size = "28px" 
-            ))
-        
-        grid.addWidget(clear,0,0)
-        clear.button_click_signal.connect(partial(self.handle_button_click, ActionKey.CLEAR))       
-
-
-#         QPushButton {\n"
-# "    background-color: #363E4D;\n"
-# "    color: #CBE1FF;\n"
-# "    border-radius: 2px;\n"
-# "    font-family: roboto;\n"
-# "    font-size: 28px;\n"
-# "   }\n"
-
-
-        left_parethesis = MvgCalcButton(CharacterInput.LEFT_P.textSymbol, self)       
-        
-        left_parethesis.setStyleSheet(build_css_string(
-            "QPushButton", 
-            background_color="#363E4D", 
-            color="#CBE1FF", 
-            border_radius="2px",
-            font_family = "roboto", 
-            font_size = "28px" 
-            ))
-        
-        left_parethesis.button_click_signal.connect(partial(self.handle_button_click, CharacterInput.LEFT_P.textEval))
-
-        right_parethesis = MvgCalcButton(CharacterInput.RIGHT_P.textSymbol,  self)                                              
-        
-        right_parethesis.setStyleSheet(build_css_string(
-            "QPushButton",
-            background_color="#363E4D", 
-            color="#CBE1FF", 
-            border_radius="2px",
-            font_family = "roboto", 
-            font_size = "28px" 
-            ))
-    
-        right_parethesis.button_click_signal.connect(partial(self.handle_button_click, CharacterInput.RIGHT_P.textEval))
-
-        parenthesis_layout = QHBoxLayout()       
-        parenthesis_layout.addWidget(left_parethesis)
-        parenthesis_layout.addWidget(right_parethesis)
-        grid.addLayout(parenthesis_layout,0,1)        
-
-
-        # TODO replaced with X var for moro's testing need to add % enum
-        # percent = MvgCalcButton("%",self)                                              
-        # grid.addWidget(percent,0,2)          
-        # right_parethesis.button_click_signal.connect(partial(self.handle_button_click, '%'))
-        
-        x_var = MvgCalcButton(CharacterInput.XVAR.textSymbol,self)                                              
-        
-        x_var.setStyleSheet(build_css_string(
-            "QPushButton",
-            background_color="#363E4D", 
-            color="#CBE1FF", 
-            border_radius="2px",
-            font_family = "roboto", 
-            font_size = "28px" 
-            ))
-        
-        grid.addWidget(x_var,0,2)
-        x_var.button_click_signal.connect(partial(self.handle_button_click, CharacterInput.XVAR.textEval))
-
-        division = MvgCalcButton(Operator.DIVIDE.textSymbol,self)                                              
-        
-        division.setStyleSheet(build_css_string(
-            "QPushButton",
-            background_color="#0060E5", 
-            color="#CBE1FF", 
-            border_radius="2px",
-            font_family = "roboto", 
-            border_top_right_radius= "8px",
-            font_size = "28px" 
-            ))
-    
-        grid.addWidget(division,0,3)
-        division.button_click_signal.connect(partial(self.handle_button_click, Operator.DIVIDE))
-
+        Basic Keyboard
+        """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+        self.basic_keys = BasicKeyboard()
+        self.stack_layout.addWidget(self.basic_keys)
+        self.basic_keys.button_click_signal_from_keyboard.connect(self.handle_button_click)
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        SECOND ROW
-        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        seven = MvgCalcButton("7",  self)   
-        
-        seven.setStyleSheet(build_css_string(
-            "QPushButton", 
-            background_color = "#242933",
-            color = "#CBE1FF",
-            border_radius = "2px",
-            font_family = "roboto",
-            font_size = "28px"
-            ))
-        
-        grid.addWidget(seven,1,0)
-        seven.button_click_signal.connect(partial(self.handle_button_click, "7"))
+        Function Keyboard
+        """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+        self.func_keys = FunctionKeyboard()
+        self.stack_layout.addWidget(self.func_keys)
+        self.func_keys.button_click_signal_from_keyboard.connect(self.handle_button_click)
 
-        eight = MvgCalcButton("8", self)   
-        
-        eight.setStyleSheet(build_css_string(
-            "QPushButton", 
-            background_color = "#242933",
-            color = "#CBE1FF",
-            border_radius = "2px",
-            font_family = "roboto",
-            font_size = "28px"
-            ))
-        
-        grid.addWidget(eight,1,1)        
-        eight.button_click_signal.connect(partial(self.handle_button_click, "8"))
+        self.main_layout.addWidget(self.stack_layout)
 
-        nine = MvgCalcButton("9",self)
-        
-        nine.setStyleSheet(build_css_string(
-            "QPushButton", 
-            background_color = "#242933",
-            color = "#CBE1FF",
-            border_radius = "2px",
-            font_family = "roboto",
-            font_size = "28px"
-        ))   
-        
-        grid.addWidget(nine,1,2) 
-        nine.button_click_signal.connect(partial(self.handle_button_click, "9"))
-
-        multiplication = MvgCalcButton(Operator.MULTIPLY.textSymbol,  self)   
-        
-        multiplication.setStyleSheet(build_css_string(
-            "QPushButton",
-            background_color="#0060E5", 
-            color="#CBE1FF", 
-            border_radius="2px",
-            font_family = "roboto", 
-            font_size = "28px"
-        ))
-        
-        grid.addWidget(multiplication,1,3)
-        multiplication.button_click_signal.connect(partial(self.handle_button_click, Operator.MULTIPLY))
-
-        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-           THIRD ROW
-        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        four = MvgCalcButton("4", self)   
-        
-        four.setStyleSheet(build_css_string(
-            "QPushButton", 
-            background_color = "#242933",
-            color = "#CBE1FF",
-            border_radius = "2px",
-            font_family = "roboto",
-            font_size = "28px"
-        ))
-        
-        grid.addWidget(four,2,0)
-        four.button_click_signal.connect(partial(self.handle_button_click, "4"))
-
-        five = MvgCalcButton("5",  self) 
-        
-        five.setStyleSheet(build_css_string(
-            "QPushButton", 
-            background_color = "#242933",
-            color = "#CBE1FF",
-            border_radius = "2px",
-            font_family = "roboto",
-            font_size = "28px"
-        ))
-          
-        grid.addWidget(five,2,1)   
-        five.button_click_signal.connect(partial(self.handle_button_click, "5"))
-
-        six = MvgCalcButton("6",  self) 
-        
-        six.setStyleSheet(build_css_string(
-            "QPushButton", 
-            background_color = "#242933",
-            color = "#CBE1FF",
-            border_radius = "2px",
-            font_family = "roboto",
-            font_size = "28px"
-        ))
-          
-        grid.addWidget(six,2,2) 
-        six.button_click_signal.connect(partial(self.handle_button_click, "6"))
-
-        subtract = MvgCalcButton(Operator.SUBTRACT.textSymbol,  self)   
-        subtract.setStyleSheet(build_css_string(
-            "QPushButton",
-            background_color="#0060E5", 
-            color="#CBE1FF", 
-            border_radius="2px",
-            font_family = "roboto", 
-            font_size = "28px"
-        ))
-        grid.addWidget(subtract,2,3)        
-        subtract.button_click_signal.connect(partial(self.handle_button_click, Operator.SUBTRACT))
-
-        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        FOURTH ROW
-        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        one = MvgCalcButton("1",self)   
-        
-        one.setStyleSheet(build_css_string(
-            "QPushButton", 
-            background_color = "#242933",
-            color = "#CBE1FF",
-            border_radius = "2px",
-            font_family = "roboto",
-            font_size = "28px"
-        ))
-        
-        grid.addWidget(one,3,0)
-        one.button_click_signal.connect(partial(self.handle_button_click, "1"))
-
-        two = MvgCalcButton("2",self)   
-        two.setStyleSheet(build_css_string(
-            "QPushButton", 
-            background_color = "#242933",
-            color = "#CBE1FF",
-            border_radius = "2px",
-            font_family = "roboto",
-            font_size = "28px"
-        ))
-        
-        grid.addWidget(two,3,1)        
-        two.button_click_signal.connect(partial(self.handle_button_click, "2"))
-
-        three = MvgCalcButton("3",self) 
-        
-        three.setStyleSheet(build_css_string(
-            "QPushButton", 
-            background_color = "#242933",
-            color = "#CBE1FF",
-            border_radius = "2px",
-            font_family = "roboto",
-            font_size = "28px"
-        ))
-          
-        grid.addWidget(three,3,2) 
-        three.button_click_signal.connect(partial(self.handle_button_click, "3"))
-
-        add = MvgCalcButton(Operator.ADD.textSymbol,self)   
-        
-        add.setStyleSheet(build_css_string(
-            "QPushButton",
-            background_color="#0060E5", 
-            color="#CBE1FF", 
-            border_radius="2px",
-            font_family = "roboto", 
-            font_size = "28px"
-        ))
-        
-        grid.addWidget(add,3,3)
-        add.button_click_signal.connect(partial(self.handle_button_click, Operator.ADD))
-
-        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        FIFTH ROW
-        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        negitive = MvgCalcButton(CharacterInput.NEGATIVE.textSymbol, self)  
-        
-        negitive.setStyleSheet(build_css_string(
-            "QPushButton", 
-            background_color="#363E4D", 
-            color="#CBE1FF", 
-            border_radius="2px",
-            border_bottom_left_radius = "8px",
-            font_family = "roboto", 
-            font_size = "28px" 
-        ))
-        
-        grid.addWidget(negitive,4,0)
-        negitive.button_click_signal.connect(partial(self.handle_button_click, CharacterInput.NEGATIVE))
-
-        zero = MvgCalcButton("0",self)
-        
-        zero.setStyleSheet(build_css_string(
-            "QPushButton", 
-            background_color = "#242933",
-            color = "#CBE1FF",
-            border_radius = "2px",
-            font_family = "roboto",
-            font_size = "28px"
-        ))
-           
-        grid.addWidget(zero,4,1)        
-        zero.button_click_signal.connect(partial(self.handle_button_click, "0"))
-
-        decimal_point = MvgCalcButton(".",  self)   
-        
-        decimal_point.setStyleSheet(build_css_string(
-            "QPushButton", 
-            background_color = "#242933",
-            color = "#CBE1FF",
-            border_radius = "2px",
-            font_family = "roboto",
-            font_size = "28px"
-        ))
-        
-        grid.addWidget(decimal_point,4,2) 
-        decimal_point.button_click_signal.connect(partial(self.handle_button_click, "."))
-
-        enter = MvgCalcButton(ActionKey.ENTER.textSymbol,  self)   
-        
-        enter.setStyleSheet(build_css_string(
-            "QPushButton",
-            background_color="#0060E5", 
-            color="#CBE1FF", 
-            border_radius="2px",
-            border_bottom_right_radius = "8px",
-            font_family = "roboto", 
-            font_size = "28px"
-        ))
-        
-        grid.addWidget(enter,4,3)
-        enter.button_click_signal.connect(partial(self.handle_button_click, ActionKey.ENTER))
-
-        self.setLayout(grid)
-
-        
     # """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     # click handler functions
     # """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    def handle_button_click(self, key_type : Enum | str):
+    def handle_button_click(self, key_type : Enum):
         #result: IResult
         if key_type == ActionKey.CLEAR:
             self.app.user_input.clear_list()
-            self.app.user_input.result = ""
+            self.refresh_expr_screen.emit()
+        elif key_type == ActionKey.BACKSPACE:
+            self.app.user_input.pop_from_list()
+            self.refresh_expr_screen.emit()
         elif key_type == ActionKey.ENTER:
-            result = context(DisplayMode.BASIC, self.app.user_input) 
-            self.app.user_input.clear_list()        #clears the list ready for a new calculation
-            self.return_result.emit(result)
-            #self.app.user_input.result = result  
-
-        elif isinstance(key_type, Enum) or  isinstance(key_type, str):
-            self.app.user_input.clear_result()
+            result = context(self.app.display_mode, self.app.user_input) 
+            self.app.user_input.clear_list()
+            self.return_result.emit(result) 
+        elif isinstance(key_type, Enum):
             self.app.user_input.add_to_list(key_type)
+            self.refresh_expr_screen.emit()
 
-        #self.updated_user_input_obj_signal.emit(self.app.user_input)
-            
+    def activate_tab(self, display_type : KeyboardDisplayMode):
+        self.key_display = display_type
+        self.stack_layout.setCurrentIndex(display_type.index)
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+BASIC KEYS
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+class BasicKeyboard(QWidget):
 
+    button_click_signal_from_keyboard = pyqtSignal(Enum)
 
-'''
-Made this as a separate class in order to add a Plot button, obviusoly we will want to have
-like a small keyboard for this display
-'''
-
-class GrapingKeyboard(QWidget):
-
-    #after button click return display text including updated inputs
-    #updated_user_input_obj_signal = pyqtSignal(UserInput)
-    #plot_request_signal = pyqtSignal(UserInput)#pass up a value
-    return_plot = pyqtSignal(IResult)
-
-    def __init__(self, app : MvgCalcApplication):
+    def __init__(self):
         super().__init__()
-        #self.graph_display = GraphDisplay(user_input)
-        #self.user_input = user_input
-        self.app = app
-        
-        grid = QGridLayout()
+
+        main_layout = QVBoxLayout()
+        self.setLayout(main_layout)
 
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        FIRST ROW
-        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        clear = MvgCalcButton(ActionKey.CLEAR.textSymbol, self) 
-        grid.addWidget(clear,0,0)
-        clear.button_click_signal.connect(partial(self.handle_button_click, ActionKey.CLEAR))       
-
-        left_parethesis = MvgCalcButton(CharacterInput.LEFT_P.textSymbol,self)       
-        left_parethesis.button_click_signal.connect(partial(self.handle_button_click, CharacterInput.LEFT_P.textEval))
-
-        right_parethesis = MvgCalcButton(CharacterInput.RIGHT_P.textSymbol, self)                                              
-        right_parethesis.button_click_signal.connect(partial(self.handle_button_click, CharacterInput.RIGHT_P.textEval))
-
-        parenthesis_layout = QHBoxLayout()       
-        parenthesis_layout.addWidget(left_parethesis)
-        parenthesis_layout.addWidget(right_parethesis)
-        grid.addLayout(parenthesis_layout,0,1)        
-
-
-        # TODO replaced with X var for moro's testing need to add % enum
-        # percent = MvgCalcButton("%",self)                                              
-        # grid.addWidget(percent,0,2)          
-        # right_parethesis.button_click_signal.connect(partial(self.handle_button_click, '%'))
-        
-        x_var = MvgCalcButton(CharacterInput.XVAR.textSymbol,self)                                              
-        grid.addWidget(x_var,0,2)
-        x_var.button_click_signal.connect(partial(self.handle_button_click, CharacterInput.XVAR.textEval))
-
-        division = MvgCalcButton(Operator.DIVIDE.textSymbol,self)                                              
-        grid.addWidget(division,0,3)
-        division.button_click_signal.connect(partial(self.handle_button_click, Operator.DIVIDE))
-
+        FIRST ROW - Shared Keys
+        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""     
+        shared_keys = SharedKeyRow()
+        main_layout.addLayout(shared_keys) 
+        shared_keys.button_click_signal_from_shared_keys.connect(self.handle_button_click)
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
         SECOND ROW
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        seven = MvgCalcButton("7", self)   
-        grid.addWidget(seven,1,0)
-        seven.button_click_signal.connect(partial(self.handle_button_click, "7"))
+        row2 = QHBoxLayout()
+        main_layout.addLayout(row2)
+        """
+        Seven 7
+        """
+        seven = MvgCalcButton(NumericInput.SEVEN.textSymbol)   
+        seven.setStyleSheet(component_dark_grey("QPushButton"))
+        
+        row2.addWidget(seven)
+        seven.button_click_signal.connect(partial(self.handle_button_click, NumericInput.SEVEN))
+        """
+        Eight 8
+        """
+        eight = MvgCalcButton(NumericInput.EIGHT.textSymbol)   
+        eight.setStyleSheet(component_dark_grey("QPushButton"))
+        
+        row2.addWidget(eight)        
+        eight.button_click_signal.connect(partial(self.handle_button_click, NumericInput.EIGHT))
+        """
+        Nine 9
+        """
+        nine = MvgCalcButton(NumericInput.NINE.textSymbol) 
+        nine.setStyleSheet(component_dark_grey("QPushButton"))
+        
+        row2.addWidget(nine) 
+        nine.button_click_signal.connect(partial(self.handle_button_click, NumericInput.NINE))    
+        """
+        Square Root
+        """
+        sqrt = MvgCalcButton(MathFunction.SQRT.textSymbol)
+        sqrt.setStyleSheet(component_blue("QPushButton"))   
+        
+        row2.addWidget(sqrt) 
+        sqrt.button_click_signal.connect(partial(self.handle_button_click, MathFunction.SQRT))   
+        """
+        Percent %
+        """
+        percent = MvgCalcButton(MathFunction.PERCENT.textSymbol)  
+        percent.setStyleSheet(component_blue("QPushButton"))
 
-        eight = MvgCalcButton("8",self)   
-        grid.addWidget(eight,1,1)        
-        eight.button_click_signal.connect(partial(self.handle_button_click, "8"))
-
-        nine = MvgCalcButton("9",self)   
-        grid.addWidget(nine,1,2) 
-        nine.button_click_signal.connect(partial(self.handle_button_click, "9"))
-
-        multiplication = MvgCalcButton(Operator.MULTIPLY.textSymbol, self)   
-        grid.addWidget(multiplication,1,3)
-        multiplication.button_click_signal.connect(partial(self.handle_button_click, Operator.MULTIPLY))
-
+        row2.addWidget(percent)          
+        percent.button_click_signal.connect(partial(self.handle_button_click, MathFunction.PERCENT))
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
            THIRD ROW
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        four = MvgCalcButton("4", self)   
-        grid.addWidget(four,2,0)
-        four.button_click_signal.connect(partial(self.handle_button_click, "4"))
+        row3 = QHBoxLayout()
+        main_layout.addLayout(row3)
+        """
+        Four 4
+        """
+        four = MvgCalcButton(NumericInput.FOUR.textSymbol)   
+        four.setStyleSheet(component_dark_grey("QPushButton"))
+        
+        row3.addWidget(four)
+        four.button_click_signal.connect(partial(self.handle_button_click, NumericInput.FOUR))
+        """
+        Five 5
+        """
+        five = MvgCalcButton(NumericInput.FIVE.textSymbol)   
+        five.setStyleSheet(component_dark_grey("QPushButton"))
+          
+        row3.addWidget(five)   
+        five.button_click_signal.connect(partial(self.handle_button_click, NumericInput.FIVE))
+        """
+        Six 6
+        """
+        six = MvgCalcButton(NumericInput.SIX.textSymbol)  
+        six.setStyleSheet(component_dark_grey("QPushButton"))
+          
+        row3.addWidget(six) 
+        six.button_click_signal.connect(partial(self.handle_button_click, NumericInput.SIX))
+        """
+        Squared
+        """
+        squared = MvgCalcButton("x\u00b2")   
+        squared.setStyleSheet(component_blue("QPushButton"))
 
-        five = MvgCalcButton("5", self)   
-        grid.addWidget(five,2,1)   
-        five.button_click_signal.connect(partial(self.handle_button_click, "5"))
-
-        six = MvgCalcButton("6", self)   
-        grid.addWidget(six,2,2) 
-        six.button_click_signal.connect(partial(self.handle_button_click, "6"))
-
-        subtract = MvgCalcButton(Operator.SUBTRACT.textSymbol, self)   
-        grid.addWidget(subtract,2,3)        
-        subtract.button_click_signal.connect(partial(self.handle_button_click, Operator.SUBTRACT))
-
+        row3.addWidget(squared)        
+        squared.button_click_signal.connect(partial(self.handle_button_click, MathFunction.SQUARED))
+        """
+        Division
+        """
+        division = MvgCalcButton(Operator.DIVIDE.textSymbol)                                              
+        division.setStyleSheet(component_blue("QPushButton"))
+    
+        row3.addWidget(division)  
+        division.button_click_signal.connect(partial(self.handle_button_click, Operator.DIVIDE))
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
         FOURTH ROW
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        one = MvgCalcButton("1",self)   
-        grid.addWidget(one,3,0)
-        one.button_click_signal.connect(partial(self.handle_button_click, "1"))
-
-        two = MvgCalcButton("2",self)   
-        grid.addWidget(two,3,1)        
-        two.button_click_signal.connect(partial(self.handle_button_click, "2"))
-
-        three = MvgCalcButton("3",self)   
-        grid.addWidget(three,3,2) 
-        three.button_click_signal.connect(partial(self.handle_button_click, "3"))
-
-        add = MvgCalcButton(Operator.ADD.textSymbol,self)   
-        grid.addWidget(add,3,3)
+        row4 = QHBoxLayout()
+        main_layout.addLayout(row4)
+        """
+        One 1
+        """        
+        one = MvgCalcButton(NumericInput.ONE.textSymbol)   
+        one.setStyleSheet(component_dark_grey("QPushButton"))
+        
+        row4.addWidget(one)  
+        one.button_click_signal.connect(partial(self.handle_button_click, NumericInput.ONE))
+        """
+        Two 2
+        """  
+        two = MvgCalcButton(NumericInput.TWO.textSymbol)   
+        two.setStyleSheet(component_dark_grey("QPushButton"))
+        
+        row4.addWidget(two)       
+        two.button_click_signal.connect(partial(self.handle_button_click, NumericInput.TWO))
+        """
+        Three 3
+        """  
+        three = MvgCalcButton(NumericInput.THREE.textSymbol) 
+        three.setStyleSheet(component_dark_grey("QPushButton"))
+          
+        row4.addWidget(three)    
+        three.button_click_signal.connect(partial(self.handle_button_click, NumericInput.THREE))
+        """
+        Add +
+        """  
+        add = MvgCalcButton(Operator.ADD.textSymbol)   
+        add.setStyleSheet(component_blue("QPushButton"))
+        
+        row4.addWidget(add)    
         add.button_click_signal.connect(partial(self.handle_button_click, Operator.ADD))
+        """
+        Multiply
+        """  
+        multiplication = MvgCalcButton(Operator.MULTIPLY.textSymbol)  
+        multiplication.setStyleSheet(component_blue("QPushButton"))
 
+        row4.addWidget(multiplication) 
+        multiplication.button_click_signal.connect(partial(self.handle_button_click, Operator.MULTIPLY))
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
         FIFTH ROW
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        plot = MvgCalcButton(ActionKey.PLOT.textSymbol, self)  
-        grid.addWidget(plot,4,0)
-        plot.button_click_signal.connect(partial(self.handle_button_click, ActionKey.PLOT))
-        # In your button's click event handler function
+        row5 = QHBoxLayout()
+        main_layout.addLayout(row5)
+        """
+        Negitive +/-
+        """  
+        negitive = MvgCalcButton(CharacterInput.NEGATIVE.textSymbol)  
+        negitive.setStyleSheet(component_light_grey("QPushButton", border_bottom_left_radius = "8px"))
+        
+        row5.addWidget(negitive)
+        negitive.button_click_signal.connect(partial(self.handle_button_click, CharacterInput.NEGATIVE))
+        """
+        Zero 0
+        """          
+        zero = MvgCalcButton(NumericInput.ZERO.textSymbol)
+        zero.setStyleSheet(component_dark_grey("QPushButton"))
+           
+        row5.addWidget(zero)        
+        zero.button_click_signal.connect(partial(self.handle_button_click, NumericInput.ZERO))
+        """
+        Decimal Point .
+        """ 
+        decimal_point = MvgCalcButton(CharacterInput.DECIMAL_POINT.textSymbol)   
+        decimal_point.setStyleSheet(component_dark_grey("QPushButton"))
+        
+        row5.addWidget(decimal_point)   
+        decimal_point.button_click_signal.connect(partial(self.handle_button_click, CharacterInput.DECIMAL_POINT))
+        """
+        Subtract -
+        """ 
+        subtract = MvgCalcButton(Operator.SUBTRACT.textSymbol)   
+        subtract.setStyleSheet(component_blue("QPushButton"))
 
-        zero = MvgCalcButton("0",self)   
-        grid.addWidget(zero,4,1)        
-        zero.button_click_signal.connect(partial(self.handle_button_click, "0"))
-
-        decimal_point = MvgCalcButton(".", self)   
-        grid.addWidget(decimal_point,4,2) 
-        decimal_point.button_click_signal.connect(partial(self.handle_button_click, "."))
-
-        enter = MvgCalcButton(ActionKey.ENTER.textSymbol, self)   
-        grid.addWidget(enter,4,3)
+        row5.addWidget(subtract)          
+        subtract.button_click_signal.connect(partial(self.handle_button_click, Operator.SUBTRACT))
+        """
+        Enter
+        """         
+        enter = MvgCalcButton(ActionKey.ENTER.textSymbol)   
+        enter.setStyleSheet(component_blue("QPushButton",border_bottom_right_radius = "8px"))
+        
+        row5.addWidget(enter)   
         enter.button_click_signal.connect(partial(self.handle_button_click, ActionKey.ENTER))
 
+    def handle_button_click(self, key_type : Enum):
+        self.button_click_signal_from_keyboard.emit(key_type)
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+FUNCTION KEYS
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+class FunctionKeyboard(QWidget):
+
+    button_click_signal_from_keyboard = pyqtSignal(Enum)
+
+    def __init__(self):
+        super().__init__()
+
+        main_layout = QVBoxLayout()
+        self.setLayout(main_layout)
+
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        SIXTH ROW
+        FIRST ROW - Shared Keys
+        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""     
+        shared_keys = SharedKeyRow()
+        main_layout.addLayout(shared_keys) 
+        shared_keys.button_click_signal_from_shared_keys.connect(self.handle_button_click)
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        to_the = MvgCalcButton(Operator.EXPONENT.textSymbol, self)  
-        grid.addWidget(to_the,5,0)
-        to_the.button_click_signal.connect(partial(self.handle_button_click, Operator.EXPONENT))
-        # In your button's click event handler function
-
-        sqrt = MvgCalcButton(MathFunction.SQRT.textSymbol,self)   
-        grid.addWidget(sqrt,5,1)        
-        sqrt.button_click_signal.connect(partial(self.handle_button_click, MathFunction.SQRT))
-
-        squared = MvgCalcButton(MathFunction.SQUARED.textSymbol, self)   
-        grid.addWidget(squared,5,2) 
-        squared.button_click_signal.connect(partial(self.handle_button_click, MathFunction.SQUARED))
-
-        sin = MvgCalcButton(Trigonometry.SIN.textSymbol, self)   
-        grid.addWidget(sin,5,3)
-        sin.button_click_signal.connect(partial(self.handle_button_click, Trigonometry.SIN))
-
-        self.setLayout(grid)
-
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    click handler functions
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    #'''
-    def handle_button_click(self, key_type : Enum | str):
-
-        if key_type == ActionKey.CLEAR:
-            #esult = context(DisplayMode.BASIC, self.app.app.user_input)
-            #result.
-            #check with Joel on this one
-            #self.return_plot.emit(result)
-            self.app.user_input.clear_list()
-
-        elif key_type == ActionKey.ENTER:
-            result = context(DisplayMode.BASIC, self.app.app.user_input) 
-            self.app.user_input.clear_list()        #clears the list ready for a new calculation
-            self.app.user_input.result = result
+        Second ROW
+        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+        row2 = QHBoxLayout()
+        main_layout.addLayout(row2)
+        """
+        Sin 
+        """ 
+        sin = MvgCalcButton(TrigonometryFunction.SIN.textSymbol)   
+        sin.setStyleSheet(component_dark_grey("QPushButton"))
         
-        elif key_type == ActionKey.PLOT:
-            result = context(DisplayMode.GRAPH, self.app.user_input)
-            self.return_plot.emit(result)
-            #self.app.user_input.clear_list()
-            
-            #result = evaluate_to_str(self.user_input.format_usr_inp_expr_as_str()) 
-            #self.user_input.clear_result()
-            #self.user_input.result = result 
-            #self.graph_display.trigger_plot_request()
-
-        elif isinstance(key_type, Enum) or  isinstance(key_type, str):
-            self.app.user_input.clear_result()
-            self.app.user_input.add_to_list(key_type)  
-            
-                   
-        #self.updated_user_input_obj_signal.emit(self.user_input)
+        row2.addWidget(sin)
+        sin.button_click_signal.connect(partial(self.handle_button_click, TrigonometryFunction.SIN))
+        """
+        Cos 
+        """ 
+        cos = MvgCalcButton(TrigonometryFunction.COS.textSymbol)   
+        cos.setStyleSheet(component_dark_grey("QPushButton"))
         
+        row2.addWidget(cos)
+        cos.button_click_signal.connect(partial(self.handle_button_click, TrigonometryFunction.COS))
+        """
+        Tan
+        """ 
+        tan = MvgCalcButton(TrigonometryFunction.TAN.textSymbol)   
+        tan.setStyleSheet(component_dark_grey("QPushButton"))
         
+        row2.addWidget(tan)
+        tan.button_click_signal.connect(partial(self.handle_button_click, TrigonometryFunction.TAN))
+        """
+        X
+        """          
+        x_var = MvgCalcButton(CharacterInput.XVAR.textSymbol)
+        x_var.setStyleSheet(component_blue("QPushButton"))
+           
+        row2.addWidget(x_var)        
+        x_var.button_click_signal.connect(partial(self.handle_button_click, CharacterInput.XVAR))
+        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+        Third ROW
+        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+        row3 = QHBoxLayout()
+        main_layout.addLayout(row3)
+        """
+        Sin Inv
+        """ 
+        invsin = MvgCalcButton(TrigonometryFunction.INVSIN.textSymbol)   
+        invsin.setStyleSheet(component_dark_grey("QPushButton"))
+        
+        row3.addWidget(invsin)
+        invsin.button_click_signal.connect(partial(self.handle_button_click, TrigonometryFunction.INVSIN))
+        """
+        Cos Inv 
+        """ 
+        invcos = MvgCalcButton(TrigonometryFunction.INVCOS.textSymbol)   
+        invcos.setStyleSheet(component_dark_grey("QPushButton"))
+        
+        row3.addWidget(invcos)
+        invcos.button_click_signal.connect(partial(self.handle_button_click, TrigonometryFunction.INVCOS))
+        """
+        Tan Inv
+        """ 
+        invtan = MvgCalcButton(TrigonometryFunction.INVSIN.textSymbol)   
+        invtan.setStyleSheet(component_dark_grey("QPushButton"))
+        
+        row3.addWidget(invtan)
+        invtan.button_click_signal.connect(partial(self.handle_button_click, TrigonometryFunction.INVSIN))
+        """
+        Pi
+        """          
+        pi = MvgCalcButton(MathConstants.PI.textSymbol)
+        pi.setStyleSheet(component_blue("QPushButton"))
+           
+        row3.addWidget(pi)        
+        pi.button_click_signal.connect(partial(self.handle_button_click, MathConstants.PI))
+        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+        Fourth ROW
+        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+        row4 = QHBoxLayout()
+        main_layout.addLayout(row4)
+        """
+        Log
+        """ 
+        log = MvgCalcButton(MathFunction.LOG.textSymbol)   
+        log.setStyleSheet(component_dark_grey("QPushButton"))
+        
+        row4.addWidget(log)
+        log.button_click_signal.connect(partial(self.handle_button_click, MathFunction.LOG))
+        """
+        Natural Log
+        """ 
+        nat_log = MvgCalcButton(MathFunction.LOG_NATURAL.textSymbol)   
+        nat_log.setStyleSheet(component_dark_grey("QPushButton"))
+        
+        row4.addWidget(nat_log)
+        nat_log.button_click_signal.connect(partial(self.handle_button_click, MathFunction.LOG_NATURAL))
+        """
+        Pow 10
+        """ 
+        power = MvgCalcButton(MathFunction.POW.textSymbol)   
+        power.setStyleSheet(component_dark_grey("QPushButton"))
+        
+        row4.addWidget(power)
+        power.button_click_signal.connect(partial(self.handle_button_click, MathFunction.POW))
+        """
+        Eulers #
+        """          
+        e = MvgCalcButton(MathConstants.EULERSNUM.textSymbol)
+        e.setStyleSheet(component_blue("QPushButton"))
+           
+        row4.addWidget(e)        
+        e.button_click_signal.connect(partial(self.handle_button_click, MathConstants.EULERSNUM))
+        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+        Fifth ROW
+        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+        row5 = QHBoxLayout()
+        main_layout.addLayout(row5)
+        """
+        Negitive +/-
+        """  
+        negitive = MvgCalcButton(CharacterInput.NEGATIVE.textSymbol)  
+        negitive.setStyleSheet(component_light_grey("QPushButton"))
+        
+        row5.addWidget(negitive)
+        negitive.button_click_signal.connect(partial(self.handle_button_click, CharacterInput.NEGATIVE))
+        """
+        Zero 0
+        """          
+        zero = MvgCalcButton(NumericInput.ZERO.textSymbol)
+        zero.setStyleSheet(component_blue("QPushButton"))
+           
+        row5.addWidget(zero)        
+        zero.button_click_signal.connect(partial(self.handle_button_click, NumericInput.ZERO))
+        """
+        Decimal Point .
+        """ 
+        decimal_point = MvgCalcButton(CharacterInput.DECIMAL_POINT.textSymbol)   
+        decimal_point.setStyleSheet(component_dark_grey("QPushButton"))
+        
+        row5.addWidget(decimal_point)   
+        decimal_point.button_click_signal.connect(partial(self.handle_button_click, CharacterInput.DECIMAL_POINT))
+        """
+        Enter
+        """         
+        enter = MvgCalcButton(ActionKey.ENTER.textSymbol)   
+        enter.setStyleSheet(component_blue("QPushButton",border_bottom_right_radius = "8px"))
+        
+        row5.addWidget(enter)   
+        enter.button_click_signal.connect(partial(self.handle_button_click, ActionKey.ENTER)) 
 
+    def handle_button_click(self, key_type : Enum):
+        self.button_click_signal_from_keyboard.emit(key_type)
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+DIRECTIONAL KEYS
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+class DPad(QWidget):
+
+    button_click_signal_from_d_pad = pyqtSignal(Enum)
+
+    def __init__(self):
+        super().__init__()
+        
+        main_layout = QVBoxLayout()
+        self.setLayout(main_layout)
+
+        up_arrow = MvgCalcButton(ActionKey.UP.textSymbol)  
+        up_arrow.setStyleSheet(component_light_grey("QPushButton"))
+        main_layout.addWidget(up_arrow)
+        up_arrow.button_click_signal.connect(partial(self.handle_button_click, ActionKey.UP))
     
-
-    
+        horizontal_layout = QHBoxLayout()
+        left_arrow = MvgCalcButton(ActionKey.LEFT.textSymbol)
+        left_arrow.setStyleSheet(component_light_grey("QPushButton"))  
+        horizontal_layout.addWidget(left_arrow)
+        left_arrow.button_click_signal.connect(partial(self.handle_button_click, ActionKey.LEFT))
         
-    #'''
+        right_arrow = MvgCalcButton(ActionKey.RIGHT.textSymbol)
+        right_arrow.setStyleSheet(component_light_grey("QPushButton"))  
+        horizontal_layout.addWidget(right_arrow)
+        main_layout.addLayout(horizontal_layout)
+        right_arrow.button_click_signal.connect(partial(self.handle_button_click, ActionKey.RIGHT))
+        
+        down_arrow = MvgCalcButton(ActionKey.DOWN.textSymbol)  
+        down_arrow.setStyleSheet(component_light_grey("QPushButton"))
+        main_layout.addWidget(down_arrow)
+        down_arrow.button_click_signal.connect(partial(self.handle_button_click, ActionKey.DOWN))
+
+    def handle_button_click(self, key_type : Enum):
+        self.button_click_signal_from_d_pad.emit(key_type)
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Shared Keys Row
+
+this single row of keys will be shared between both basic and functions
+keyboards
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+class SharedKeyRow(QHBoxLayout):
+
+    button_click_signal_from_shared_keys = pyqtSignal(Enum)
+
+    def __init__(self):
+        super().__init__()
+        
+        """
+        Clear Button
+        """
+        clear = MvgCalcButton(ActionKey.CLEAR.textSymbol) 
+        clear.setStyleSheet(component_light_grey("QPushButton", border_top_left_radius = "8px",max_width = "20px"))
+        
+        self.addWidget(clear)
+        clear.button_click_signal.connect(
+            partial(self.handle_button_click, ActionKey.CLEAR))       
+        """
+        Left Parenthesis
+        """
+        left_parethesis = MvgCalcButton(CharacterInput.LEFT_P.textSymbol)             
+        left_parethesis.setStyleSheet(component_light_grey("QPushButton"))
+        
+        left_parethesis.button_click_signal.connect(
+            partial(self.handle_button_click, CharacterInput.LEFT_P))
+        """
+        Right Parenthesis
+        """
+        right_parethesis = MvgCalcButton(CharacterInput.RIGHT_P.textSymbol)                                                   
+        right_parethesis.setStyleSheet(component_light_grey("QPushButton"))
+    
+        right_parethesis.button_click_signal.connect(
+            partial(self.handle_button_click, CharacterInput.RIGHT_P))
+  
+        #add both left and right parenthesis main layout
+        parenthesis_layout = QHBoxLayout()       
+        parenthesis_layout.addWidget(left_parethesis)
+        parenthesis_layout.addWidget(right_parethesis)
+        self.addLayout(parenthesis_layout)        
+        """
+        Backspace
+        """
+        backspace = MvgCalcButton(ActionKey.BACKSPACE.textSymbol)
+        backspace.setStyleSheet(component_red("QPushButton")) 
+        
+        self.addWidget(backspace) 
+        backspace.button_click_signal.connect(partial(self.handle_button_click, ActionKey.BACKSPACE))
+        """
+        D Pad
+        """       
+        d_pad = DPad()
+        self.addWidget(d_pad) 
+        d_pad.button_click_signal_from_d_pad.connect(self.handle_button_click)
+
+    def handle_button_click(self, key_type : Enum):
+        self.button_click_signal_from_shared_keys.emit(key_type)
