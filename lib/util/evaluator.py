@@ -46,13 +46,13 @@ def evaluate_basic(user_input : UserInput) -> IResult:
         return result
 
 def evaluate_graph(user_input : UserInput):
-        result  = BasicResult()
+        result  = GraphResult()
         result.expression = user_input.format_usr_inp_expr_as_str(True)
-         
+        #set x and y vals
         try:     
             formatted_user_input = parse_expr(user_input.format_usr_inp_expr_as_str(),transformations='all')  
             #return sp.sympify(parsed_in).evalf()
-            result.value = str(sp.sympify(formatted_user_input).evalf())
+            result.y = str(sp.sympify(formatted_user_input).evalf())
             
             #get rid of trailing 0's
             #if '.' in result.value:

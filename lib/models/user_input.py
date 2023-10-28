@@ -28,12 +28,7 @@ class UserInput:
             outputExprBuffer = StringIO()
 
             for item in self.user_input_list:
-
-                if isinstance(item, Enum): 
-                    outputExprBuffer.write(item.textSymbol if display_to_user else item.textEval)
-                else:
-                    outputExprBuffer.write(str(item))
-    
+                outputExprBuffer.write(item.textSymbol if display_to_user else item.textEval)
             out_expr = outputExprBuffer.getvalue()
 
         finally:

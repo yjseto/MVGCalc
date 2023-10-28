@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import (
     QStackedWidget,
     QVBoxLayout,
     QWidget,
+    QDesktopWidget
 )
 
 from lib.enums.modes import DisplayMode
@@ -18,6 +19,21 @@ class MvgCalcMainWindow(QMainWindow):
         self.setWindowTitle("")
         central_widget = QWidget(self)
         self.setCentralWidget(central_widget)
+
+        """
+        TODO: Enable Code below to test if window will be auto-resized to fit length and width on
+        mobile devices
+        """
+        # Get the screen dimensions
+        # desktop = QDesktopWidget()
+        # screen_width = desktop.screenGeometry().width()
+        # screen_height = desktop.screenGeometry().height()
+
+        # Set the main window's size
+        # window_width = int(screen_width * 1)  # Set to 100% of the screen width
+        # window_height = int(screen_height * 1)  # Set to 100% of the screen height
+        #self.setFixedSize(window_width, window_height)
+        self.setFixedSize(360, 740)
 
         self.main_layout = QVBoxLayout()
         self.stack_layout = QStackedWidget()
