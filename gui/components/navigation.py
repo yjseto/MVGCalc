@@ -4,8 +4,6 @@ from functools import partial
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import  QHBoxLayout
 
-from lib.enums.modes import DisplayMode
-
 from gui.components.button import MvgCalcButton
 
 class NavBar(QHBoxLayout):

@@ -1,6 +1,8 @@
 from io import StringIO
 from typing import Dict
 
+from gui.enums.styles import COLORS
+
 def build_css_string(component_name, **kwargs: Dict[str, str]) -> str:
  
     try: 
@@ -25,8 +27,8 @@ def component_dark_grey(component_name, **kwargs: Dict[str, str]) -> str:
     
     return build_css_string(
         component_name, 
-        background_color = "#242933",
-        color = "#CBE1FF",
+        background_color = COLORS.DARK_GREY.value,
+        color = COLORS.WHITE.value,
         border_radius = "2px",
         font_family = "roboto",
         font_size = "28px",
@@ -37,8 +39,8 @@ def component_light_grey(component_name, **kwargs: Dict[str, str]) -> str:
 
     return build_css_string(
         component_name, 
-        background_color="#363E4D", 
-        color="#CBE1FF", 
+        background_color= COLORS.LIGHT_GREY.value, 
+        color= COLORS.WHITE.value, 
         border_radius="2px",
         font_family = "roboto", 
         font_size = "28px",
@@ -49,8 +51,8 @@ def component_blue(component_name, **kwargs: Dict[str, str]) -> str:
 
     return build_css_string(
         component_name, 
-        background_color="#0060E5", 
-        color="#CBE1FF", 
+        background_color= COLORS.BLUE.value, 
+        color= COLORS.WHITE.value, 
         border_radius="2px",
         font_family = "roboto", 
         font_size = "28px",
@@ -61,8 +63,8 @@ def component_red(component_name, **kwargs: Dict[str, str]) -> str:
 
     return build_css_string(
         component_name, 
-        background_color="#FF3F46", 
-        color="#CBE1FF", 
+        background_color= COLORS.RED.value, 
+        color=COLORS.WHITE.value, 
         border_radius="2px",
         font_family = "roboto", 
         font_size = "28px",

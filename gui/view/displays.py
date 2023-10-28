@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import *
 
 import numpy as np
 from lib.models.result import GraphResult, IResult
+from gui.components.textarea import MvgCalcExpressionTextField
 
 from gui.containers.app import MvgCalcApplication
 from gui.components.keyboard import Keyboard
@@ -32,7 +33,7 @@ class BasicCalcDisplay(QWidget):
             color= "#FFFFFF"
             ))
         
-        self.display_expression_text = QTextEdit()
+        self.display_expression_text = MvgCalcExpressionTextField()
         self.keyboard = Keyboard(self.app)
 
         self.keyboard.return_result.connect(self.retrieve_result_object)  
@@ -72,7 +73,7 @@ class GraphDisplay(QWidget):
 
         layout_main = QVBoxLayout()
 
-        self.display_expression_text = QTextEdit()
+        self.display_expression_text = MvgCalcExpressionTextField()
         self.keyboard = Keyboard(self.app)
 
         self.keyboard.return_result.connect(self.retrieve_result_object)

@@ -33,10 +33,6 @@ class ActionKey(Enum):
     LEFT            = (5, "\u2190")
     CLEAR           = (6, "AC")
     ENTER           = (7, "=")
-    PLOT            = (8,"PLOT")
-
-    
-    
 
     def __init__ (self, index, textSymbol):
         self.index = index
@@ -50,6 +46,7 @@ class CharacterInput(Enum):
     XVAR                = (5,"XVAR",               "x",    "X")
     YVAR                = (6,"YVAR",               "y",    "Y")
     ZVAR                = (7,"ZVAR",               "z",    "Z")
+
     def __init__ (self, index, textId, textEval, textSymbol):
         self.index = index
         self.textId = textId
@@ -57,16 +54,17 @@ class CharacterInput(Enum):
         self.textSymbol = textSymbol
 
 class NumericInput(Enum):
-    ONE     = (1,   "1","1","1")
-    TWO     = (2,   "2","2","2")
-    THREE   = (3,   "3","3","3")
-    FOUR    = (4,   "4","4","4")
-    FIVE    = (5,   "5","5","5")
-    SIX     = (6,   "6","6","6")
-    SEVEN   = (7,   "7","7","7")    
-    EIGHT   = (8,   "8","8","8")
-    NINE    = (9,   "9","9","9")      
-    ZERO    = (10,  "0","0","0")
+    ONE     = (1,   "ONE"   ,"1","1")
+    TWO     = (2,   "TWO"   ,"2","2")
+    THREE   = (3,   "THREE" ,"3","3")
+    FOUR    = (4,   "FOUR"  ,"4","4")
+    FIVE    = (5,   "FIVE"  ,"5","5")
+    SIX     = (6,   "SIX"   ,"6","6")
+    SEVEN   = (7,   "SEVEN" ,"7","7")    
+    EIGHT   = (8,   "EIGHT" ,"8","8")
+    NINE    = (9,   "NINE"  ,"9","9")      
+    ZERO    = (10,  "ZERO"  ,"0","0")
+
     def __init__ (self, index, textId, textEval, textSymbol):
         self.index = index
         self.textId = textId
@@ -75,17 +73,17 @@ class NumericInput(Enum):
 
 class MathFunction(Enum):
     SQRT            = (1,"SQRT",                    "sqrt(",        "\u221A")
-    SQUARED         = (2,"SQUARED",                 "**2",          "x\u00b2")
-    CUBERT          = (3,"CUBERT",                  "math.cbrt",    "") #Will need a function for higher order roots and exponents
-    CUBED           = (4,"CUBED",                   "**3",          "")
-    POW             = (6,"POW",                     "math.pow",     "")
-    INVERSE         = (7,"INVERSE",                 "**-1",         "")
-    LOG             = (8,"LOG",                     "math.log",     "") #customizable done by math.log(x,[,base]) 1 arugment ln(x)
-    LOG_NATURAL     = (9,"LOG_NATURAL",             "math.ln",      "")
-    LOGTEN          = (10,"LOGTEN",                 "math.log10",   "")
+    SQUARED         = (2,"SQUARED",                 "**2",          "^2")
+    # CUBERT          = (3,"CUBERT",                  "math.cbrt",    "") #Will need a function for higher order roots and exponents
+    # CUBED           = (4,"CUBED",                   "**3",          "")
+    POW             = (6,"POW",                     "pow",     "^")
+    INVERSE         = (7,"INVERSE",                 "**-1",         "\u207B\u00B9")
+    LOG             = (8,"LOG",                     "math.log",     "log") #customizable done by math.log(x,[,base]) 1 arugment ln(x)
+    LOG_NATURAL     = (9,"LOG_NATURAL",             "math.ln",      "ln")
+    # LOGTEN          = (10,"LOGTEN",                 "math.log10",   "")
     FACTORIAL       = (11,"FACTORIAL",              "math.factorial","") #x!
-    EXPONENTIAL2    = (12,"EXPONENTIAL2",           "math.exp2",    "") #2^x
-    EXP             = (13,"EXP",                    "math.exp",     "") #e^x
+    # EXPONENTIAL2    = (12,"EXPONENTIAL2",           "math.exp2",    "") #2^x
+    EXP             = (13,"EXP",                    "math.exp",     "e^\u036F") #e^x
     ABSOLUTE_VAL    = (14,"ABSOLUTE_VAL",           "math.fabs",    "")
     MODULP          = (15,"MODULP",                 "math.modf",    "") #float mod
     REMAINDER       = (16,"REMAINDER",              "math.remainder","") 
@@ -93,6 +91,7 @@ class MathFunction(Enum):
     LCM             = (18,"LCM",                    "math.lcm",     "")
     TO_DEGREES      = (19,"TO_DEGREES",             "math.degrees", "")
     TO_RADIANS      = (20,"TO_RADIANS",             "math.radians", "")
+    PERCENT         = (21,"PERCENT",                "*100"       , "%")
     
     def __init__ (self, index, textId, textEval, textSymbol):
         self.index = index
@@ -117,16 +116,16 @@ class Operator(Enum):
 # operation = Operation.ADD
 # result = operation.perform(5, 3)
 
-class Trigonometry(Enum):
-    SIN         = (1,"SIN",     "math.sin(",     "sin(")
-    COS         = (2,"COS",     "math.cos(",     "")
-    TAN         = (3,"TAN",     "math.tan",     "")
-    INVSIN      = (4,"INVSIN",  "math.asin",    "")
-    INVCOS      = (5,"INVCOS",  "math.acos",    "")
-    INVTAN      = (6,"INVTAN",  "math.atan",    "")
-    SINH        = (7,"SINH",    "math.sinh",    "") #Hyperbolic functions
-    COSH        = (8,"COSH",    "math.cosh",    "")
-    TANH        = (9,"TANH",    "math.tanh",    "")
+class TrigonometryFunction(Enum):
+    SIN         = (1,"SIN",     "sin",         "sin")
+    COS         = (2,"COS",     "cos",         "cos")
+    TAN         = (3,"TAN",     "tan",         "tan")
+    INVSIN      = (4,"INVSIN",  "asin",        "sin\u207B\u00B9")
+    INVCOS      = (5,"INVCOS",  "acos",        "cos\u207B\u00B9")
+    INVTAN      = (6,"INVTAN",  "atan",        "tan\u207B\u00B9")
+    # SINH        = (7,"SINH",    "math.sinh",        "") #Hyperbolic functions
+    # COSH        = (8,"COSH",    "math.cosh",        "")
+    # TANH        = (9,"TANH",    "math.tanh",        "")
 
     def __init__ (self, index, textId, textEval, textSymbol):
         self.index = index
@@ -134,19 +133,18 @@ class Trigonometry(Enum):
         self.textEval = textEval
         self.textSymbol = textSymbol
 
-class SympyTrig(Enum): #this class allows the sympy evaluator to read trig functions
-    SIN         = (1,"SYMPY_SIN",     "sin","sin")
-    COS         = (2,"SYMPY_COS",     "cos","")
-    TAN         = (3,"SYMPY_TAN",     "tan","")
-    INVSIN      = (4,"SYMPY_INVSIN",  "asin","")
-    INVCOS      = (5,"SYMPY_INVCOS",  "acos","")
-    INVTAN      = (6,"SYMPY_INVTAN",  "atan","")
-    SINH        = (7,"SYMPY_SINH",    "sinh","") #Hyperbolic functions
-    COSH        = (8,"SYMPY_COSH",    "cosh","")
-    TANH        = (9,"SYMPY_TANH",    "tanh","")
-
-    def __init__ (self, index, textId, textEval, textSymbol):
-        self.index = index
-        self.textId = textId
-        self.textEval = textEval
-        self.textSymbol = textSymbol
+# class SympyTrig(Enum): #this class allows the sympy evaluator to read trig functions
+#     SIN         = (1,"SYMPY_SIN",     "sin","sin")
+#     COS         = (2,"SYMPY_COS",     "cos","")
+#     TAN         = (3,"SYMPY_TAN",     "tan","")
+#     INVSIN      = (4,"SYMPY_INVSIN",  "asin","")
+#     INVCOS      = (5,"SYMPY_INVCOS",  "acos","")
+#     INVTAN      = (6,"SYMPY_INVTAN",  "atan","")
+    # SINH        = (7,"SYMPY_SINH",    "sinh","") #Hyperbolic functions
+    # COSH        = (8,"SYMPY_COSH",    "cosh","")
+    # TANH        = (9,"SYMPY_TANH",    "tanh","")
+    # def __init__ (self, index, textId, textEval, textSymbol):
+    #     self.index = index
+    #     self.textId = textId
+    #     self.textEval = textEval
+    #     self.textSymbol = textSymbol

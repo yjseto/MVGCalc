@@ -4,10 +4,10 @@ class DisplayMode(Enum):
     BASIC               = (0, "Calculator") #do we want to add (1,"evaluator_algebra.py") or something like that?
     GRAPH               = (1, "Graph")
     MENU                = (2, "Menu")
-    ALGEBRA             = (4, "") #solve algebraic equations and trigonometric identities
-    CALCULUS            = (5, "") #differentiation and integration
-    TIP_CALC            = (6, "")
-    EXPORT              = (7, "")
+    # ALGEBRA             = (4, "") #solve algebraic equations and trigonometric identities
+    # CALCULUS            = (5, "") #differentiation and integration
+    # TIP_CALC            = (6, "")
+    # EXPORT              = (7, "")
     def __init__ (self, index, textSymbol):
         self.index = index
         self.textSymbol = textSymbol  

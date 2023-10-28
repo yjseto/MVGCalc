@@ -1,9 +1,5 @@
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QPushButton, QWidget
-
-from typing import Optional
-
-from lib.models.user_input import UserInput
+from PyQt5.QtWidgets import QPushButton
 
 class MvgCalcButton(QPushButton):
 
