@@ -1,34 +1,27 @@
-from .conveter_base import ConverterBase
+from conveter_base import ConverterBase
 from unit_converter.models.user_input import UserInput
 import sympy as sp
 from sympy.parsing.sympy_parser import parse_expr
 
-class ConverterLength(ConverterBase):
+class ConverterLength():
 
     def __init__(self):
         #i think the best way to do this is to have a base unit, then build off of that
-        self.meter = 1
-        self.kilometer = 1000*self.meter
-        self.centimeter = 0.01*self.meter
-        self.milimeter = 0.001*self.meter
-        self.micrometer = 0.000001*self.meter
-        self.nanometer = 0.0000000001*self.meter
-        self.mile = 1609.35*self.meter
-        self.yard = 0.9144*self.meter
-        self.foot = 0.3048*self.meter
-        self.inch = 0.0254
+        #using a dictionary
+        self.unit_table = {'meter': 1, 'kilometer' : 1000, 
+                           'centimeter' : 0.01, 'milimeter' : 0.001,
+                           'micrometer' : 0.000001, 'nanometer' : 0.0000000001,
+                           'mile' : 1609.35, 'yard' : 0.9144, 'foot' : 0.3048,
+                           'inch' : 0.0254}
         
 
         #work in progress
     
-    def convert(user_input):
+    def convert(self,value, unit1,unit2):
         #you'd have a list inputted like [1,'mile',0,'kilometer']
-        value_to_conv = user_input[0]
-        unit_base = user_input[1]
-        output_val = user_input[2]
-        output_val_unit = user_input[3]
-        
-        #1 mile would be defined as 1609.35*1 meters
-        in_meters = value_to_conv
+        result = value * self.unit_table[unit1] / self.unit_table[unit2]
+        return result
             
+convert_test = ConverterLength()
 
+print(convert_test.convert(1,'mile','kilometer'))

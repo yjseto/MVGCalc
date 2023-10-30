@@ -1,5 +1,8 @@
 from enum import Enum
-
+'''
+I think we can use this for the display
+not sure
+'''
 class LengthUnits(Enum):
     METER           = (1,'meter')
     CENTIMETER      = (2,'centimeter')

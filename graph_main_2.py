@@ -1,11 +1,12 @@
 import sys
-from gui.containers.app import MvgCalcApplication
-from gui.containers.window import MvgCalcMainWindow
+from gui.app import MvgCalcApplication
+from gui.displays.basic import BasicCalcDisplay
+from gui.displays.graph import GraphDisplay
 
 def main():
     try:
         app = MvgCalcApplication(sys.argv)
-        window = MvgCalcMainWindow(app)
+        window = GraphDisplay(app)
         window.show()
         sys.exit(app.exec_())
     except Exception as e:
@@ -14,4 +15,3 @@ def main():
 
 if __name__ == "__main__":
     main()
- 
