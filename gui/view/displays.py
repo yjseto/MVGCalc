@@ -98,4 +98,5 @@ class GraphDisplay(QWidget):
         else:
             x = result.x
             y = eval(result.y)
+            #y = 10 * np.sin(x)
             self.graph_screen.plot(x,y,pen = self.graph_screen.pen)

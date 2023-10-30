@@ -116,6 +116,9 @@ class Operator(Enum):
 # operation = Operation.ADD
 # result = operation.perform(5, 3)
 
+#need to differentiate between different types of sin, like np.sin and sin
+#np.sin for graphing
+
 class TrigonometryFunction(Enum):
     SIN         = (1,"SIN",     "sin",         "sin")
     COS         = (2,"COS",     "cos",         "cos")
