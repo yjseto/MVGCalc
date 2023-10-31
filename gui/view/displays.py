@@ -78,6 +78,7 @@ class GraphDisplay(QWidget):
 
         self.keyboard.return_result.connect(self.retrieve_result_object)
         self.keyboard.refresh_expr_screen.connect(self.refresh_expr_screen)
+        self.keyboard.clear_graph.connect(self.clear_graph_screen)
 
         layout_main.addWidget(self.graph_screen)
         layout_main.addWidget(self.display_expression_text)
@@ -91,12 +92,16 @@ class GraphDisplay(QWidget):
     def refresh_expr_screen(self):
         self.display_expression_text.setText(
             self.app.user_input.format_usr_inp_expr_as_str(True))
+    
+    def clear_graph_screen(self):
+        self.graph_screen.clear()
 
     def retrieve_result_object(self,result : GraphResult):
         if result.success == False:
             print('NOT IMPLEMENTED')
         else:
             x = result.x
-            y = eval(result.y)
-            #y = 10 * np.sin(x)
+            #y = eval(result.y)
+            #{'x': x,'np': np, 'sin': np.sin, 'cos': np.cos, 'tan': np.tan,'asin': np.arcsin,'acos': np.arccos,'atan':np.arctan})
+            y = eval(result.y, {'x': x,'np': np, 'sin': np.sin, 'cos': np.cos, 'tan': np.tan,'asin': np.arcsin,'acos': np.arccos,'atan':np.arctan})
             self.graph_screen.plot(x,y,pen = self.graph_screen.pen)

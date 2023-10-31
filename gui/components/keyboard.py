@@ -29,6 +29,7 @@ class Keyboard(QWidget):
     #after button click return display text including updated inputs
     return_result = pyqtSignal(IResult)
     refresh_expr_screen = pyqtSignal()
+    clear_graph = pyqtSignal()
 
     def __init__(self, app : MvgCalcApplication):
         super().__init__()
@@ -68,6 +69,7 @@ class Keyboard(QWidget):
         if key_type == ActionKey.CLEAR:
             self.app.user_input.clear_list()
             self.refresh_expr_screen.emit()
+            self.clear_graph.emit()
         elif key_type == ActionKey.BACKSPACE:
             self.app.user_input.pop_from_list()
             self.refresh_expr_screen.emit()
