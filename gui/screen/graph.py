@@ -29,7 +29,7 @@ class GraphScreen(PlotWidget):
         styles = {'color':'white', 'font-size':'20px'}
         self.setBackground('#00193f')
         self.showGrid(x = True, y =True)
-        self.pen = pg.mkPen(color = 'w', width = 1.5)
+        #self.pen = pg.mkPen(color = 'w', width = 1.5)
         #self.plot(y=0,pen = self.pen) trying to draw axis lines
         #can set the x and y range in this object
         #might be messed up

@@ -38,7 +38,7 @@ class CharacterInput(EvalEnum):
     DECIMAL_POINT       = (1,"DECIMAL_POINT",      ".",    ".")
     LEFT_P              = (2,"LEFT_P",             "(",    "(")
     RIGHT_P             = (3,"RIGHT_P",            ")",    ")")
-    NEGATIVE            = (4,"NEGITIVE",           "-",    "\u207A\u2215\u208B")
+    NEGATIVE            = (4,"NEGITIVE",           "-",    "-")
     XVAR                = (5,"XVAR",               "x",    "X")
     YVAR                = (6,"YVAR",               "y",    "Y")
     ZVAR                = (7,"ZVAR",               "z",    "Z")
@@ -60,10 +60,10 @@ class MathFunction(EvalEnum):
     SQUARED         = (2,"SQUARED",                 "**2",          "^2")
     # CUBERT          = (3,"CUBERT",                  "math.cbrt",    "") #Will need a function for higher order roots and exponents
     # CUBED           = (4,"CUBED",                   "**3",          "")
-    POW             = (6,"POW",                     "pow",     "^")
+    POW             = (6,"POW",                     "**",     "^")
     INVERSE         = (7,"INVERSE",                 "**-1",         "\u207B\u00B9")
-    LOG             = (8,"LOG",                     "math.log",     "log") #customizable done by math.log(x,[,base]) 1 arugment ln(x)
-    LOG_NATURAL     = (9,"LOG_NATURAL",             "math.ln",      "ln")
+    LOG             = (8,"LOG",                     "log(",     "log(") #customizable done by math.log(x,[,base]) 1 arugment ln(x)
+    LOG_NATURAL     = (9,"LOG_NATURAL",             "ln(",      "ln(")
     # LOGTEN          = (10,"LOGTEN",                 "math.log10",   "")
     FACTORIAL       = (11,"FACTORIAL",              "math.factorial","") #x!
     # EXPONENTIAL2    = (12,"EXPONENTIAL2",           "math.exp2",    "") #2^x
@@ -80,8 +80,8 @@ class MathFunction(EvalEnum):
 class Operator(EvalEnum):
     ADD      = (1,"ADD",        "+",    "+")
     SUBTRACT = (2,"SUBTRACT",   "-",    "-")
-    MULTIPLY = (3,"MULTIPLY",   "*",    "x")
-    DIVIDE   = (4,"DIVIDE",     "/",    "\u00F7")
+    MULTIPLY = (3,"MULTIPLY",   "*",    "*")
+    DIVIDE   = (4,"DIVIDE",     "/",    "/")#\u00F7
     #(^ on the calc) ** is eval() readable
     EXPONENT = (5,"EXPONENT",   "**",   "^")
         
@@ -89,12 +89,14 @@ class Operator(EvalEnum):
 # result = operation.perform(5, 3)
 
 class TrigonometryFunction(EvalEnum):
-    SIN         = (1,"SIN",     "sin",         "sin")
-    COS         = (2,"COS",     "cos",         "cos")
-    TAN         = (3,"TAN",     "tan",         "tan")
-    INVSIN      = (4,"INVSIN",  "asin",        "sin\u207B\u00B9")
-    INVCOS      = (5,"INVCOS",  "acos",        "cos\u207B\u00B9")
-    INVTAN      = (6,"INVTAN",  "atan",        "tan\u207B\u00B9")
+    SIN         = (1,"SIN",     "sin(",         "sin(")
+    COS         = (2,"COS",     "cos(",         "cos(")
+    TAN         = (3,"TAN",     "tan(",         "tan(")
+    INVSIN      = (4,"INVSIN",  "asin(",        "sin\u207B\u00B9(")
+    INVCOS      = (5,"INVCOS",  "acos(",        "cos\u207B\u00B9(")
+    INVTAN      = (6,"INVTAN",  "atan(",        "tan\u207B\u00B9(")
+
+    
     # SINH        = (7,"SINH",    "math.sinh",        "") #Hyperbolic functions
     # COSH        = (8,"COSH",    "math.cosh",        "")
     # TANH        = (9,"TANH",    "math.tanh",        "")

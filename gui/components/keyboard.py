@@ -247,7 +247,7 @@ class BasicKeyboard(QWidget):
         """
         Negitive +/-
         """  
-        negitive = MvgCalcButton(CharacterInput.NEGATIVE.textSymbol)  
+        negitive = MvgCalcButton("\u207A\u2215\u208B")
         negitive.setStyleSheet(component_light_grey("QPushButton", border_bottom_left_radius = "8px"))
         
         row5.addWidget(negitive)
@@ -315,7 +315,7 @@ class FunctionKeyboard(QWidget):
         """
         Sin 
         """ 
-        sin = MvgCalcButton(TrigonometryFunction.SIN.textSymbol)   
+        sin = MvgCalcButton(TrigonometryFunction.SIN.get_no_parentheses())   
         sin.setStyleSheet(component_dark_grey("QPushButton"))
         
         row2.addWidget(sin)
@@ -323,7 +323,7 @@ class FunctionKeyboard(QWidget):
         """
         Cos 
         """ 
-        cos = MvgCalcButton(TrigonometryFunction.COS.textSymbol)   
+        cos = MvgCalcButton(TrigonometryFunction.COS.get_no_parentheses())   
         cos.setStyleSheet(component_dark_grey("QPushButton"))
         
         row2.addWidget(cos)
@@ -331,7 +331,7 @@ class FunctionKeyboard(QWidget):
         """
         Tan
         """ 
-        tan = MvgCalcButton(TrigonometryFunction.TAN.textSymbol)   
+        tan = MvgCalcButton(TrigonometryFunction.TAN.get_no_parentheses())   
         tan.setStyleSheet(component_dark_grey("QPushButton"))
         
         row2.addWidget(tan)
@@ -352,7 +352,7 @@ class FunctionKeyboard(QWidget):
         """
         Sin Inv
         """ 
-        invsin = MvgCalcButton(TrigonometryFunction.INVSIN.textSymbol)   
+        invsin = MvgCalcButton(TrigonometryFunction.INVSIN.get_no_parentheses())   
         invsin.setStyleSheet(component_dark_grey("QPushButton"))
         
         row3.addWidget(invsin)
@@ -360,7 +360,7 @@ class FunctionKeyboard(QWidget):
         """
         Cos Inv 
         """ 
-        invcos = MvgCalcButton(TrigonometryFunction.INVCOS.textSymbol)   
+        invcos = MvgCalcButton(TrigonometryFunction.INVCOS.get_no_parentheses())   
         invcos.setStyleSheet(component_dark_grey("QPushButton"))
         
         row3.addWidget(invcos)
@@ -368,11 +368,11 @@ class FunctionKeyboard(QWidget):
         """
         Tan Inv
         """ 
-        invtan = MvgCalcButton(TrigonometryFunction.INVSIN.textSymbol)   
+        invtan = MvgCalcButton(TrigonometryFunction.INVTAN.get_no_parentheses())   
         invtan.setStyleSheet(component_dark_grey("QPushButton"))
         
         row3.addWidget(invtan)
-        invtan.button_click_signal.connect(partial(self.handle_button_click, TrigonometryFunction.INVSIN))
+        invtan.button_click_signal.connect(partial(self.handle_button_click, TrigonometryFunction.INVTAN))
         """
         Pi
         """          
@@ -389,7 +389,7 @@ class FunctionKeyboard(QWidget):
         """
         Log
         """ 
-        log = MvgCalcButton(MathFunction.LOG.textSymbol)   
+        log = MvgCalcButton(MathFunction.LOG.get_no_parentheses())   
         log.setStyleSheet(component_dark_grey("QPushButton"))
         
         row4.addWidget(log)
@@ -397,7 +397,7 @@ class FunctionKeyboard(QWidget):
         """
         Natural Log
         """ 
-        nat_log = MvgCalcButton(MathFunction.LOG_NATURAL.textSymbol)   
+        nat_log = MvgCalcButton(MathFunction.LOG_NATURAL.get_no_parentheses())   
         nat_log.setStyleSheet(component_dark_grey("QPushButton"))
         
         row4.addWidget(nat_log)
@@ -426,7 +426,7 @@ class FunctionKeyboard(QWidget):
         """
         Negitive +/-
         """  
-        negitive = MvgCalcButton(CharacterInput.NEGATIVE.textSymbol)  
+        negitive = MvgCalcButton("\u207A\u2215\u208B")  
         negitive.setStyleSheet(component_light_grey("QPushButton"))
         
         row5.addWidget(negitive)

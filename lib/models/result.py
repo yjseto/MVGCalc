@@ -28,7 +28,6 @@ class GraphResult(IResult):
         self.success = False
         self.expression: str = ""
         #self.clear_graph == False
-        self.x = np.linspace(-100,100,3000)
         self.y: str
         self.trig_func = False
 
