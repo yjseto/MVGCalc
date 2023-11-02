@@ -1,0 +1,21 @@
+can evaluate with letters like x if it is defined as some number
+eval can take global and local parameters
+security issues
+ ^ operator is XOR not power
+can evaluate linear equations by transforming them into a complex equation
+https://www.geeksforgeeks.org/solve-linear-equations-using-eval-in-python/ 
+i definetly think its possible to write our own code for arithmatic
+but if we want to do calculus its better to use a library
+
+
+using :
+b = 'False or False'
+while True:
+    try:
+        b = b + b[5:]
+        print(len(b), eval(b))
+    except:
+        print (len(b))
+        break
+        
+eval max is 75 megabytes
