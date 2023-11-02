@@ -85,7 +85,7 @@ def evaluate_graph(user_input : UserInput):
         result.success = len(result.error_msgs) == 0
         return result
 
-def context(display_mode: DisplayMode, user_input : UserInput) -> IResult:
+def evaluate(display_mode: DisplayMode, user_input : UserInput) -> IResult:
 
     if display_mode == DisplayMode.BASIC: 
         return evaluate_basic(user_input)

@@ -1,13 +1,13 @@
 from dataclasses import dataclass, field
 
 import numpy as np
-from lib.models.user_input import UserInput
 from typing import Protocol
 
 class IResult(Protocol):
     error_msgs: [str]
     success: bool
     value: any
+    expression : str
     #add value and expression in the future?
 
 
