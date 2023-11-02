@@ -1,7 +1,6 @@
-import math
-from enum import Enum
+from lib.enums.base import EvalEnum
 
-class MathConstants(Enum):
+class MathConstants(EvalEnum):
     PI          = (1,"","pi","\u03C0")
     EULERSNUM   = (2,"","e","e")
     # TAU         = (3,"math.tau")

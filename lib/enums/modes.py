@@ -1,6 +1,6 @@
-from enum import Enum
+from lib.enums.base import BaseEnum
 
-class DisplayMode(Enum):
+class DisplayMode(BaseEnum):
     BASIC               = (0, "Calculator") #do we want to add (1,"evaluator_algebra.py") or something like that?
     GRAPH               = (1, "Graph")
     MENU                = (2, "Menu")
@@ -8,13 +8,7 @@ class DisplayMode(Enum):
     # CALCULUS            = (5, "") #differentiation and integration
     # TIP_CALC            = (6, "")
     # EXPORT              = (7, "")
-    def __init__ (self, index, textSymbol):
-        self.index = index
-        self.textSymbol = textSymbol  
         
-class KeyboardDisplayMode(Enum):
+class KeyboardDisplayMode(BaseEnum):
     BASIC                   = (0, "Basic") #do we want to add (1,"evaluator_algebra.py") or something like that?
     FUNCTIONS               = (1, "Functions") #do we want to add (1,"evaluator_algebra.py") or something like that?
-    def __init__ (self, index, textSymbol):
-        self.index = index
-        self.textSymbol = textSymbol  

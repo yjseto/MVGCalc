@@ -7,7 +7,7 @@ from lib.enums.keys import *
 from lib.enums.constants import *
 from lib.models.result import IResult
 from lib.enums.modes import *
-from lib.util.evaluator import context
+from lib.util.evaluator import evaluate
 
 from gui.containers.app import MvgCalcApplication
 from gui.components.button import MvgCalcButton
@@ -63,7 +63,7 @@ class Keyboard(QWidget):
     # """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     # click handler functions
     # """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    def handle_button_click(self, key_type : Enum):
+    def handle_button_click(self, key_type : BaseEnum):
         #result: IResult
         if key_type == ActionKey.CLEAR:
             self.app.user_input.clear_list()
@@ -72,10 +72,10 @@ class Keyboard(QWidget):
             self.app.user_input.pop_from_list()
             self.refresh_expr_screen.emit()
         elif key_type == ActionKey.ENTER:
-            result = context(self.app.display_mode, self.app.user_input) 
+            result = evaluate(self.app.display_mode, self.app.user_input) 
             self.app.user_input.clear_list()
             self.return_result.emit(result) 
-        elif isinstance(key_type, Enum):
+        elif isinstance(key_type, BaseEnum):
             self.app.user_input.add_to_list(key_type)
             self.refresh_expr_screen.emit()
 
@@ -88,7 +88,7 @@ BASIC KEYS
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 class BasicKeyboard(QWidget):
 
-    button_click_signal_from_keyboard = pyqtSignal(Enum)
+    button_click_signal_from_keyboard = pyqtSignal(BaseEnum)
 
     def __init__(self):
         super().__init__()
@@ -283,7 +283,7 @@ class BasicKeyboard(QWidget):
         row5.addWidget(enter)   
         enter.button_click_signal.connect(partial(self.handle_button_click, ActionKey.ENTER))
 
-    def handle_button_click(self, key_type : Enum):
+    def handle_button_click(self, key_type : BaseEnum):
         self.button_click_signal_from_keyboard.emit(key_type)
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -291,7 +291,7 @@ FUNCTION KEYS
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 class FunctionKeyboard(QWidget):
 
-    button_click_signal_from_keyboard = pyqtSignal(Enum)
+    button_click_signal_from_keyboard = pyqtSignal(BaseEnum)
 
     def __init__(self):
         super().__init__()
@@ -454,7 +454,7 @@ class FunctionKeyboard(QWidget):
         row5.addWidget(enter)   
         enter.button_click_signal.connect(partial(self.handle_button_click, ActionKey.ENTER)) 
 
-    def handle_button_click(self, key_type : Enum):
+    def handle_button_click(self, key_type : BaseEnum):
         self.button_click_signal_from_keyboard.emit(key_type)
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -462,7 +462,7 @@ DIRECTIONAL KEYS
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 class DPad(QWidget):
 
-    button_click_signal_from_d_pad = pyqtSignal(Enum)
+    button_click_signal_from_d_pad = pyqtSignal(BaseEnum)
 
     def __init__(self):
         super().__init__()
@@ -492,7 +492,7 @@ class DPad(QWidget):
         main_layout.addWidget(down_arrow)
         down_arrow.button_click_signal.connect(partial(self.handle_button_click, ActionKey.DOWN))
 
-    def handle_button_click(self, key_type : Enum):
+    def handle_button_click(self, key_type : BaseEnum):
         self.button_click_signal_from_d_pad.emit(key_type)
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -503,7 +503,7 @@ keyboards
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 class SharedKeyRow(QHBoxLayout):
 
-    button_click_signal_from_shared_keys = pyqtSignal(Enum)
+    button_click_signal_from_shared_keys = pyqtSignal(BaseEnum)
 
     def __init__(self):
         super().__init__()
@@ -554,5 +554,5 @@ class SharedKeyRow(QHBoxLayout):
         self.addWidget(d_pad) 
         d_pad.button_click_signal_from_d_pad.connect(self.handle_button_click)
 
-    def handle_button_click(self, key_type : Enum):
+    def handle_button_click(self, key_type : BaseEnum):
         self.button_click_signal_from_shared_keys.emit(key_type)

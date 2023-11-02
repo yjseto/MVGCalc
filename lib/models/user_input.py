@@ -46,9 +46,6 @@ class UserInput:
     #     return f"idk this may be cool too one day"
     #i agree!
 
-    def clear_result(self):
-        self.result = ""
-
     def clear_list(self):
         self.user_input_list.clear()            
 
