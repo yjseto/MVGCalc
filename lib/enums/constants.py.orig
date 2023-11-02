@@ -1,0 +1,22 @@
+from lib.enums.base import EvalEnum
+
+<<<<<<< HEAD
+class MathConstants(Enum):
+=======
+class MathConstants(EvalEnum):
+>>>>>>> 7168e1dcebe0bb98e15b4ac3432cecf24e9e44b2
+    PI          = (1,"","pi","\u03C0")
+    EULERSNUM   = (2,"","e","e")
+    # TAU         = (3,"math.tau")
+    # INFINITY    = (4,"math.inf")
+<<<<<<< HEAD
+    # NAN         = (5,"math.nan")
+
+    def __init__ (self, index, textId, textEval, textSymbol):
+        self.index = index
+        self.textId = textId
+        self.textEval = textEval
+        self.textSymbol = textSymbol
+=======
+    # NAN         = (5,"math.nan")
+>>>>>>> 7168e1dcebe0bb98e15b4ac3432cecf24e9e44b2
