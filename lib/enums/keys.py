@@ -1,5 +1,4 @@
-from enum import Enum
-
+from lib.enums.base import BaseEnum, EvalEnum
 '''
 README
 
@@ -23,37 +22,28 @@ Please see how to do output in unit_tests.py
 
     #object.name = XVAR, DECIMAL, ETC.
     #object.value = 1,2,3,4
-    #object.value[1] = "x",".""()"etc..
+    #object.value[1] = "x",".""()"etc..  
 
-class ActionKey(Enum):
+class ActionKey(BaseEnum):
     BACKSPACE       = (1, "del")
     UP              = (2, "\u2191")
     DOWN            = (3, "\u2193")
     RIGHT           = (4, "\u2192")
     LEFT            = (5, "\u2190")
     CLEAR           = (6, "AC")
-    ENTER           = (7, "=")
+    ENTER           = (7, "=")   
 
-    def __init__ (self, index, textSymbol):
-        self.index = index
-        self.textSymbol = textSymbol        
-    
-class CharacterInput(Enum):
+
+class CharacterInput(EvalEnum):
     DECIMAL_POINT       = (1,"DECIMAL_POINT",      ".",    ".")
     LEFT_P              = (2,"LEFT_P",             "(",    "(")
     RIGHT_P             = (3,"RIGHT_P",            ")",    ")")
-    NEGATIVE            = (4,"NEGITIVE",           "-",    "\u207A\u2215\u208B")
+    NEGATIVE            = (4,"NEGITIVE",           "-",    "-")
     XVAR                = (5,"XVAR",               "x",    "X")
     YVAR                = (6,"YVAR",               "y",    "Y")
     ZVAR                = (7,"ZVAR",               "z",    "Z")
 
-    def __init__ (self, index, textId, textEval, textSymbol):
-        self.index = index
-        self.textId = textId
-        self.textEval = textEval
-        self.textSymbol = textSymbol
-
-class NumericInput(Enum):
+class NumericInput(EvalEnum):
     ONE     = (1,   "ONE"   ,"1","1")
     TWO     = (2,   "TWO"   ,"2","2")
     THREE   = (3,   "THREE" ,"3","3")
@@ -63,23 +53,17 @@ class NumericInput(Enum):
     SEVEN   = (7,   "SEVEN" ,"7","7")    
     EIGHT   = (8,   "EIGHT" ,"8","8")
     NINE    = (9,   "NINE"  ,"9","9")      
-    ZERO    = (10,  "ZERO"  ,"0","0")
+    ZERO    = (10,  "ZERO"  ,"0","0") 
 
-    def __init__ (self, index, textId, textEval, textSymbol):
-        self.index = index
-        self.textId = textId
-        self.textEval = textEval
-        self.textSymbol = textSymbol  
-
-class MathFunction(Enum):
+class MathFunction(EvalEnum):
     SQRT            = (1,"SQRT",                    "sqrt(",        "\u221A")
     SQUARED         = (2,"SQUARED",                 "**2",          "^2")
     # CUBERT          = (3,"CUBERT",                  "math.cbrt",    "") #Will need a function for higher order roots and exponents
     # CUBED           = (4,"CUBED",                   "**3",          "")
-    POW             = (6,"POW",                     "pow",     "^")
+    POW             = (6,"POW",                     "**",     "^")
     INVERSE         = (7,"INVERSE",                 "**-1",         "\u207B\u00B9")
-    LOG             = (8,"LOG",                     "math.log",     "log") #customizable done by math.log(x,[,base]) 1 arugment ln(x)
-    LOG_NATURAL     = (9,"LOG_NATURAL",             "math.ln",      "ln")
+    LOG             = (8,"LOG",                     "log(",     "log(") #customizable done by math.log(x,[,base]) 1 arugment ln(x)
+    LOG_NATURAL     = (9,"LOG_NATURAL",             "ln(",      "ln(")
     # LOGTEN          = (10,"LOGTEN",                 "math.log10",   "")
     FACTORIAL       = (11,"FACTORIAL",              "math.factorial","") #x!
     # EXPONENTIAL2    = (12,"EXPONENTIAL2",           "math.exp2",    "") #2^x
@@ -92,46 +76,30 @@ class MathFunction(Enum):
     TO_DEGREES      = (19,"TO_DEGREES",             "math.degrees", "")
     TO_RADIANS      = (20,"TO_RADIANS",             "math.radians", "")
     PERCENT         = (21,"PERCENT",                "*100"       , "%")
-    
-    def __init__ (self, index, textId, textEval, textSymbol):
-        self.index = index
-        self.textId = textId
-        self.textEval = textEval
-        self.textSymbol = textSymbol
 
-class Operator(Enum):
+class Operator(EvalEnum):
     ADD      = (1,"ADD",        "+",    "+")
     SUBTRACT = (2,"SUBTRACT",   "-",    "-")
-    MULTIPLY = (3,"MULTIPLY",   "*",    "x")
-    DIVIDE   = (4,"DIVIDE",     "/",    "\u00F7")
+    MULTIPLY = (3,"MULTIPLY",   "*",    "*")
+    DIVIDE   = (4,"DIVIDE",     "/",    "/")#\u00F7
     #(^ on the calc) ** is eval() readable
     EXPONENT = (5,"EXPONENT",   "**",   "^")
-    
-    def __init__ (self, index, textId, textEval, textSymbol):
-        self.index = index
-        self.textId = textId
-        self.textEval = textEval
-        self.textSymbol = textSymbol
         
 # operation = Operation.ADD
 # result = operation.perform(5, 3)
 
-class TrigonometryFunction(Enum):
-    SIN         = (1,"SIN",     "sin",         "sin")
-    COS         = (2,"COS",     "cos",         "cos")
-    TAN         = (3,"TAN",     "tan",         "tan")
-    INVSIN      = (4,"INVSIN",  "asin",        "sin\u207B\u00B9")
-    INVCOS      = (5,"INVCOS",  "acos",        "cos\u207B\u00B9")
-    INVTAN      = (6,"INVTAN",  "atan",        "tan\u207B\u00B9")
+class TrigonometryFunction(EvalEnum):
+    SIN         = (1,"SIN",     "sin(",         "sin(")
+    COS         = (2,"COS",     "cos(",         "cos(")
+    TAN         = (3,"TAN",     "tan(",         "tan(")
+    INVSIN      = (4,"INVSIN",  "asin(",        "sin\u207B\u00B9(")
+    INVCOS      = (5,"INVCOS",  "acos(",        "cos\u207B\u00B9(")
+    INVTAN      = (6,"INVTAN",  "atan(",        "tan\u207B\u00B9(")
+
+    
     # SINH        = (7,"SINH",    "math.sinh",        "") #Hyperbolic functions
     # COSH        = (8,"COSH",    "math.cosh",        "")
     # TANH        = (9,"TANH",    "math.tanh",        "")
-
-    def __init__ (self, index, textId, textEval, textSymbol):
-        self.index = index
-        self.textId = textId
-        self.textEval = textEval
-        self.textSymbol = textSymbol
 
 # class SympyTrig(Enum): #this class allows the sympy evaluator to read trig functions
 #     SIN         = (1,"SYMPY_SIN",     "sin","sin")

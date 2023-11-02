@@ -30,7 +30,7 @@ def evaluate_basic(user_input : UserInput) -> IResult:
 
         except SyntaxError as se:
             print(f"Syntax error: {se}")
-            result.error_msgs.append(f"Syntax error: {se}")
+            result.error_msgs.append(f"Syntax error")
 
         except NotImplementedError as nie:
             print(f"Not implemented error: {nie}")
@@ -70,7 +70,7 @@ def evaluate_graph(user_input : UserInput):
 
         except SyntaxError as se:
             print(f"Syntax error: {se}")
-            result.error_msgs.append(f"Syntax error: {se}")
+            result.error_msgs.append(f"Syntax error")
 
         except NotImplementedError as nie:
             print(f"Not implemented error: {nie}")
@@ -85,7 +85,7 @@ def evaluate_graph(user_input : UserInput):
         result.success = len(result.error_msgs) == 0
         return result
 
-def context(display_mode: DisplayMode, user_input : UserInput) -> IResult:
+def evaluate(display_mode: DisplayMode, user_input : UserInput) -> IResult:
 
     if display_mode == DisplayMode.BASIC: 
         return evaluate_basic(user_input)

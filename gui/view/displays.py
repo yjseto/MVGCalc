@@ -1,6 +1,6 @@
 import math
 from PyQt5.QtWidgets import *
-
+import pyqtgraph as pg
 import numpy as np
 from lib.models.result import GraphResult, IResult
 from gui.components.textarea import MvgCalcExpressionTextField
@@ -68,6 +68,19 @@ class GraphDisplay(QWidget):
     def __init__(self,app):
         super().__init__()
         self.app = app
+        self.x = np.linspace(-100,100,3000)
+        self.graph_config = {'x': self.x,
+                             'np': np, 
+                             'sin': np.sin, 
+                             'cos': np.cos, 
+                             'tan': np.tan,
+                             'asin': np.arcsin,
+                             'acos': np.arccos,
+                             'atan':np.arctan,
+                             'log': np.log10,
+                             'ln' : np.emath.log}
+        #support for additional functions can be added to this dictionary
+        self.pen = pg.mkPen(color = 'w', width = 1.5) #sets the style of the line we plot on the graph
 
         self.graph_screen = GraphScreen()
 
@@ -78,6 +91,7 @@ class GraphDisplay(QWidget):
 
         self.keyboard.return_result.connect(self.retrieve_result_object)
         self.keyboard.refresh_expr_screen.connect(self.refresh_expr_screen)
+        self.keyboard.clear_graph.connect(self.clear_graph_screen)
 
         layout_main.addWidget(self.graph_screen)
         layout_main.addWidget(self.display_expression_text)
@@ -91,11 +105,16 @@ class GraphDisplay(QWidget):
     def refresh_expr_screen(self):
         self.display_expression_text.setText(
             self.app.user_input.format_usr_inp_expr_as_str(True))
+    
+    def clear_graph_screen(self):
+        self.graph_screen.clear()
 
     def retrieve_result_object(self,result : GraphResult):
         if result.success == False:
             print('NOT IMPLEMENTED')
         else:
-            x = result.x
-            y = eval(result.y)
-            self.graph_screen.plot(x,y,pen = self.graph_screen.pen)
+            #x = result.x
+            #y = eval(result.y)
+            #{'x': x,'np': np, 'sin': np.sin, 'cos': np.cos, 'tan': np.tan,'asin': np.arcsin,'acos': np.arccos,'atan':np.arctan})
+            y = eval(result.y, self.graph_config)
+            self.graph_screen.plot(self.x,y,pen = self.pen)

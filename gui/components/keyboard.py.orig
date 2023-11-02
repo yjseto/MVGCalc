@@ -29,7 +29,6 @@ class Keyboard(QWidget):
     #after button click return display text including updated inputs
     return_result = pyqtSignal(IResult)
     refresh_expr_screen = pyqtSignal()
-    clear_graph = pyqtSignal()
 
     def __init__(self, app : MvgCalcApplication):
         super().__init__()
@@ -64,20 +63,30 @@ class Keyboard(QWidget):
     # """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     # click handler functions
     # """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+<<<<<<< HEAD
+    def handle_button_click(self, key_type : Enum):
+=======
     def handle_button_click(self, key_type : BaseEnum):
+>>>>>>> 7168e1dcebe0bb98e15b4ac3432cecf24e9e44b2
         #result: IResult
         if key_type == ActionKey.CLEAR:
             self.app.user_input.clear_list()
             self.refresh_expr_screen.emit()
-            self.clear_graph.emit()
         elif key_type == ActionKey.BACKSPACE:
             self.app.user_input.pop_from_list()
             self.refresh_expr_screen.emit()
         elif key_type == ActionKey.ENTER:
+<<<<<<< HEAD
+            result = context(self.app.display_mode, self.app.user_input) 
+            self.app.user_input.clear_list()
+            self.return_result.emit(result) 
+        elif isinstance(key_type, Enum):
+=======
             result = evaluate(self.app.display_mode, self.app.user_input) 
             self.app.user_input.clear_list()
             self.return_result.emit(result) 
         elif isinstance(key_type, BaseEnum):
+>>>>>>> 7168e1dcebe0bb98e15b4ac3432cecf24e9e44b2
             self.app.user_input.add_to_list(key_type)
             self.refresh_expr_screen.emit()
 
@@ -90,7 +99,11 @@ BASIC KEYS
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 class BasicKeyboard(QWidget):
 
+<<<<<<< HEAD
+    button_click_signal_from_keyboard = pyqtSignal(Enum)
+=======
     button_click_signal_from_keyboard = pyqtSignal(BaseEnum)
+>>>>>>> 7168e1dcebe0bb98e15b4ac3432cecf24e9e44b2
 
     def __init__(self):
         super().__init__()
@@ -247,7 +260,7 @@ class BasicKeyboard(QWidget):
         """
         Negitive +/-
         """  
-        negitive = MvgCalcButton("\u207A\u2215\u208B")
+        negitive = MvgCalcButton(CharacterInput.NEGATIVE.textSymbol)  
         negitive.setStyleSheet(component_light_grey("QPushButton", border_bottom_left_radius = "8px"))
         
         row5.addWidget(negitive)
@@ -285,7 +298,11 @@ class BasicKeyboard(QWidget):
         row5.addWidget(enter)   
         enter.button_click_signal.connect(partial(self.handle_button_click, ActionKey.ENTER))
 
+<<<<<<< HEAD
+    def handle_button_click(self, key_type : Enum):
+=======
     def handle_button_click(self, key_type : BaseEnum):
+>>>>>>> 7168e1dcebe0bb98e15b4ac3432cecf24e9e44b2
         self.button_click_signal_from_keyboard.emit(key_type)
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -293,7 +310,11 @@ FUNCTION KEYS
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 class FunctionKeyboard(QWidget):
 
+<<<<<<< HEAD
+    button_click_signal_from_keyboard = pyqtSignal(Enum)
+=======
     button_click_signal_from_keyboard = pyqtSignal(BaseEnum)
+>>>>>>> 7168e1dcebe0bb98e15b4ac3432cecf24e9e44b2
 
     def __init__(self):
         super().__init__()
@@ -315,7 +336,7 @@ class FunctionKeyboard(QWidget):
         """
         Sin 
         """ 
-        sin = MvgCalcButton(TrigonometryFunction.SIN.get_no_parentheses())   
+        sin = MvgCalcButton(TrigonometryFunction.SIN.textSymbol)   
         sin.setStyleSheet(component_dark_grey("QPushButton"))
         
         row2.addWidget(sin)
@@ -323,7 +344,7 @@ class FunctionKeyboard(QWidget):
         """
         Cos 
         """ 
-        cos = MvgCalcButton(TrigonometryFunction.COS.get_no_parentheses())   
+        cos = MvgCalcButton(TrigonometryFunction.COS.textSymbol)   
         cos.setStyleSheet(component_dark_grey("QPushButton"))
         
         row2.addWidget(cos)
@@ -331,7 +352,7 @@ class FunctionKeyboard(QWidget):
         """
         Tan
         """ 
-        tan = MvgCalcButton(TrigonometryFunction.TAN.get_no_parentheses())   
+        tan = MvgCalcButton(TrigonometryFunction.TAN.textSymbol)   
         tan.setStyleSheet(component_dark_grey("QPushButton"))
         
         row2.addWidget(tan)
@@ -352,7 +373,7 @@ class FunctionKeyboard(QWidget):
         """
         Sin Inv
         """ 
-        invsin = MvgCalcButton(TrigonometryFunction.INVSIN.get_no_parentheses())   
+        invsin = MvgCalcButton(TrigonometryFunction.INVSIN.textSymbol)   
         invsin.setStyleSheet(component_dark_grey("QPushButton"))
         
         row3.addWidget(invsin)
@@ -360,7 +381,7 @@ class FunctionKeyboard(QWidget):
         """
         Cos Inv 
         """ 
-        invcos = MvgCalcButton(TrigonometryFunction.INVCOS.get_no_parentheses())   
+        invcos = MvgCalcButton(TrigonometryFunction.INVCOS.textSymbol)   
         invcos.setStyleSheet(component_dark_grey("QPushButton"))
         
         row3.addWidget(invcos)
@@ -368,11 +389,11 @@ class FunctionKeyboard(QWidget):
         """
         Tan Inv
         """ 
-        invtan = MvgCalcButton(TrigonometryFunction.INVTAN.get_no_parentheses())   
+        invtan = MvgCalcButton(TrigonometryFunction.INVSIN.textSymbol)   
         invtan.setStyleSheet(component_dark_grey("QPushButton"))
         
         row3.addWidget(invtan)
-        invtan.button_click_signal.connect(partial(self.handle_button_click, TrigonometryFunction.INVTAN))
+        invtan.button_click_signal.connect(partial(self.handle_button_click, TrigonometryFunction.INVSIN))
         """
         Pi
         """          
@@ -389,7 +410,7 @@ class FunctionKeyboard(QWidget):
         """
         Log
         """ 
-        log = MvgCalcButton(MathFunction.LOG.get_no_parentheses())   
+        log = MvgCalcButton(MathFunction.LOG.textSymbol)   
         log.setStyleSheet(component_dark_grey("QPushButton"))
         
         row4.addWidget(log)
@@ -397,7 +418,7 @@ class FunctionKeyboard(QWidget):
         """
         Natural Log
         """ 
-        nat_log = MvgCalcButton(MathFunction.LOG_NATURAL.get_no_parentheses())   
+        nat_log = MvgCalcButton(MathFunction.LOG_NATURAL.textSymbol)   
         nat_log.setStyleSheet(component_dark_grey("QPushButton"))
         
         row4.addWidget(nat_log)
@@ -426,7 +447,7 @@ class FunctionKeyboard(QWidget):
         """
         Negitive +/-
         """  
-        negitive = MvgCalcButton("\u207A\u2215\u208B")  
+        negitive = MvgCalcButton(CharacterInput.NEGATIVE.textSymbol)  
         negitive.setStyleSheet(component_light_grey("QPushButton"))
         
         row5.addWidget(negitive)
@@ -456,7 +477,11 @@ class FunctionKeyboard(QWidget):
         row5.addWidget(enter)   
         enter.button_click_signal.connect(partial(self.handle_button_click, ActionKey.ENTER)) 
 
+<<<<<<< HEAD
+    def handle_button_click(self, key_type : Enum):
+=======
     def handle_button_click(self, key_type : BaseEnum):
+>>>>>>> 7168e1dcebe0bb98e15b4ac3432cecf24e9e44b2
         self.button_click_signal_from_keyboard.emit(key_type)
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -464,7 +489,11 @@ DIRECTIONAL KEYS
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 class DPad(QWidget):
 
+<<<<<<< HEAD
+    button_click_signal_from_d_pad = pyqtSignal(Enum)
+=======
     button_click_signal_from_d_pad = pyqtSignal(BaseEnum)
+>>>>>>> 7168e1dcebe0bb98e15b4ac3432cecf24e9e44b2
 
     def __init__(self):
         super().__init__()
@@ -494,7 +523,11 @@ class DPad(QWidget):
         main_layout.addWidget(down_arrow)
         down_arrow.button_click_signal.connect(partial(self.handle_button_click, ActionKey.DOWN))
 
+<<<<<<< HEAD
+    def handle_button_click(self, key_type : Enum):
+=======
     def handle_button_click(self, key_type : BaseEnum):
+>>>>>>> 7168e1dcebe0bb98e15b4ac3432cecf24e9e44b2
         self.button_click_signal_from_d_pad.emit(key_type)
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -505,7 +538,11 @@ keyboards
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 class SharedKeyRow(QHBoxLayout):
 
+<<<<<<< HEAD
+    button_click_signal_from_shared_keys = pyqtSignal(Enum)
+=======
     button_click_signal_from_shared_keys = pyqtSignal(BaseEnum)
+>>>>>>> 7168e1dcebe0bb98e15b4ac3432cecf24e9e44b2
 
     def __init__(self):
         super().__init__()
@@ -556,5 +593,9 @@ class SharedKeyRow(QHBoxLayout):
         self.addWidget(d_pad) 
         d_pad.button_click_signal_from_d_pad.connect(self.handle_button_click)
 
+<<<<<<< HEAD
+    def handle_button_click(self, key_type : Enum):
+=======
     def handle_button_click(self, key_type : BaseEnum):
+>>>>>>> 7168e1dcebe0bb98e15b4ac3432cecf24e9e44b2
         self.button_click_signal_from_shared_keys.emit(key_type)
