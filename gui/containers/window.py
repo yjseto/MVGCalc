@@ -33,14 +33,18 @@ class MvgCalcMainWindow(QMainWindow):
         # window_width = int(screen_width * 1)  # Set to 100% of the screen width
         # window_height = int(screen_height * 1)  # Set to 100% of the screen height
         #self.setFixedSize(window_width, window_height)
-        self.setFixedSize(360, 740)
+        
+        self.setFixedSize(391, 828)
 
         self.main_layout = QVBoxLayout()
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
+
         self.stack_layout = QStackedWidget()
         central_widget.setLayout(self.main_layout)
 
         #add nav bar button group to top of calculator
-        self.navbar = NavBar(DisplayMode.BASIC, DisplayMode.GRAPH)
+        self.navbar = NavBar(DisplayMode.BASIC, DisplayMode.GRAPH, DisplayMode.UNIT_CONV)
+        self.navbar.setContentsMargins(0,0,0,0)
         self.navbar.clicked_display_signal.connect(self.activate_tab)
         self.main_layout.addLayout(self.navbar)
 
@@ -49,6 +53,7 @@ class MvgCalcMainWindow(QMainWindow):
         self.stack_layout.addWidget(GraphDisplay(self.app))
 
         self.main_layout.addWidget(self.stack_layout)
+        
 
     def activate_tab(self, display_mode : DisplayMode):
         self.app.display_mode = display_mode

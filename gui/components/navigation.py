@@ -4,7 +4,7 @@ from functools import partial
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import  QHBoxLayout
 
-from gui.components.button import MvgCalcButton
+from gui.components.button import MvgCalcButton, MvgCalcNavButton
 
 class NavBar(QHBoxLayout):
 
@@ -14,7 +14,7 @@ class NavBar(QHBoxLayout):
         super().__init__()
 
         for arg  in args:
-            button = MvgCalcButton(arg.textSymbol)
+            button = MvgCalcNavButton(arg.textSymbol)
             button.button_click_signal.connect(partial(self.handle_button_click, arg))
             self.addWidget(button)
             

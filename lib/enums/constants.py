@@ -7,8 +7,5 @@ class MathConstants(EvalEnum):
     # INFINITY    = (4,"math.inf")
     # NAN         = (5,"math.nan")
 
-    def __init__ (self, index, textId, textEval, textSymbol):
-        self.index = index
-        self.textId = textId
-        self.textEval = textEval
-        self.textSymbol = textSymbol
+WINDOW_WIDTH = 391
+WINDOW_HEIGHT = 828 
