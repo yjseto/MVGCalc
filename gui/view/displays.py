@@ -25,6 +25,7 @@ class BasicCalcDisplay(QWidget):
 
         #create vertical box structure to place widget components
         layout_main = QVBoxLayout()
+        layout_main.setContentsMargins(0, 0, 0, 0)
 
         self.display_result_text = QTextEdit()
         self.display_result_text.setStyleSheet(build_css_string(
