@@ -1,17 +1,27 @@
 from sympy.parsing.sympy_parser import parse_expr
 import sympy as sp
-from sympy import N
+from sympy import N, Eq, zoo
 from lib.models.result import BasicResult, GraphResult, IResult
 from lib.models.user_input import UserInput
 from lib.enums.modes import DisplayMode
 
+
 def evaluate_basic(user_input : UserInput) -> IResult: 
-        result  = BasicResult()
-        result.expression = user_input.format_usr_inp_expr_as_str(True)
-         
-        try:     
-            parsed_in = parse_expr(user_input.format_usr_inp_expr_as_str(),transformations='all')  
-            #return sp.sympify(parsed_in).evalf()
+    result  = BasicResult()
+    #if isValid(user_input.format_usr_inp_expr_as_str(True), result.error_msgs):
+
+    result.expression = user_input.format_usr_inp_expr_as_str(True)
+        
+    try:     
+        parsed_in = parse_expr(user_input.format_usr_inp_expr_as_str(),transformations='all')  
+        #return sp.sympify(parsed_in).evalf()
+        
+        #check if result expression is undefined
+        if Eq(parsed_in, zoo):
+            result.error_msgs.append(f"{result.expression} is undefined")
+        
+        else:    
+            
             result.value = str(sp.sympify(parsed_in).evalf())
             
             #get rid of trailing 0's
@@ -20,30 +30,32 @@ def evaluate_basic(user_input : UserInput) -> IResult:
 
             result.success = True
 
-        except ValueError as ve:
-            print(f"Value error: {ve}")
-            result.error_msgs.append(f"Value error: {ve}")
+    except ValueError as ve:
+        print(f"Value error: {ve}")
+        result.error_msgs.append(f"Value error: {ve}")
 
-        except TypeError as te:
-            print(f"Tytpe error: {te}")
-            result.error_msgs.append(f"Type error: {te}")
+    except TypeError as te:
+        print(f"Tytpe error: {te}")
+        result.error_msgs.append(f"Type error: {te}")
 
-        except SyntaxError as se:
-            print(f"Syntax error: {se}")
-            result.error_msgs.append(f"Syntax error")
+    except SyntaxError as se:
+        print(f"Syntax error: {se}")
+        result.error_msgs.append(f"Syntax error: {se}")
 
-        except NotImplementedError as nie:
-            print(f"Not implemented error: {nie}")
-            result.error_msgs.append(f"Not implemented error: {nie}")
-        except Exception as e:
-            raise e
-        
-        #result.error_msgs.append(f"TESTING1")
-        #result.error_msgs.append(f"TESTING2")
-        #result.error_msgs.append(f"TESTING3")
-        
-        result.success = len(result.error_msgs) == 0
-        return result
+    except NotImplementedError as nie:
+        print(f"Not implemented error: {nie}")
+        result.error_msgs.append(f"Not implemented error: {nie}")
+    except Exception as e:
+        raise e
+    
+    #result.error_msgs.append(f"TESTING1")
+    #result.error_msgs.append(f"TESTING2")
+    #result.error_msgs.append(f"TESTING3")
+    
+    result.success = len(result.error_msgs) == 0
+    if result.success == True:
+        user_input.clear_list()
+    return result
 
 def evaluate_graph(user_input : UserInput):
         result  = GraphResult()
@@ -70,7 +82,7 @@ def evaluate_graph(user_input : UserInput):
 
         except SyntaxError as se:
             print(f"Syntax error: {se}")
-            result.error_msgs.append(f"Syntax error")
+            result.error_msgs.append(f"Syntax error: {se}")
 
         except NotImplementedError as nie:
             print(f"Not implemented error: {nie}")
