@@ -2,15 +2,19 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import List
 from io import StringIO
-from lib.enums.keys import Operator
+from lib.enums.keys import MathFunction, Operator
 import sympy as sp
 from sympy.parsing.sympy_parser import parse_expr, transformations
+
 
 @dataclass
 class UserInput:
     
     user_input_list: list = field(default_factory=list)
     #result: str = field(default="")
+    
+    def get_user_input_list(self):
+        return self.user_input_list
     
 
     def format_usr_inp_expr_as_str(self, display_to_user=False) -> str:
@@ -50,7 +54,7 @@ class UserInput:
         self.user_input_list.clear()            
 
     def add_to_list(self,value):
-        if not self.user_input_list and isinstance(value,Operator):
+        if self.is_empty() and (isinstance(value,Operator) or value == MathFunction.POW or value == MathFunction.SQUARED):
             return
         
         if isinstance(value, str) and isinstance(self.get_prev(),str): 
@@ -59,11 +63,14 @@ class UserInput:
             self.user_input_list.append(value)
             return
 
+        #replace operator
         if isinstance(self.get_prev(),Operator) and isinstance(value,Operator):
             self.user_input_list.pop()
             self.user_input_list.append(value)
         else:
             self.user_input_list.append(value)
+            
+        
         
     def pop_from_list(self):
         self.user_input_list.pop()
@@ -72,3 +79,6 @@ class UserInput:
         if not self.user_input_list:
             return
         return self.user_input_list[-1]
+    
+    def is_empty(self):
+        return len(self.user_input_list) == 0

@@ -56,13 +56,11 @@ class NumericInput(EvalEnum):
     ZERO    = (10,  "ZERO"  ,"0","0") 
 
 class MathFunction(EvalEnum):
-    SQRT            = (1,"SQRT",                    "sqrt(",        "\u221A")
-    SQUARED         = (2,"SQUARED",                 "**2",          "^2")
+    SQRT            = (1,"SQRT",                    "sqrt(",        "\u221A(")
     # CUBERT          = (3,"CUBERT",                  "math.cbrt",    "") #Will need a function for higher order roots and exponents
     # CUBED           = (4,"CUBED",                   "**3",          "")
-    POW             = (6,"POW",                     "**",     "^")
     INVERSE         = (7,"INVERSE",                 "**-1",         "\u207B\u00B9")
-    LOG             = (8,"LOG",                     "log(",     "log(") #customizable done by math.log(x,[,base]) 1 arugment ln(x)
+    LOG             = (8,"LOG",                     "log(",     "log(") #customizable done by math.log(x,[,base]) 1 argument ln(x)
     LOG_NATURAL     = (9,"LOG_NATURAL",             "ln(",      "ln(")
     # LOGTEN          = (10,"LOGTEN",                 "math.log10",   "")
     FACTORIAL       = (11,"FACTORIAL",              "math.factorial","") #x!
@@ -75,7 +73,8 @@ class MathFunction(EvalEnum):
     LCM             = (18,"LCM",                    "math.lcm",     "")
     TO_DEGREES      = (19,"TO_DEGREES",             "math.degrees", "")
     TO_RADIANS      = (20,"TO_RADIANS",             "math.radians", "")
-    PERCENT         = (21,"PERCENT",                "*100"       , "%")
+    POW             = (5,"POW",                     "**",     "^")
+    SQUARED         = (6,"SQUARED",                 "**2",          "^2")
 
 class Operator(EvalEnum):
     ADD      = (1,"ADD",        "+",    "+")
@@ -83,7 +82,8 @@ class Operator(EvalEnum):
     MULTIPLY = (3,"MULTIPLY",   "*",    "*")
     DIVIDE   = (4,"DIVIDE",     "/",    "/")#\u00F7
     #(^ on the calc) ** is eval() readable
-    EXPONENT = (5,"EXPONENT",   "**",   "^")
+    PERCENT  = (21,"PERCENT",                "*0.01"       , "%")
+
         
 # operation = Operation.ADD
 # result = operation.perform(5, 3)

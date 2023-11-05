@@ -10,9 +10,10 @@ from lib.enums.modes import *
 from lib.util.evaluator import evaluate
 
 from gui.containers.app import MvgCalcApplication
-from gui.components.button import MvgCalcButton, MvgCalcHalfInputButton, MvgCalcInputButton
+from gui.components.button import MvgCalcInputButton, MvgCalcHalfInputButton, MvgCalcInputButton
 from gui.components.navigation import NavBar
 from gui.util.css import *
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Keyboard
@@ -71,13 +72,15 @@ class Keyboard(QWidget):
             self.refresh_expr_screen.emit()
             self.clear_graph.emit()
         elif key_type == ActionKey.BACKSPACE:
-            self.app.user_input.pop_from_list()
-            self.refresh_expr_screen.emit()
+            if not self.app.user_input.is_empty():
+                self.app.user_input.pop_from_list()
+                self.refresh_expr_screen.emit()
         elif key_type == ActionKey.ENTER:
             result = evaluate(self.app.display_mode, self.app.user_input) 
-            self.app.user_input.clear_list()
-            self.return_result.emit(result) 
-        elif isinstance(key_type, BaseEnum):
+            self.return_result.emit(result)
+        elif isinstance(key_type, ActionKey):
+            pass
+        elif isinstance(key_type, EvalEnum):    
             self.app.user_input.add_to_list(key_type)
             self.refresh_expr_screen.emit()
 
@@ -117,7 +120,6 @@ class BasicKeyboard(QWidget):
         
         row2.addWidget(seven)
         seven.button_click_signal.connect(partial(self.handle_button_click, NumericInput.SEVEN))
-        
         """
         Eight 8
         """
@@ -137,7 +139,7 @@ class BasicKeyboard(QWidget):
         """
         Square Root
         """
-        sqrt = MvgCalcInputButton(MathFunction.SQRT.textSymbol)
+        sqrt = MvgCalcInputButton(MathFunction.SQRT.get_no_parentheses())
         sqrt.setStyleSheet(component_blue("QPushButton"))   
         
         row2.addWidget(sqrt) 
@@ -145,11 +147,11 @@ class BasicKeyboard(QWidget):
         """
         Percent %
         """
-        percent = MvgCalcInputButton(MathFunction.PERCENT.textSymbol)  
+        percent = MvgCalcInputButton(Operator.PERCENT.textSymbol)  
         percent.setStyleSheet(component_blue("QPushButton"))
 
         row2.addWidget(percent)          
-        percent.button_click_signal.connect(partial(self.handle_button_click, MathFunction.PERCENT))
+        percent.button_click_signal.connect(partial(self.handle_button_click, Operator.PERCENT))
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
            THIRD ROW
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -515,10 +517,8 @@ class SharedKeyRow(QHBoxLayout):
         Clear Button
         """
         clear = MvgCalcInputButton(ActionKey.CLEAR.textSymbol) 
-        #clear.setStyleSheet(component_light_grey("QPushButton", border_top_left_radius = "8px",max_width = "20px"))
-        #for qtextedit
-        #clear.setFont()
-        #clear.setFixedSize(68, 200)
+        clear.setStyleSheet(component_light_grey("QPushButton", border_top_left_radius = "8px",max_width = "20px"))
+        
         self.addWidget(clear)
         clear.button_click_signal.connect(
             partial(self.handle_button_click, ActionKey.CLEAR))       
