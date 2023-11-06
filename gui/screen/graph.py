@@ -1,33 +1,17 @@
-from PyQt5 import QtWidgets
-from pyqtgraph import PlotWidget, plot, GraphicsLayoutWidget
-import pyqtgraph as pg
-import os
-import sympy as sp
-import math
-import numpy as np
-from PyQt5.QtWidgets import *
-from gui.components.keyboard import BasicKeyboard
-#from gui.components.graphing_keyboard import BasicGrapingKeyboard
-#from gui.components.graph_display import GraphDisplay
-import sys
-from PyQt5.QtWidgets import *
-from gui.components.keyboard import BasicKeyboard
-from lib.models import result
-from lib.models.user_input import UserInput
 
+from PyQt5.QtWidgets import *
+from pyqtgraph import PlotWidget
 
 '''
 Similar to basic But i just replaced the top with the graph instead of the resulting string
 just for now
 '''
-
 class GraphScreen(PlotWidget):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, plotItem=None):
+        super().__init__(plotItem)
         #I hope to be able to do most of the graph styling here
         #can customize look here?
         styles = {'color':'white', 'font-size':'20px'}
-        self.setBackground('#00193f')
         self.showGrid(x = True, y =True)
         #self.pen = pg.mkPen(color = 'w', width = 1.5)
         #self.plot(y=0,pen = self.pen) trying to draw axis lines

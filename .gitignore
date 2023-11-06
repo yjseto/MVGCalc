@@ -7,3 +7,6 @@ __pycache__/
 
 # Ignore source file generated after resolving conflicts with mergetool
 *.orig
+
+# Ignore test harnesses
+main_*
