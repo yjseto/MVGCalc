@@ -6,12 +6,9 @@ from lib.models.result import GraphResult, IResult
 from gui.components.textarea import MvgCalcExpressionTextField
 
 from gui.containers.app import MvgCalcApplication
-from gui.components.keyboard import Keyboard
+from gui.containers.controller import KeyInputController
 from gui.screen.graph import GraphScreen
 from gui.util.css import build_css_string
-
-# remove after evaluator linked to displays
-from utils.Util import evaluate_graph, evaluate_to_str
 
 """
     IMPORTANT: reciever for signal from keyboard when signal is returned the  
@@ -35,7 +32,7 @@ class BasicCalcDisplay(QWidget):
             ))
         
         self.display_expression_text = MvgCalcExpressionTextField()
-        self.keyboard = Keyboard(self.app)
+        self.keyboard = KeyInputController(self.app)
 
         self.keyboard.return_result.connect(self.retrieve_result_object)  
         self.keyboard.refresh_expr_screen.connect(self.refresh_expr_screen)  
@@ -88,7 +85,7 @@ class GraphDisplay(QWidget):
         layout_main = QVBoxLayout()
 
         self.display_expression_text = MvgCalcExpressionTextField()
-        self.keyboard = Keyboard(self.app)
+        self.keyboard = KeyInputController(self.app)
 
         self.keyboard.return_result.connect(self.retrieve_result_object)
         self.keyboard.refresh_expr_screen.connect(self.refresh_expr_screen)

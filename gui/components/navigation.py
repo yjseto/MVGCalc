@@ -3,8 +3,9 @@ from functools import partial
 
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import  QHBoxLayout
+from PyQt5 import QtGui
 
-from gui.components.button import MvgCalcButton, MvgCalcNavButton
+from gui.components.button import MvgCalcNavButton
 
 class NavBar(QHBoxLayout):
 
@@ -14,8 +15,13 @@ class NavBar(QHBoxLayout):
         super().__init__()
 
         for arg  in args:
+
             button = MvgCalcNavButton(arg.textSymbol)
-            button.button_click_signal.connect(partial(self.handle_button_click, arg))
+
+            if arg.iconPath is not None:
+                button.setIcon(QtGui.QIcon(arg.iconPath))
+
+            button.clicked.connect(partial(self.handle_button_click, arg))
             self.addWidget(button)
             
     def handle_button_click(self, display_mode : Enum):

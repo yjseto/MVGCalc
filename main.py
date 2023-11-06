@@ -1,4 +1,5 @@
 import sys
+
 from gui.containers.app import MvgCalcApplication
 from gui.containers.window import MvgCalcMainWindow
 
