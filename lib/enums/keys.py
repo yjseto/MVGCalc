@@ -57,14 +57,10 @@ class NumericInput(EvalEnum):
 
 class MathFunction(EvalEnum):
     SQRT            = (1,"SQRT",                    "sqrt(",        "\u221A(")
-    # CUBERT          = (3,"CUBERT",                  "math.cbrt",    "") #Will need a function for higher order roots and exponents
-    # CUBED           = (4,"CUBED",                   "**3",          "")
     INVERSE         = (7,"INVERSE",                 "**-1",         "\u207B\u00B9")
-    LOG             = (8,"LOG",                     "log(",     "log(") #customizable done by math.log(x,[,base]) 1 argument ln(x)
-    LOG_NATURAL     = (9,"LOG_NATURAL",             "ln(",      "ln(")
-    # LOGTEN          = (10,"LOGTEN",                 "math.log10",   "")
+    LOG             = (8,"LOG",                     "log(",         "log(") #customizable done by math.log(x,[,base]) 1 argument ln(x)
+    LOG_NATURAL     = (9,"LOG_NATURAL",             "ln(",          "ln(")
     FACTORIAL       = (11,"FACTORIAL",              "math.factorial","") #x!
-    # EXPONENTIAL2    = (12,"EXPONENTIAL2",           "math.exp2",    "") #2^x
     EXP             = (13,"EXP",                    "math.exp",     "e^\u036F") #e^x
     ABSOLUTE_VAL    = (14,"ABSOLUTE_VAL",           "math.fabs",    "")
     MODULP          = (15,"MODULP",                 "math.modf",    "") #float mod
@@ -75,6 +71,10 @@ class MathFunction(EvalEnum):
     TO_RADIANS      = (20,"TO_RADIANS",             "math.radians", "")
     POW             = (5,"POW",                     "**",     "^")
     SQUARED         = (6,"SQUARED",                 "**2",          "^2")
+    # LOGTEN          = (10,"LOGTEN",                 "math.log10",   "")
+    # EXPONENTIAL2    = (12,"EXPONENTIAL2",           "math.exp2",    "") #2^x
+    # CUBERT          = (3,"CUBERT",                  "math.cbrt",    "") #Will need a function for higher order roots and exponents
+    # CUBED           = (4,"CUBED",                   "**3",          "")
 
 class Operator(EvalEnum):
     ADD      = (1,"ADD",        "+",    "+")
@@ -96,23 +96,6 @@ class TrigonometryFunction(EvalEnum):
     INVCOS      = (5,"INVCOS",  "acos(",        "cos\u207B\u00B9(")
     INVTAN      = (6,"INVTAN",  "atan(",        "tan\u207B\u00B9(")
 
-    
-    # SINH        = (7,"SINH",    "math.sinh",        "") #Hyperbolic functions
-    # COSH        = (8,"COSH",    "math.cosh",        "")
-    # TANH        = (9,"TANH",    "math.tanh",        "")
-
-# class SympyTrig(Enum): #this class allows the sympy evaluator to read trig functions
-#     SIN         = (1,"SYMPY_SIN",     "sin","sin")
-#     COS         = (2,"SYMPY_COS",     "cos","")
-#     TAN         = (3,"SYMPY_TAN",     "tan","")
-#     INVSIN      = (4,"SYMPY_INVSIN",  "asin","")
-#     INVCOS      = (5,"SYMPY_INVCOS",  "acos","")
-#     INVTAN      = (6,"SYMPY_INVTAN",  "atan","")
-    # SINH        = (7,"SYMPY_SINH",    "sinh","") #Hyperbolic functions
-    # COSH        = (8,"SYMPY_COSH",    "cosh","")
-    # TANH        = (9,"SYMPY_TANH",    "tanh","")
-    # def __init__ (self, index, textId, textEval, textSymbol):
-    #     self.index = index
-    #     self.textId = textId
-    #     self.textEval = textEval
-    #     self.textSymbol = textSymbol
+class MathConstants(EvalEnum):
+    PI          = (1,"","pi","\u03C0")
+    EULERSNUM   = (2,"","E","e")

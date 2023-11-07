@@ -1,29 +1,81 @@
-#from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QLabel #, QScrollArea, QWidget, QVBoxLayout
+from io import StringIO
+from typing import Optional
+from PyQt5.QtWidgets import QTextEdit
 from PyQt5.QtGui import QFont
-from PyQt5.QtCore import Qt
+from gui.enums.styles import COLORS
 
-class MvgCalcExpressionTextField(QLabel):
-    def __init__(self, ):
-        super().__init__() 
+from lib.enums.keys import ActionKey
+from lib.models.user_input import UserInput
 
-        #self.layout = QVBoxLayout(self)
+from lib.util.constants import WINDOW_WIDTH
 
-        # Create a QTextEdit widget
-        #self.text_edit = QTextEdit(self)
+class MvgCalcExpressionTextField(QTextEdit):
+    def __init__(self, parent = None):
+        super().__init__(parent) 
         
-        custom_font = QFont("roboto", 28)
+        self.h_pos = None
+
+        custom_font = QFont("roboto", 24)
         self.setFont(custom_font)
-        self.setMaximumHeight(self.fontMetrics().height())
+        self.setMinimumHeight(self.fontMetrics().height() * 2)
+        self.setMaximumWidth(int(WINDOW_WIDTH) - 4)
+        self.setReadOnly(True)
 
-        #self.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+    def display_usr_inp_expr_as_str(self, user_input: UserInput, pos : int) -> str:
 
-        # Place the QTextEdit widget inside a QScrollArea
-        # scroll_area = QScrollArea(self)
-        # scroll_area.setWidget(self.text_edit)
+        try: 
+            outputExprBuffer = StringIO()
 
-        # Add the QScrollArea to the layout
-        #self.layout.addWidget(scroll_area)
+            for index, key_input in enumerate(user_input.user_input_list):          
+                if pos == index:
+                    outputExprBuffer.write(f"<span style=")
+                    outputExprBuffer.write(f"\"background-color: {COLORS.LIGHT_GREY.value};")
+                    outputExprBuffer.write(f"color: {COLORS.WHITE.value};\">")
+                    outputExprBuffer.write(key_input.textSymbol)
+                    outputExprBuffer.write("</span>")
+                else:   
+                    outputExprBuffer.write(key_input.textSymbol)
 
+            out_expr = outputExprBuffer.getvalue()
 
+        finally:
+            outputExprBuffer.close()
+
+        return out_expr  
+
+    def update(self, user_input : UserInput, action : Optional[ActionKey] = None) -> int:
+
+        max_length = len(user_input.user_input_list)
+        current_pos = max_length
+
+        if isinstance(action, ActionKey):
+            current_pos = self.set_current_pos(max_length, action)
+            self.setText(self.display_usr_inp_expr_as_str(user_input, current_pos))
+        else:
+            self.setText(self.display_usr_inp_expr_as_str(user_input, -1))
+            self.reset_pos()
+
+        return current_pos
+    
+    def set_current_pos(self, max_length : int, action : ActionKey) -> int:
+
+        if self.h_pos is None: 
+            self.h_pos = max_length   
+        
+        if ActionKey.LEFT == action:
+            if self.h_pos > 0:
+                self.h_pos = self.h_pos - 1 
+            return self.h_pos
+        elif ActionKey.BACKSPACE == action:
+            if self.h_pos > 0:
+                self.h_pos = self.h_pos - 1 
+            return self.h_pos
+        elif ActionKey.RIGHT == action: 
+            if self.h_pos < max_length:
+                self.h_pos = self.h_pos + 1 
+            return self.h_pos
+
+    def reset_pos(self):
+        self.h_pos = None
+        
         

@@ -8,3 +8,4 @@ class MvgCalcApplication(QApplication):
         super().__init__(argv)
         self.user_input = UserInput()
         self.display_mode = DisplayMode.BASIC #default to BASIC
+        self.h_pos = None

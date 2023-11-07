@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import pyqtSignal
 
 from lib.enums.keys import *
-from lib.enums.constants import *
+from lib.util.constants import *
 from lib.enums.modes import *
 
 from gui.components.button import MvgCalcInputButton, MvgCalcHalfInputButton, MvgCalcInputButton
