@@ -1,10 +1,11 @@
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import List
+from typing import List, Optional
 from io import StringIO
+from gui.enums.styles import COLORS
 from lib.enums.keys import MathFunction, Operator
 import sympy as sp
-from sympy.parsing.sympy_parser import parse_expr, transformations
+from sympy.parsing.sympy_parser import parse_expr
 
 
 @dataclass
@@ -16,6 +17,7 @@ class UserInput:
     def get_user_input_list(self):
         return self.user_input_list
     
+
 
     def format_usr_inp_expr_as_str(self, display_to_user=False) -> str:
 
@@ -38,7 +40,8 @@ class UserInput:
         finally:
             outputExprBuffer.close()
 
-        return out_expr    
+        return out_expr 
+  
     
     def convert_usr_inp_exp_as_func(self):
         func = self.format_usr_inp_expr_as_str()
@@ -53,10 +56,15 @@ class UserInput:
     def clear_list(self):
         self.user_input_list.clear()            
 
-    def add_to_list(self,value):
-        if self.is_empty() and (isinstance(value,Operator) or value == MathFunction.POW or value == MathFunction.SQUARED):
+    def add_to_list(self, value, pos : Optional[int] = None):
+
+        # block entering operator that require two operands at beganning of expression
+        if self.is_empty() and (isinstance(value,Operator) or 
+                                value == MathFunction.POW or 
+                                value == MathFunction.SQUARED):
             return
         
+        # merge two numeric inputs into single value.
         if isinstance(value, str) and isinstance(self.get_prev(),str): 
             value = self.get_prev() + value
             self.user_input_list.pop()
@@ -68,12 +76,10 @@ class UserInput:
             self.user_input_list.pop()
             self.user_input_list.append(value)
         else:
-            self.user_input_list.append(value)
+            self.user_input_list.append(value) if pos is None else self.user_input_list.insert(pos, value)
             
-        
-        
-    def pop_from_list(self):
-        self.user_input_list.pop()
+    def remove_from_list(self, pos : Optional[int] = None):
+        self.user_input_list.pop() if pos >= len(self.user_input_list) else self.user_input_list.pop(pos)
     
     def get_prev(self):
         if not self.user_input_list:

@@ -1,7 +1,9 @@
-import math
+from typing import Optional
 from PyQt5.QtWidgets import *
+from PyQt5.QtCore import Qt
 import pyqtgraph as pg
 import numpy as np
+from lib.enums.keys import ActionKey
 from lib.models.result import GraphResult, IResult
 from gui.components.textarea import MvgCalcExpressionTextField
 
@@ -14,16 +16,27 @@ from gui.util.css import build_css_string
     IMPORTANT: reciever for signal from keyboard when signal is returned the  
     retrieve_updated_user_input_object method is involked.
 """
-
-class BasicCalcDisplay(QWidget):
+class MvgCalcDisplayBase(QWidget):
     def __init__(self, app : MvgCalcApplication):
         super().__init__()
         self.app = app
 
         #create vertical box structure to place widget components
-        layout_main = QVBoxLayout()
-        layout_main.setContentsMargins(0, 0, 0, 0)
+        self.layout_main = QVBoxLayout()
+        self.layout_main.setContentsMargins(2, 0, 2, 0)
 
+        self.textfield_expression = MvgCalcExpressionTextField()
+        self.keyboard = KeyInputController(self.app)
+
+        self.keyboard.refresh_expr_screen.connect(self.refresh_expr_screen)  
+
+    def refresh_expr_screen(self, action : Optional[ActionKey] = None):
+        self.app.h_pos = self.textfield_expression.update(self.app.user_input, action)
+
+class BasicCalcDisplay(MvgCalcDisplayBase):
+    def __init__(self, app : MvgCalcApplication):
+        super().__init__(app)
+        
         self.display_result_text = QTextEdit()
         self.display_result_text.setStyleSheet(build_css_string(
             "QTextEdit",
@@ -31,17 +44,13 @@ class BasicCalcDisplay(QWidget):
             color= "#FFFFFF"
             ))
         
-        self.display_expression_text = MvgCalcExpressionTextField()
-        self.keyboard = KeyInputController(self.app)
-
         self.keyboard.return_result.connect(self.retrieve_result_object)  
-        self.keyboard.refresh_expr_screen.connect(self.refresh_expr_screen)  
 
-        layout_main.addWidget(self.display_result_text)
-        layout_main.addWidget(self.display_expression_text)
-        layout_main.addWidget(self.keyboard)
+        self.layout_main.addWidget(self.display_result_text)
+        self.layout_main.addWidget(self.textfield_expression)
+        self.layout_main.addWidget(self.keyboard)
 
-        self.setLayout(layout_main)
+        self.setLayout(self.layout_main)
 
     def retrieve_result_object(self, result : IResult):
         if result.success == False:
@@ -51,21 +60,18 @@ class BasicCalcDisplay(QWidget):
             self.display_result_text.setText(error_str)
         else:
             self.display_result_text.setText(result.value)
-            self.display_expression_text.setText(result.expression)
+            self.textfield_expression.setText(result.expression)
 
-    def refresh_expr_screen(self):
-        self.display_expression_text.setText(
-            self.app.user_input.format_usr_inp_expr_as_str(True))
 
 '''
 Similar to basic But i just replaced the top with the graph instead of the resulting string
 just for now
 '''
 
-class GraphDisplay(QWidget):
-    def __init__(self,app):
-        super().__init__()
-        self.app = app
+class GraphDisplay(MvgCalcDisplayBase):
+    def __init__(self, app : MvgCalcApplication):
+        super().__init__(app)
+
         self.x = np.linspace(-100,100,3000)
         self.graph_config = {'x': self.x,
                              'np': np, 
@@ -82,27 +88,14 @@ class GraphDisplay(QWidget):
 
         self.graph_screen = GraphScreen()
 
-        layout_main = QVBoxLayout()
-
-        self.display_expression_text = MvgCalcExpressionTextField()
-        self.keyboard = KeyInputController(self.app)
-
         self.keyboard.return_result.connect(self.retrieve_result_object)
-        self.keyboard.refresh_expr_screen.connect(self.refresh_expr_screen)
         self.keyboard.clear_graph.connect(self.clear_graph_screen)
 
-        layout_main.addWidget(self.graph_screen)
-        layout_main.addWidget(self.display_expression_text)
-        layout_main.addWidget(self.keyboard)
+        self.layout_main.addWidget(self.graph_screen)
+        self.layout_main.addWidget(self.textfield_expression)
+        self.layout_main.addWidget(self.keyboard)
 
-        self.setLayout(layout_main)
-
-    #def retrieve_updated_user_input_object(self, updated_user_input : UserInput):
-        #self.display_result_text.setText(updated_user_input.result)
-        #self.display_expression_text.setText(updated_user_input.format_usr_inp_expr_as_str(True))
-    def refresh_expr_screen(self):
-        self.display_expression_text.setText(
-            self.app.user_input.format_usr_inp_expr_as_str(True))
+        self.setLayout(self.layout_main)
     
     def clear_graph_screen(self):
         self.graph_screen.clear()

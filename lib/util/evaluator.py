@@ -7,8 +7,8 @@ from lib.enums.modes import DisplayMode
 
 
 def evaluate_basic(user_input : UserInput) -> IResult: 
+
     result  = BasicResult()
-    #if isValid(user_input.format_usr_inp_expr_as_str(True), result.error_msgs):
 
     result.expression = user_input.format_usr_inp_expr_as_str(True)
         
@@ -19,9 +19,7 @@ def evaluate_basic(user_input : UserInput) -> IResult:
         #check if result expression is undefined
         if Eq(parsed_in, zoo):
             result.error_msgs.append(f"{result.expression} is undefined")
-        
-        else:    
-            
+        else:                
             result.value = str(sp.sympify(parsed_in).evalf())
             
             #get rid of trailing 0's

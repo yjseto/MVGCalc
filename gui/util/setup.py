@@ -1,6 +1,5 @@
     
-from lib.enums.constants import WINDOW_HEIGHT, WINDOW_WIDTH
-from lib.util.utils import get_project_root
+from lib.util.constants import WINDOW_HEIGHT, WINDOW_WIDTH
 
 height_input_multiplier =0.0772
 width_input_multiplier = 0.1739
@@ -18,5 +17,3 @@ def get_nav_button_height():
 def get_nav_button_width():
     return width_nav_multiplier * WINDOW_WIDTH
 
-#Image Paths
-HISTORIC_EXPRESSION_ICON_FILE_PATH = f"{get_project_root()}\gui\images\history.png"

@@ -2,7 +2,6 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import pyqtSignal
 
 from lib.enums.keys import *
-from lib.enums.constants import *
 from lib.models.result import IResult
 from lib.enums.modes import *
 from lib.util.evaluator import evaluate
@@ -26,7 +25,7 @@ class KeyInputController(QWidget):
 
     #after button click return display text including updated inputs
     return_result = pyqtSignal(IResult)
-    refresh_expr_screen = pyqtSignal()
+    refresh_expr_screen = pyqtSignal(BaseEnum)
     clear_graph = pyqtSignal()
 
     def __init__(self, app : MvgCalcApplication):
@@ -34,13 +33,14 @@ class KeyInputController(QWidget):
 
         self.app = app
         self.main_layout = QVBoxLayout()
+
         self.setLayout(self.main_layout)
         self.stack_layout = QStackedWidget()
 
-        self.key_display = KeyboardDisplayMode.BASIC
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
         Navbar
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""        
+        self.key_display = KeyboardDisplayMode.BASIC
         self.navbar = NavBar(
             KeyboardDisplayMode.BASIC,
             KeyboardDisplayMode.FUNCTIONS,
@@ -77,20 +77,23 @@ class KeyInputController(QWidget):
         #result: IResult
         if key_type == ActionKey.CLEAR:
             self.app.user_input.clear_list()
-            self.refresh_expr_screen.emit()
+            self.app.h_pos = None
+            self.refresh_expr_screen.emit(key_type)
             self.clear_graph.emit()
         elif key_type == ActionKey.BACKSPACE:
             if not self.app.user_input.is_empty():
-                self.app.user_input.pop_from_list()
-                self.refresh_expr_screen.emit()
+                self.app.user_input.remove_from_list(self.app.h_pos)
+                self.refresh_expr_screen.emit(key_type)
         elif key_type == ActionKey.ENTER:
-            result = evaluate(self.app.display_mode, self.app.user_input) 
-            self.return_result.emit(result)
+            if not self.app.user_input.is_empty():
+                self.app.h_pos = None
+                result = evaluate(self.app.display_mode, self.app.user_input) 
+                self.return_result.emit(result)
         elif isinstance(key_type, ActionKey):
-            pass
-        elif isinstance(key_type, EvalEnum):    
-            self.app.user_input.add_to_list(key_type)
-            self.refresh_expr_screen.emit()
+            self.refresh_expr_screen.emit(key_type)
+        elif isinstance(key_type, EvalEnum): 
+            self.app.user_input.add_to_list(key_type, self.app.h_pos)
+            self.refresh_expr_screen.emit(key_type)
 
     def activate_tab(self, display_type : KeyboardDisplayMode):
         self.key_display = display_type
