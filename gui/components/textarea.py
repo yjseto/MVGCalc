@@ -3,6 +3,7 @@ from typing import Optional
 from PyQt5.QtWidgets import QTextEdit
 from PyQt5.QtGui import QFont
 from gui.enums.styles import COLORS
+from gui.util.css import build_css_string
 
 from lib.enums.keys import ActionKey
 from lib.models.user_input import UserInput
@@ -15,11 +16,17 @@ class MvgCalcExpressionTextField(QTextEdit):
         
         self.h_pos = None
 
-        custom_font = QFont("roboto", 24)
-        self.setFont(custom_font)
+
         self.setMinimumHeight(self.fontMetrics().height() * 2)
         self.setMaximumWidth(int(WINDOW_WIDTH) - 4)
         self.setReadOnly(True)
+        
+        self.setStyleSheet(build_css_string(
+            "QTextEdit",
+            background_color= "#20252E",
+            color= "#CBE1FF",
+            font_size="24pt"
+            ))
 
     def display_usr_inp_expr_as_str(self, user_input: UserInput, pos : int) -> str:
 
