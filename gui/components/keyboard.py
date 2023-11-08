@@ -9,6 +9,7 @@ from lib.enums.modes import *
 
 from gui.components.button import MvgCalcInputButton, MvgCalcHalfInputButton, MvgCalcInputButton
 from gui.util.css import *
+from lib.util.constants import *
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 BASIC KEYS
@@ -442,13 +443,14 @@ class SharedKeyRow(QWidget):
         Clear Button
         """
         clear = MvgCalcInputButton(ActionKey.CLEAR.textSymbol) 
+        clear.setStyleSheet(component_light_grey("QPushButton", border_top_left_radius = "8px",max_width = "20px"))
         main_layout.addWidget(clear)
         clear.clicked.connect(
             partial(self.handle_button_click, ActionKey.CLEAR))       
         """
         Left Parenthesis
         """
-        left_parethesis = MvgCalcHalfInputButton(CharacterInput.LEFT_P.textSymbol)             
+        left_parethesis = MvgCalcHalfInputButton(CharacterInput.LEFT_P.textSymbol, width_input_multiplier*0.5, height_input_multiplier, self)             
         left_parethesis.setStyleSheet(component_light_grey("QPushButton"))
         
         left_parethesis.clicked.connect(
@@ -456,7 +458,7 @@ class SharedKeyRow(QWidget):
         """
         Right Parenthesis
         """
-        right_parethesis = MvgCalcHalfInputButton(CharacterInput.RIGHT_P.textSymbol)                                                   
+        right_parethesis = MvgCalcHalfInputButton(CharacterInput.RIGHT_P.textSymbol, width_input_multiplier*0.5, height_input_multiplier, self)                                                   
         right_parethesis.setStyleSheet(component_light_grey("QPushButton"))
     
         right_parethesis.clicked.connect(

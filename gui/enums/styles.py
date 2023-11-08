@@ -7,3 +7,4 @@ class COLORS(Enum):
     RED             = ("#FF5050")
     WHITE           = ("#FFFFFF")  
     BLACK           = ("#161A20")  
+    PALE_GRAY       = ("#D9D9D9")

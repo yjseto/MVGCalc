@@ -29,6 +29,9 @@ class MvgCalcDisplayBase(QWidget):
         self.keyboard = KeyInputController(self.app)
 
         self.keyboard.refresh_expr_screen.connect(self.refresh_expr_screen)  
+        
+        
+
 
     def refresh_expr_screen(self, action : Optional[ActionKey] = None):
         self.app.h_pos = self.textfield_expression.update(self.app.user_input, action)
@@ -38,11 +41,17 @@ class BasicCalcDisplay(MvgCalcDisplayBase):
         super().__init__(app)
         
         self.display_result_text = QTextEdit()
-        self.display_result_text.setStyleSheet(build_css_string(
+        self.display_result_text.setReadOnly(True)
+        self.setStyleSheet(build_css_string(
             "QTextEdit",
-            background_color= "#161A20",
-            color= "#FFFFFF"
+            background_color= "#20252E",
+            color= "#CBE1FF",
+            font_size="24pt"
             ))
+        
+        self.display_expression_text = MvgCalcExpressionTextField()
+
+        
         
         self.keyboard.return_result.connect(self.retrieve_result_object)  
 

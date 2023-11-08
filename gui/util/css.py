@@ -30,8 +30,6 @@ def component_dark_grey(component_name, **kwargs: Dict[str, str]) -> str:
         background_color = COLORS.DARK_GREY.value,
         color = COLORS.WHITE.value,
         border_radius = "2px",
-        font_family = "roboto",
-        font_size = "28px",
         **kwargs
     )
 
@@ -42,8 +40,6 @@ def component_light_grey(component_name, **kwargs: Dict[str, str]) -> str:
         background_color= COLORS.LIGHT_GREY.value, 
         color= COLORS.WHITE.value, 
         border_radius="2px",
-        font_family = "roboto", 
-        font_size = "28px",
         **kwargs
     )
 
@@ -54,8 +50,6 @@ def component_blue(component_name, **kwargs: Dict[str, str]) -> str:
         background_color= COLORS.BLUE.value, 
         color= COLORS.WHITE.value, 
         border_radius="2px",
-        font_family = "roboto", 
-        font_size = "28px",
         **kwargs
     )
 
@@ -66,7 +60,18 @@ def component_red(component_name, **kwargs: Dict[str, str]) -> str:
         background_color= COLORS.RED.value, 
         color=COLORS.WHITE.value, 
         border_radius="2px",
-        font_family = "roboto", 
-        font_size = "28px",
         **kwargs
     )
+
+def component_pale_gray(component_name, **kwargs: Dict[str, str]) -> str:
+
+    return build_css_string(
+        component_name, 
+        background_color= COLORS.PALE_GRAY.value, 
+        color=COLORS.BLACK.value, 
+        border_radius="15px",
+
+        font_size = "17px",
+        **kwargs
+    )
+    
