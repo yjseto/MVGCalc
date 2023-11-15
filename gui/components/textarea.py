@@ -67,11 +67,13 @@ class MvgCalcExpressionTextField(QTextEdit):
     def set_current_pos(self, max_length : int, action : ActionKey) -> int:
 
         if self.h_pos is None: 
-            self.h_pos = max_length   
+            self.h_pos = max_length + 1  
         
         if ActionKey.LEFT == action:
             if self.h_pos > 0:
                 self.h_pos = self.h_pos - 1 
+            if self.h_pos >= max_length:  
+                self.h_pos = self.h_pos - 1
             return self.h_pos
         elif ActionKey.BACKSPACE == action:
             if self.h_pos > 0:

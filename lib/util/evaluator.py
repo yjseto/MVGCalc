@@ -51,8 +51,8 @@ def evaluate_basic(user_input : UserInput) -> IResult:
     #result.error_msgs.append(f"TESTING3")
     
     result.success = len(result.error_msgs) == 0
-    if result.success == True:
-        user_input.clear_list()
+    # if result.success == True:
+    #     user_input.clear_list()
     return result
 
 def evaluate_graph(user_input : UserInput):
