@@ -71,11 +71,11 @@ class BasicKeyboard(QWidget):
         """
         Percent %
         """
-        percent = MvgCalcInputButton(Operator.PERCENT.textSymbol, self)  
+        percent = MvgCalcInputButton(MathFunction.PERCENT.textSymbol, self)  
         percent.setStyleSheet(component_blue("QPushButton"))
 
         row2.addWidget(percent)          
-        percent.clicked.connect(partial(self.handle_button_click, Operator.PERCENT))
+        percent.clicked.connect(partial(self.handle_button_click, MathFunction.PERCENT))
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
            THIRD ROW
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

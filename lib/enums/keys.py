@@ -42,6 +42,7 @@ class CharacterInput(EvalEnum):
     XVAR                = (5,"XVAR",               "x",    "X")
     YVAR                = (6,"YVAR",               "y",    "Y")
     ZVAR                = (7,"ZVAR",               "z",    "Z")
+    LOG_10_SUFFIX       = (8,"LOG_10_SUFFIX",      ",10",   "")
 
 class NumericInput(EvalEnum):
     ONE     = (1,   "ONE"   ,"1","1")
@@ -75,6 +76,7 @@ class MathFunction(EvalEnum):
     # EXPONENTIAL2    = (12,"EXPONENTIAL2",           "math.exp2",    "") #2^x
     # CUBERT          = (3,"CUBERT",                  "math.cbrt",    "") #Will need a function for higher order roots and exponents
     # CUBED           = (4,"CUBED",                   "**3",          "")
+    PERCENT  = (21,"PERCENT",                "*0.01"       , "%")
 
 class Operator(EvalEnum):
     ADD      = (1,"ADD",        "+",    "+")
@@ -82,7 +84,6 @@ class Operator(EvalEnum):
     MULTIPLY = (3,"MULTIPLY",   "*",    "*")
     DIVIDE   = (4,"DIVIDE",     "/",    "/")#\u00F7
     #(^ on the calc) ** is eval() readable
-    PERCENT  = (21,"PERCENT",                "*0.01"       , "%")
 
         
 # operation = Operation.ADD

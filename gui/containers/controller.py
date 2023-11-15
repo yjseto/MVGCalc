@@ -89,9 +89,14 @@ class KeyInputController(QWidget):
                 self.app.h_pos = None
                 result = evaluate(self.app.display_mode, self.app.user_input) 
                 self.return_result.emit(result)
+        # condition for directional buttons
         elif isinstance(key_type, ActionKey):
             self.refresh_expr_screen.emit(key_type)
+        # block for all value key inputs
         elif isinstance(key_type, EvalEnum): 
+            if DisplayMode.BASIC == self.app.display_mode and key_type == CharacterInput.XVAR:
+                return
+            
             self.app.user_input.add_to_list(key_type, self.app.h_pos)
             self.refresh_expr_screen.emit(key_type)
 

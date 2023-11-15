@@ -3,7 +3,7 @@ from enum import Enum
 from typing import List, Optional
 from io import StringIO
 from gui.enums.styles import COLORS
-from lib.enums.keys import MathFunction, Operator
+from lib.enums.keys import CharacterInput, MathFunction, Operator
 import sympy as sp
 from sympy.parsing.sympy_parser import parse_expr
 
@@ -32,9 +32,26 @@ class UserInput:
 
         try: 
             outputExprBuffer = StringIO()
-
+            counter = -1
+            
             for item in self.user_input_list:
+                
+                if counter > 0 and item == CharacterInput.LEFT_P:
+                    counter += 1
+                
+                if counter > 0 and item == CharacterInput.RIGHT_P:
+                    counter -= 1
+                
+                if counter == 0:
+                    counter = -1
+                    outputExprBuffer.write(CharacterInput.LOG_10_SUFFIX.textSymbol if display_to_user else CharacterInput.LOG_10_SUFFIX.textEval)
+
+                
+                if item == MathFunction.LOG:
+                    counter = 1
+                    
                 outputExprBuffer.write(item.textSymbol if display_to_user else item.textEval)
+            
             out_expr = outputExprBuffer.getvalue()
 
         finally:
