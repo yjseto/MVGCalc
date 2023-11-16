@@ -10,3 +10,6 @@ __pycache__/
 
 # Ignore test harnesses
 main_*
+
+# Ignore .pkl files created in development
+*.pkl

@@ -2,7 +2,6 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import List, Optional
 from io import StringIO
-from gui.enums.styles import COLORS
 from lib.enums.base import EvalEnum
 from lib.enums.keys import CharacterInput, MathFunction, NumericInput, Operator
 import sympy as sp
