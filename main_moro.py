@@ -1,44 +1,22 @@
 import sys
-import matplotlib
-matplotlib.use('Qt5Agg')
+import pickle as pk
+from gui.containers.app import MvgCalcApplication
+from gui.containers.window import MvgCalcMainWindow
+from lib.util.persistence import load_all
+SAVE_FILE = 'results.pkl'
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+def main():
+    try:
+        open(SAVE_FILE,"wb").close()
+        #something that clear results on start
+        app = MvgCalcApplication(sys.argv)
+        window = MvgCalcMainWindow(app)
+        window.show()
+        sys.exit(app.exec_())
+    except Exception as e:
+        # Handle the exception gracefully
+        print(f"An error occurred: {e}")
 
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg, NavigationToolbar2QT as NavigationToolbar
-from matplotlib.figure import Figure
-
-
-class MplCanvas(FigureCanvasQTAgg):
-
-    def __init__(self, parent=None, width=5, height=4, dpi=100):
-        fig = Figure(figsize=(width, height), dpi=dpi)
-        self.axes = fig.add_subplot(111)
-        super(MplCanvas, self).__init__(fig)
-
-
-class MainWindow(QtWidgets.QMainWindow):
-
-    def __init__(self, *args, **kwargs):
-        super(MainWindow, self).__init__(*args, **kwargs)
-
-        sc = MplCanvas(self, width=5, height=4, dpi=100)
-        sc.axes.plot([0,1,2,3,4], [10,1,20,3,40])
-
-        # Create toolbar, passing canvas as first parament, parent (self, the MainWindow) as second.
-        toolbar = NavigationToolbar(sc, self)
-
-        layout = QtWidgets.QVBoxLayout()
-        layout.addWidget(toolbar)
-        layout.addWidget(sc)
-
-        # Create a placeholder widget to hold our toolbar and canvas.
-        widget = QtWidgets.QWidget()
-        widget.setLayout(layout)
-        self.setCentralWidget(widget)
-
-        self.show()
-
-
-app = QtWidgets.QApplication(sys.argv)
-w = MainWindow()
-app.exec_()
+if __name__ == "__main__":
+    main()
+ 

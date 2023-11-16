@@ -64,7 +64,7 @@ class KeyInputController(QWidget):
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
         Historic Expression Listbox
         """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
-        self.hist_expr_listbox = HistoricExpressionListWidget()
+        self.hist_expr_listbox = HistoricExpressionListWidget(app.display_mode)
         self.stack_layout.addWidget(self.hist_expr_listbox)
         #self.hist_expr_listbox.button_click_signal_from_keyboard.connect(self.handle_button_click)        
 
@@ -102,4 +102,6 @@ class KeyInputController(QWidget):
 
     def activate_tab(self, display_type : KeyboardDisplayMode):
         self.key_display = display_type
+        if display_type == KeyboardDisplayMode.HISTORIC_EXPRESSIONS:
+            self.hist_expr_listbox.populate_historic_expr_listbox(self.app.display_mode) #reload with updated expressions
         self.stack_layout.setCurrentIndex(display_type.index)

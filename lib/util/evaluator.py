@@ -1,15 +1,15 @@
-from sympy.parsing.sympy_parser import parse_expr
 import sympy as sp
-from sympy import N, Eq, zoo
+from sympy import Eq, zoo
+from sympy.parsing.sympy_parser import parse_expr
+
 from lib.models.result import BasicResult, GraphResult, IResult
 from lib.models.user_input import UserInput
 from lib.enums.modes import DisplayMode
-
+from lib.util.persistence import MvgCalcDataBuffer
 
 def evaluate_basic(user_input : UserInput) -> IResult: 
 
     result  = BasicResult()
-
     result.expression = user_input.format_usr_inp_expr_as_str(True)
         
     try:     
@@ -46,16 +46,12 @@ def evaluate_basic(user_input : UserInput) -> IResult:
     except Exception as e:
         raise e
     
-    #result.error_msgs.append(f"TESTING1")
-    #result.error_msgs.append(f"TESTING2")
-    #result.error_msgs.append(f"TESTING3")
-    
     result.success = len(result.error_msgs) == 0
-    # if result.success == True:
-    #     user_input.clear_list()
+    #don't clear list yet, we want to save whatever enum list held the expression
     return result
 
 def evaluate_graph(user_input : UserInput):
+        
         result  = GraphResult()
         result.expression = user_input.format_usr_inp_expr_as_str(True)
         #set x and y vals
@@ -88,17 +84,25 @@ def evaluate_graph(user_input : UserInput):
         except Exception as e:
             raise e
         
-        #result.error_msgs.append(f"TESTING1")
-        #result.error_msgs.append(f"TESTING2")
-        #result.error_msgs.append(f"TESTING3")
-        
         result.success = len(result.error_msgs) == 0
         return result
 
 def evaluate(display_mode: DisplayMode, user_input : UserInput) -> IResult:
 
+    result : IResult = None
+    mvg_calc_buffer = MvgCalcDataBuffer(display_mode)
+
+    #need to change this function to originally save enums first?
     if display_mode == DisplayMode.BASIC: 
-        return evaluate_basic(user_input)
-    
+        result = evaluate_basic(user_input)
     elif display_mode == DisplayMode.GRAPH: 
-        return evaluate_graph(user_input)
+        result = evaluate_graph(user_input)
+    
+    if result is None:
+        print("throw exception")
+        return
+
+    if result.success == True: #might not need that
+        mvg_calc_buffer.save_expression_to_disk(user_input) #saving expression as UserInput Object
+    
+    return result
