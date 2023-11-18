@@ -16,7 +16,6 @@ class MvgCalcExpressionTextField(QTextEdit):
         
         self.h_pos = None
 
-
         self.setMinimumHeight(self.fontMetrics().height() * 2)
         self.setMaximumWidth(int(WINDOW_WIDTH) - 4)
         self.setReadOnly(True)

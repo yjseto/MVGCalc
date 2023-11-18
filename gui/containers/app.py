@@ -10,6 +10,7 @@ class MvgCalcApplication(QApplication):
         self.user_input = UserInput()
         self.display_mode = DisplayMode.BASIC #default to BASIC
         self.h_pos = None
+        self.v_pos = None
         
         self.setStyleSheet(build_css_string(
         "QWidget",
