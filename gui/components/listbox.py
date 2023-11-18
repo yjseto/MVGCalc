@@ -1,4 +1,6 @@
 from PyQt5.QtWidgets import QListWidget, QListWidgetItem
+from PyQt5.QtGui import QColor
+from lib.enums.keys import ActionKey
 
 from lib.enums.modes import DisplayMode
 from lib.util.persistence import MvgCalcDataBuffer
@@ -8,18 +10,26 @@ class HistoricExpressionListWidget(QListWidget):
     def __init__(self, display_mode : DisplayMode, parent=None):
         super().__init__(parent)
 
+        self.v_pos : int = None
+        self.mvg_calc_buffer : MvgCalcDataBuffer = None
+
         #listbox config
         self.setAlternatingRowColors(False)  #True to Alternate row colors
+        self.setSelectionMode(QListWidget.SelectionMode.SingleSelection)
+       
+        # self.insertItem(0,"No history")    
+        # self.setCurrentRow(0)
+        # self.item(0).setSelected(True)
 
         #listbox data
         self.populate_historic_expr_listbox(display_mode)
 
-    def add_expression_to_list(self, text):
+    def create_list_item(self, expression_as_text : str) -> QListWidgetItem:
 
-        item = QListWidgetItem(text)
-        self.addItem(item)
+        item = QListWidgetItem(expression_as_text)
 
-        # Customize the item properties here if needed
+        return item
+
 
     def populate_historic_expr_listbox(self, display_mode : DisplayMode):
 
@@ -45,4 +55,32 @@ class HistoricExpressionListWidget(QListWidget):
             assert isinstance(i, int)
             assert isinstance(expression, UserInput)
 
-            self.insertItem(i, expression.format_usr_inp_expr_as_str(True))
+            self.insertItem(i, self.create_list_item(expression.format_usr_inp_expr_as_str(True)))
+    
+    def update(self, action : ActionKey) -> UserInput:
+
+        current_pos = 0
+
+        if action == ActionKey.UP or action == ActionKey.DOWN:
+            current_pos = self.set_current_pos(action)
+
+        return self.mvg_calc_buffer.load_all()[current_pos]
+
+    def set_current_pos(self, action : ActionKey) -> int:
+
+        if self.v_pos is None: 
+            self.v_pos = 0
+        
+        if ActionKey.UP == action:
+            if self.v_pos > 0:
+                self.v_pos = self.v_pos - 1 
+            if self.v_pos >= (self.count() - 1):  
+                self.v_pos = self.v_pos - 1
+            return self.v_pos
+        elif ActionKey.DOWN == action: 
+            if self.v_pos < (self.count() - 1):
+                self.v_pos = self.v_pos + 1 
+            return self.v_pos
+
+    def reset_pos(self):
+        self.v_pos = None

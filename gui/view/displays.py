@@ -29,12 +29,14 @@ class MvgCalcDisplayBase(QWidget):
         self.keyboard = KeyInputController(self.app)
 
         self.keyboard.refresh_expr_screen.connect(self.refresh_expr_screen)  
-        
-        
-
 
     def refresh_expr_screen(self, action : Optional[ActionKey] = None):
-        self.app.h_pos = self.textfield_expression.update(self.app.user_input, action)
+
+        if action == ActionKey.UP or action == ActionKey.DOWN:
+            self.app.user_input = self.keyboard.hist_expr_listbox.update(action)
+            self.textfield_expression.setText(self.app.user_input.format_usr_inp_expr_as_str(True))
+        else:
+            self.app.h_pos = self.textfield_expression.update(self.app.user_input, action)
 
 class BasicCalcDisplay(MvgCalcDisplayBase):
     def __init__(self, app : MvgCalcApplication):
@@ -50,8 +52,6 @@ class BasicCalcDisplay(MvgCalcDisplayBase):
             ))
         
         self.display_expression_text = MvgCalcExpressionTextField()
-
-        
         
         self.keyboard.return_result.connect(self.retrieve_result_object)  
 
