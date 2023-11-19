@@ -1,21 +1,20 @@
+from functools import partial
+
 from PyQt5.QtWidgets import (
     QMainWindow,
     QStackedWidget,
     QVBoxLayout,
     QWidget,
-    QDesktopWidget
+    QHBoxLayout
 )
-from gui.components.button import MvgCalcInputButton2
-from gui.util.css import *
-
-from lib.util.constants import *
 
 from lib.enums.modes import DisplayMode
 
+from gui.components.button import MvgCalcInputButton2
 from gui.view.displays import BasicCalcDisplay, GraphDisplay
-from gui.components.navigation import NavBar
-from functools import partial
-from PyQt5.QtWidgets import  QHBoxLayout
+from gui.util.css import *
+from gui.util.setup import *
+
 class MvgCalcMainWindow(QMainWindow):
     def __init__(self, app):
         super().__init__()
@@ -55,20 +54,20 @@ class MvgCalcMainWindow(QMainWindow):
         # self.main_layout.addLayout(self.navbar)
         
         self.navbar_layout = QHBoxLayout()
-        button1 = MvgCalcInputButton2(DisplayMode.BASIC.textSymbol, width_nav_multiplier, height_nav_multiplier*0.75)
-        button1.setStyleSheet(component_pale_gray("QPushButton"))
+        button1 = MvgCalcInputButton2(DisplayMode.BASIC.textSymbol, width_nav_multiplier, height_nav_multiplier)
+        button1.setStyleSheet(component_nav_gray("QPushButton", Border_top_left_radius= "4px", border_bottom_left_radius = "4px"))
         button1.clicked.connect(
             partial(self.activate_tab,DisplayMode.BASIC))
         self.navbar_layout.addWidget(button1)
         
         button2 = MvgCalcInputButton2(DisplayMode.GRAPH.textSymbol, width_nav_multiplier, height_nav_multiplier)
-        button2.setStyleSheet(component_pale_gray("QPushButton"))
+        button2.setStyleSheet(component_nav_gray("QPushButton"))
         button2.clicked.connect(
             partial(self.activate_tab, DisplayMode.GRAPH))
         self.navbar_layout.addWidget(button2)
         
         button3 = MvgCalcInputButton2(DisplayMode.UNIT_CONV.textSymbol, width_nav_multiplier, height_nav_multiplier)
-        button3.setStyleSheet(component_pale_gray("QPushButton"))
+        button3.setStyleSheet(component_nav_gray("QPushButton", border_top_right_radius = "4px", border_bottom_right_radius = "4px"))
         button3.clicked.connect(
             partial(self.activate_tab, DisplayMode.UNIT_CONV))
         self.navbar_layout.addWidget(button3)

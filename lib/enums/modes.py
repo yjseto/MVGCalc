@@ -1,4 +1,4 @@
-from lib.util.constants import HISTORIC_EXPRESSION_ICON_FILE_PATH
+from gui.util.setup import HISTORIC_EXPRESSION_ICON_FILE_PATH
 
 from lib.enums.base import BaseEnum, IconEnum
 
