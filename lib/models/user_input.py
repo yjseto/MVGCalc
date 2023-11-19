@@ -73,13 +73,6 @@ class UserInput:
         # blocks numeric input if previous input was a %
         if self.get_prev() == MathFunction.PERCENT and (isinstance(value, CharacterInput) or isinstance(value, NumericInput)):
             return
-        
-        # merge two numeric inputs into single value.
-        if isinstance(value, str) and isinstance(self.get_prev(),str): 
-            value = self.get_prev() + value
-            self.user_input_list.pop()
-            self.user_input_list.append(value)
-            return
 
         # replace operator
         if isinstance(self.get_prev(),Operator) and isinstance(value,Operator):

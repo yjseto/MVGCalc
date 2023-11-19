@@ -1,16 +1,17 @@
 from typing import Optional
+
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import Qt
+
 import pyqtgraph as pg
 import numpy as np
+
 from lib.enums.keys import ActionKey
 from lib.models.result import GraphResult, IResult
-from gui.components.textarea import MvgCalcExpressionTextField
 
+from gui.components.textarea import MvgCalcExpressionTextField
 from gui.containers.app import MvgCalcApplication
 from gui.containers.controller import KeyInputController
 from gui.screen.graph import GraphScreen
-from gui.util.css import build_css_string
 
 """
     IMPORTANT: reciever for signal from keyboard when signal is returned the  
@@ -44,12 +45,6 @@ class BasicCalcDisplay(MvgCalcDisplayBase):
         
         self.display_result_text = QTextEdit()
         self.display_result_text.setReadOnly(True)
-        self.setStyleSheet(build_css_string(
-            "QTextEdit",
-            background_color= "#20252E",
-            color= "#CBE1FF",
-            font_size="24pt"
-            ))
         
         self.display_expression_text = MvgCalcExpressionTextField()
         

@@ -1,4 +1,7 @@
-from lib.enums.base import BaseEnum, EvalEnum
+from lib.enums.base import EvalEnum, IconEnum
+
+from gui.util.setup import *
+
 '''
 README
 
@@ -24,14 +27,14 @@ Please see how to do output in unit_tests.py
     #object.value = 1,2,3,4
     #object.value[1] = "x",".""()"etc..  
 
-class ActionKey(BaseEnum):
-    BACKSPACE       = (1, "del")
-    UP              = (2, "\u2191")
-    DOWN            = (3, "\u2193")
-    RIGHT           = (4, "\u2192")
-    LEFT            = (5, "\u2190")
-    CLEAR           = (6, "AC")
-    ENTER           = (7, "=")   
+class ActionKey(IconEnum):
+    BACKSPACE       = (1, "del", None)
+    UP              = (2, "", D_PAD_UP_ICON_FILE_PATH)
+    DOWN            = (3, "", D_PAD_DOWN_ICON_FILE_PATH)
+    RIGHT           = (4, "", D_PAD_RIGHT_ICON_FILE_PATH)
+    LEFT            = (5, "", D_PAD_LEFT_ICON_FILE_PATH)
+    CLEAR           = (6, "AC", None)
+    ENTER           = (7, "=", None)   
 
 
 class CharacterInput(EvalEnum):

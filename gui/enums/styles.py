@@ -8,3 +8,4 @@ class COLORS(Enum):
     WHITE           = ("#FFFFFF")  
     BLACK           = ("#161A20")  
     PALE_GRAY       = ("#D9D9D9")
+    NAV_GRAY        = ("#2D3440")
