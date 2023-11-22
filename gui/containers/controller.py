@@ -2,14 +2,14 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import pyqtSignal
 
 from lib.enums.keys import *
-from lib.models.result import IResult
+from lib.models.result import ResultBase
 from lib.enums.modes import *
 from lib.util.evaluator import evaluate
 
 from gui.containers.app import MvgCalcApplication
 from gui.components.navigation import NavBar
 from gui.components.keyboard import *
-from gui.components.listbox import HistoricExpressionListWidget
+from lib.util.persistence import MvgCalcDataBuffer
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Keyboard
@@ -24,7 +24,7 @@ to the evaluator service made or the user_input model is updated.
 class KeyInputController(QWidget):
 
     #after button click return display text including updated inputs
-    return_result = pyqtSignal(IResult)
+    return_result = pyqtSignal(ResultBase)
     refresh_expr_screen = pyqtSignal(BaseEnum)
     clear_graph = pyqtSignal()
 
@@ -62,11 +62,11 @@ class KeyInputController(QWidget):
         self.func_keys.button_click_signal_from_keyboard.connect(self.handle_button_click)
 
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-        Historic Expression Listbox
+        Historic Expressions
         """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
-        self.hist_expr_listbox = HistoricExpressionListWidget(app.display_mode)
-        self.stack_layout.addWidget(self.hist_expr_listbox)
-        #self.hist_expr_listbox.button_click_signal_from_keyboard.connect(self.handle_button_click)        
+        self.hist_expr_display = HistoricExpressionKeyboard(app.display_mode)
+        self.stack_layout.addWidget(self.hist_expr_display)
+        self.hist_expr_display.button_click_signal_from_keyboard.connect(self.handle_button_click)        
 
         self.main_layout.addWidget(self.stack_layout)
 
@@ -74,14 +74,17 @@ class KeyInputController(QWidget):
     # click handler functions
     # """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def handle_button_click(self, key_type : BaseEnum):
-        #result: IResult
+        #result: ResultBase
         if key_type == ActionKey.CLEAR:
             self.app.user_input.clear_list()
             self.app.h_pos = None
             self.refresh_expr_screen.emit(key_type)
             self.clear_graph.emit()
         elif key_type == ActionKey.BACKSPACE:
-            if not self.app.user_input.is_empty():
+            if self.key_display == KeyboardDisplayMode.HISTORIC_EXPRESSIONS:
+                print("uncomment below then Fix errors when pickle is deleted and directional arrows used")
+                #MvgCalcDataBuffer(self.app.display_mode).delete_history_by_display()
+            else:
                 self.app.user_input.remove_from_list(self.app.h_pos)
                 self.refresh_expr_screen.emit(key_type)
         elif key_type == ActionKey.ENTER:
@@ -103,5 +106,5 @@ class KeyInputController(QWidget):
     def activate_tab(self, display_type : KeyboardDisplayMode):
         self.key_display = display_type
         if display_type == KeyboardDisplayMode.HISTORIC_EXPRESSIONS:
-            self.hist_expr_listbox.populate_historic_expr_listbox(self.app.display_mode) #reload with updated expressions
+            self.hist_expr_display.hist_expr_listbox.populate_historic_expr_listbox(self.app.display_mode) #reload with updated expressions
         self.stack_layout.setCurrentIndex(display_type.index)

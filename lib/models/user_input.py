@@ -83,7 +83,8 @@ class UserInput:
             
             
     def remove_from_list(self, pos : Optional[int] = None):
-        self.user_input_list.pop() if pos is None or pos >= len(self.user_input_list) else self.user_input_list.pop(pos)
+        if not self.is_empty():
+            self.user_input_list.pop() if pos is None or pos >= len(self.user_input_list) else self.user_input_list.pop(pos)
     
     def get_prev(self):
         if not self.user_input_list:

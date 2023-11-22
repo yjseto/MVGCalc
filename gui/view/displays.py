@@ -6,7 +6,7 @@ import pyqtgraph as pg
 import numpy as np
 
 from lib.enums.keys import ActionKey
-from lib.models.result import GraphResult, IResult
+from lib.models.result import GraphResult, ResultBase
 
 from gui.components.textarea import MvgCalcExpressionTextField
 from gui.containers.app import MvgCalcApplication
@@ -34,7 +34,7 @@ class MvgCalcDisplayBase(QWidget):
     def refresh_expr_screen(self, action : Optional[ActionKey] = None):
 
         if action == ActionKey.UP or action == ActionKey.DOWN:
-            self.app.user_input = self.keyboard.hist_expr_listbox.update(action)
+            self.app.user_input = self.keyboard.hist_expr_display.hist_expr_listbox.update(action)
             self.textfield_expression.setText(self.app.user_input.format_usr_inp_expr_as_str(True))
         else:
             self.app.h_pos = self.textfield_expression.update(self.app.user_input, action)
@@ -56,12 +56,9 @@ class BasicCalcDisplay(MvgCalcDisplayBase):
 
         self.setLayout(self.layout_main)
 
-    def retrieve_result_object(self, result : IResult):
+    def retrieve_result_object(self, result : ResultBase):
         if result.success == False:
-            error_str = ""
-            for error in result.error_msgs:
-                error_str = error_str + str(error) + '\n'    
-            self.display_result_text.setText(error_str)
+            self.display_result_text.setText(result.get_formatted_error_msg_list())
         else:
             self.display_result_text.setText(result.value)
             self.textfield_expression.setText(result.expression)
@@ -104,12 +101,12 @@ class GraphDisplay(MvgCalcDisplayBase):
     def clear_graph_screen(self):
         self.graph_screen.clear()
 
-    def retrieve_result_object(self,result : GraphResult):
-        if result.success == False:
-            print('NOT IMPLEMENTED')
-        else:
+    def retrieve_result_object(self, result : GraphResult):
+
+        if result.success == True:
             #x = result.x
             #y = eval(result.y)
-            #{'x': x,'np': np, 'sin': np.sin, 'cos': np.cos, 'tan': np.tan,'asin': np.arcsin,'acos': np.arccos,'atan':np.arctan})
             y = eval(result.y, self.graph_config)
             self.graph_screen.plot(self.x,y,pen = self.pen)
+        else:
+            print(result.error_msgs[0])

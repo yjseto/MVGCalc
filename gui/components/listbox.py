@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QListWidget, QListWidgetItem
 from PyQt5.QtGui import QColor
+from gui.enums.styles import COLORS
 from lib.enums.keys import ActionKey
 
 from lib.enums.modes import DisplayMode
@@ -16,10 +17,11 @@ class HistoricExpressionListWidget(QListWidget):
         #listbox config
         self.setAlternatingRowColors(False)  #True to Alternate row colors
         self.setSelectionMode(QListWidget.SelectionMode.SingleSelection)
-       
-        # self.insertItem(0,"No history")    
-        # self.setCurrentRow(0)
-        # self.item(0).setSelected(True)
+        self.setStyleSheet(f"""
+                QListWidget::item:selected {{ 
+                    background: \"{COLORS.LIGHT_GREY.value}\"; 
+                    color: \"{COLORS.WHITE.value}\"; 
+                }}""")
 
         #listbox data
         self.populate_historic_expr_listbox(display_mode)
@@ -40,11 +42,13 @@ class HistoricExpressionListWidget(QListWidget):
 
         #set default list item to No History
         self.insertItem(0,"No history")
+
         historic_expr_list = self.mvg_calc_buffer.load_all()
 
         if len(historic_expr_list) > 0:
             self.populate_historic_expr_listbox_from_disk(historic_expr_list)
-
+            self.item(0).setSelected(True)
+            
     def populate_historic_expr_listbox_from_disk(self, historic_expr_list : list[UserInput]):
 
         #remove default list item to No History or previous list
@@ -64,7 +68,15 @@ class HistoricExpressionListWidget(QListWidget):
         if action == ActionKey.UP or action == ActionKey.DOWN:
             current_pos = self.set_current_pos(action)
 
+        self.select_item_by_pos(current_pos)
+
         return self.mvg_calc_buffer.load_all()[current_pos]
+
+    def select_item_by_pos(self, item_index : int):
+
+        selected_item = self.item(item_index)
+        selected_item.setSelected(True)
+
 
     def set_current_pos(self, action : ActionKey) -> int:
 
