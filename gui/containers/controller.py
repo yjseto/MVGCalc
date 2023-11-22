@@ -88,11 +88,13 @@ class KeyInputController(QWidget):
                 self.app.user_input.remove_from_list(self.app.h_pos)
                 self.refresh_expr_screen.emit(key_type)
         elif key_type == ActionKey.ENTER:
-            if not self.app.user_input.is_empty():
-                self.app.h_pos = None
-                result = evaluate(self.app.display_mode, self.app.user_input) 
-                self.return_result.emit(result)
-        # condition for directional buttons
+            try:
+                if not self.app.user_input.is_empty():
+                    self.app.h_pos = None
+                    result = evaluate(self.app.display_mode, self.app.user_input) 
+                    self.return_result.emit(result)
+            except TypeError as e:
+                pass
         elif isinstance(key_type, ActionKey):
             self.refresh_expr_screen.emit(key_type)
         # block for all value key inputs
