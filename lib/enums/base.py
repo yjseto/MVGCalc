@@ -18,3 +18,10 @@ class EvalEnum(BaseEnum):
         super().__init__(index, textId)
         self.textEval = textEval
         self.textSymbol = textSymbol
+
+class UnitEnum(BaseEnum):
+    def __init__ (self, index, textSymbol, ratio,symbol):
+        super().__init__(index,textSymbol)
+        self.ratio = ratio
+        self.symbol = symbol
+   

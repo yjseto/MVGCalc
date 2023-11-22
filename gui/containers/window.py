@@ -9,9 +9,8 @@ from PyQt5.QtWidgets import (
 )
 
 from lib.enums.modes import DisplayMode
-
+from gui.view.displays import BasicCalcDisplay, GraphDisplay, UnitConvDisplay
 from gui.components.button import MvgCalcInputButton2
-from gui.view.displays import BasicCalcDisplay, GraphDisplay
 from gui.util.css import *
 from gui.util.setup import *
 
@@ -76,6 +75,7 @@ class MvgCalcMainWindow(QMainWindow):
         # add calculator views
         self.stack_layout.addWidget(BasicCalcDisplay(self.app))
         self.stack_layout.addWidget(GraphDisplay(self.app))
+        self.stack_layout.addWidget(UnitConvDisplay(self.app))
 
         self.main_layout.addWidget(self.stack_layout)
         
