@@ -394,31 +394,31 @@ class FunctionKeyboard(QWidget):
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 HISTORIC EXPRESSION KEYS
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-# class HistoricExpressionKeyboard(QWidget):
+class HistoricExpressionKeyboard(QWidget):
 
-#     button_click_signal_from_keyboard = pyqtSignal(BaseEnum)
+    button_click_signal_from_keyboard = pyqtSignal(BaseEnum)
 
-#     def __init__(self, display_mode : DisplayMode, parent=None):
-#         super().__init__(parent)
+    def __init__(self, display_mode : DisplayMode, parent=None):
+        super().__init__(parent)
 
-#         main_layout = QVBoxLayout()
-#         self.setLayout(main_layout)
-#         self.display_mode = display_mode
+        main_layout = QVBoxLayout()
+        self.setLayout(main_layout)
+        self.display_mode = display_mode
 
-#         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-#         FIRST ROW - Shared Keys
-#         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""     
-#         shared_keys = SharedKeyRow()
-#         main_layout.addWidget(shared_keys) 
-#         shared_keys.button_click_signal_from_shared_keys.connect(self.handle_button_click)
-#         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-#         Historic Expression Listbox
-#         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""          
-#         self.hist_expr_listbox = HistoricExpressionListWidget(display_mode)
-#         main_layout.addWidget(self.hist_expr_listbox) 
+        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+        FIRST ROW - Shared Keys
+        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""     
+        shared_keys = SharedKeyRow()
+        main_layout.addWidget(shared_keys) 
+        shared_keys.button_click_signal_from_shared_keys.connect(self.handle_button_click)
+        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+        Historic Expression Listbox
+        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""          
+        self.hist_expr_listbox = HistoricExpressionListWidget(display_mode)
+        main_layout.addWidget(self.hist_expr_listbox) 
 
-#     def handle_button_click(self, key_type : BaseEnum):
-#         self.button_click_signal_from_keyboard.emit(key_type)
+    def handle_button_click(self, key_type : BaseEnum):
+        self.button_click_signal_from_keyboard.emit(key_type)
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 DIRECTIONAL KEYS

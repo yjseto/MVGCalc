@@ -61,7 +61,7 @@ class MvgCalcDataBuffer:
 
     def delete_history_by_display(self):
         try:
-            with open(self.data_store_file_path, 'w'):
+            if os.path.exists(self.data_store_file_path):
                 os.remove(self.data_store_file_path)
         except OSError as e:
             #TODO handle exception

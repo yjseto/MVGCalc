@@ -1,46 +1,27 @@
-from dataclasses import dataclass, field
+from abc import ABC
 
-from typing import Protocol
-
-class IResult(Protocol):
-    error_msgs: [str]
-    success: bool
-    value: any
-    expression : str
-    #add value and expression in the future?
-
-
-# A structural subtype of IShape
-# Not a nominal subtype of IShape
-
-class BasicResult(IResult):
-    def __init__(self):
-        self.value : str = ""
-        self.error_msgs = []
-        self.success = False
+class ResultBase(ABC):
+    def __init__ (self):
+        self.value : any = ""
+        self.error_msgs : [str] = []
+        self.success : bool = False
         self.expression: str = ""
 
-class GraphResult(IResult):
+    def get_formatted_error_msg_list(self) -> str:
+
+        error_str = ""
+
+        for error in self.error_msgs:
+            error_str = error_str + str(error) + "\n" 
+
+        return error_str
+
+class BasicResult(ResultBase):
     def __init__(self):
-        self.value : str
-        self.error_msgs = []
-        self.success = False
-        self.expression: str = ""
-        #self.clear_graph == False
+        super().__init__()
+
+class GraphResult(ResultBase):
+    def __init__(self):
+        super().__init__()
         self.y: str
         self.trig_func = False
-
-'''
-@dataclass
-class GraphResult(ResultBase):
-    result = "?"
-
-@dataclass
-class CalculusResult(ResultBase):
-     result = ""
-
-@dataclass
-class CalculusResult(ResultBase):
-     result = "? we may want to return two results for each side of the conversion"
-
-'''     

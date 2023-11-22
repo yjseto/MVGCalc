@@ -2,12 +2,12 @@ import sympy as sp
 from sympy import Eq, zoo
 from sympy.parsing.sympy_parser import parse_expr
 
-from lib.models.result import BasicResult, GraphResult, IResult
+from lib.models.result import BasicResult, GraphResult, ResultBase
 from lib.models.user_input import UserInput
 from lib.enums.modes import DisplayMode
 from lib.util.persistence import MvgCalcDataBuffer
 
-def evaluate_basic(user_input : UserInput) -> IResult: 
+def evaluate_basic(user_input : UserInput) -> ResultBase: 
 
     result  = BasicResult()
     result.expression = user_input.format_usr_inp_expr_as_str(True)
@@ -25,8 +25,6 @@ def evaluate_basic(user_input : UserInput) -> IResult:
             #get rid of trailing 0's
             if '.' in result.value:
                 result.value = result.value.rstrip('0').rstrip('.')
-
-            result.success = True
 
     except ValueError as ve:
         print(f"Value error: {ve}")
@@ -59,11 +57,6 @@ def evaluate_graph(user_input : UserInput):
             formatted_user_input = parse_expr(user_input.format_usr_inp_expr_as_str(),transformations='all')  
             #return sp.sympify(parsed_in).evalf()
             result.y = str(sp.sympify(formatted_user_input).evalf())
-            
-            #get rid of trailing 0's
-            #if '.' in result.value:
-                #result.value = result.value.rstrip('0').rstrip('.')
-
             result.success = True
 
         except ValueError as ve:
@@ -87,9 +80,9 @@ def evaluate_graph(user_input : UserInput):
         result.success = len(result.error_msgs) == 0
         return result
 
-def evaluate(display_mode: DisplayMode, user_input : UserInput) -> IResult:
+def evaluate(display_mode: DisplayMode, user_input : UserInput) -> ResultBase:
 
-    result : IResult = None
+    result : ResultBase = None
     mvg_calc_buffer = MvgCalcDataBuffer(display_mode)
 
     #need to change this function to originally save enums first?
