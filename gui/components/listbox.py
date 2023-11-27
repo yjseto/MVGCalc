@@ -13,6 +13,7 @@ class HistoricExpressionListWidget(QListWidget):
 
         self.v_pos : int = None
         self.mvg_calc_buffer : MvgCalcDataBuffer = None
+        self.display_mode = display_mode
 
         #listbox config
         self.setAlternatingRowColors(False)  #True to Alternate row colors
@@ -24,7 +25,7 @@ class HistoricExpressionListWidget(QListWidget):
                 }}""")
 
         #listbox data
-        self.populate_historic_expr_listbox(display_mode)
+        self.populate_historic_expr_listbox(self.display_mode)
 
     def create_list_item(self, expression_as_text : str) -> QListWidgetItem:
 
@@ -47,7 +48,8 @@ class HistoricExpressionListWidget(QListWidget):
 
         if len(historic_expr_list) > 0:
             self.populate_historic_expr_listbox_from_disk(historic_expr_list)
-            self.item(0).setSelected(True)
+            self.item(0).setSelected(True) 
+            self.v_pos = 0
             
     def populate_historic_expr_listbox_from_disk(self, historic_expr_list : list[UserInput]):
 
@@ -93,6 +95,20 @@ class HistoricExpressionListWidget(QListWidget):
             if self.v_pos < (self.count() - 1):
                 self.v_pos = self.v_pos + 1 
             return self.v_pos
+
+    def delete_all(self):
+
+        self.mvg_calc_buffer.delete_history_by_display()
+        self.populate_historic_expr_listbox(self.display_mode)
+    
+    def delete_selected(self):
+
+        if self.v_pos is not None:
+            self.takeItem(self.v_pos)
+            self.mvg_calc_buffer.delete_expression_at_index(self.v_pos)
+            self.v_pos = self.v_pos - 1
+            self.populate_historic_expr_listbox(self.display_mode)
+
 
     def reset_pos(self):
         self.v_pos = None
