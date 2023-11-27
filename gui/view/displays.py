@@ -4,7 +4,6 @@ from PyQt5.QtWidgets import *
 
 import pyqtgraph as pg
 import numpy as np
-from gui.screen.unit_listboxes import weight_listbox
 from lib.enums.base import UnitEnum
 from lib.enums.converter_enums import Length, Measure
 from lib.enums.keys import ActionKey
@@ -116,6 +115,7 @@ class GraphDisplay(MvgCalcDisplayBase):
             self.graph_screen.plot(self.x,y,pen = self.pen)
         else:
             print(result.error_msgs[0])
+            
 class UnitConvDisplay(MvgCalcDisplayBase):
     def __init__(self, app : MvgCalcApplication):
         super().__init__(app)

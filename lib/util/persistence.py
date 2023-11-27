@@ -5,7 +5,6 @@ from typing import List
 
 from lib.enums.modes import DisplayMode
 from lib.models.user_input import UserInput
-
 from lib.util.utils import get_project_root
 
 class MvgCalcDataBuffer:
@@ -59,13 +58,35 @@ class MvgCalcDataBuffer:
 
         return historic_expressions
 
+
+    def delete_expression_at_index(self, index : int):
+
+        try:
+
+            historic_expressions : List[UserInput] = self.load_all()
+
+            # Add current expression
+            historic_expressions.pop(index)
+            
+            # Save the updated historic expressions list back to file
+            with open(self.data_store_file_path, 'wb') as rf:
+                pk.dump(historic_expressions, rf)
+                rf.close()
+
+        except (FileNotFoundError):
+            #moro you usually want to handle the exception in a way that allows the program to 
+            #halt execution gracefully and display/log an error messages. you were swallowing 
+            #the exception which is a code smell. i will handle these exceptions in the next delivery
+            #TODO handle exception
+            print("throw exception")        
+
     def delete_history_by_display(self):
         try:
             if os.path.exists(self.data_store_file_path):
                 os.remove(self.data_store_file_path)
         except OSError as e:
             #TODO handle exception
-            print("throw exception")        
+            print("throw exception")     
 
 
 

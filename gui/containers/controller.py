@@ -76,14 +76,16 @@ class KeyInputController(QWidget):
     def handle_button_click(self, key_type : BaseEnum):
         #result: ResultBase
         if key_type == ActionKey.CLEAR:
-            self.app.user_input.clear_list()
-            self.app.h_pos = None
-            self.refresh_expr_screen.emit(key_type)
-            self.clear_graph.emit()
+            if self.key_display == KeyboardDisplayMode.HISTORIC_EXPRESSIONS:
+                self.hist_expr_display.hist_expr_listbox.delete_all()
+            else:
+                self.app.user_input.clear_list()
+                self.app.h_pos = None
+                self.refresh_expr_screen.emit(key_type)
+                self.clear_graph.emit()
         elif key_type == ActionKey.BACKSPACE:
             if self.key_display == KeyboardDisplayMode.HISTORIC_EXPRESSIONS:
-                print("uncomment below then Fix errors when pickle is deleted and directional arrows used")
-                #MvgCalcDataBuffer(self.app.display_mode).delete_history_by_display()
+                self.hist_expr_display.hist_expr_listbox.delete_selected()
             else:
                 self.app.user_input.remove_from_list(self.app.h_pos)
                 self.refresh_expr_screen.emit(key_type)
@@ -106,6 +108,7 @@ class KeyInputController(QWidget):
             self.refresh_expr_screen.emit(key_type)
 
     def activate_tab(self, display_type : KeyboardDisplayMode):
+
         self.key_display = display_type
         if display_type == KeyboardDisplayMode.HISTORIC_EXPRESSIONS:
             self.hist_expr_display.hist_expr_listbox.populate_historic_expr_listbox(self.app.display_mode) #reload with updated expressions

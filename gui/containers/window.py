@@ -7,10 +7,11 @@ from PyQt5.QtWidgets import (
     QWidget,
     QHBoxLayout
 )
+from gui.components.navigation import NavBar
 
 from lib.enums.modes import DisplayMode
 from gui.view.displays import BasicCalcDisplay, GraphDisplay, UnitConvDisplay
-from gui.components.button import MvgCalcInputButton2
+from gui.components.button import MvgCalcNavButton
 from gui.util.css import *
 from gui.util.setup import *
 
@@ -44,35 +45,24 @@ class MvgCalcMainWindow(QMainWindow):
 
         self.stack_layout = QStackedWidget()
         central_widget.setLayout(self.main_layout)
+        
 
-        #add nav bar button group to top of calculator
-        # self.navbar = NavBar(DisplayMode.BASIC, DisplayMode.GRAPH, DisplayMode.UNIT_CONV)
-        
-        # self.navbar.setContentsMargins(0,0,0,0)
-        # self.navbar.clicked_display_signal.connect(self.activate_tab)
-        # self.main_layout.addLayout(self.navbar)
-        
-        self.navbar_layout = QHBoxLayout()
-        button1 = MvgCalcInputButton2(DisplayMode.BASIC.textSymbol, width_nav_multiplier, height_nav_multiplier)
-        button1.setStyleSheet(component_nav_gray("QPushButton", Border_top_left_radius= "4px", border_bottom_left_radius = "4px"))
-        button1.clicked.connect(
-            partial(self.activate_tab,DisplayMode.BASIC))
-        self.navbar_layout.addWidget(button1)
-        
-        button2 = MvgCalcInputButton2(DisplayMode.GRAPH.textSymbol, width_nav_multiplier, height_nav_multiplier)
-        button2.setStyleSheet(component_nav_gray("QPushButton"))
-        button2.clicked.connect(
-            partial(self.activate_tab, DisplayMode.GRAPH))
-        self.navbar_layout.addWidget(button2)
-        
-        button3 = MvgCalcInputButton2(DisplayMode.UNIT_CONV.textSymbol, width_nav_multiplier, height_nav_multiplier)
-        button3.setStyleSheet(component_nav_gray("QPushButton", border_top_right_radius = "4px", border_bottom_right_radius = "4px"))
-        button3.clicked.connect(
-            partial(self.activate_tab, DisplayMode.UNIT_CONV))
-        self.navbar_layout.addWidget(button3)
-        self.main_layout.addLayout(self.navbar_layout)
+        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+        Navbar
+        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""        
+        self.key_display = DisplayMode.BASIC
+        self.navbar = NavBar(
+            DisplayMode.BASIC,
+            DisplayMode.GRAPH,
+            DisplayMode.UNIT_CONV
+        )
+        self.navbar.setContentsMargins(10,10,10,10)
+        self.navbar.clicked_display_signal.connect(self.activate_tab)
+        self.main_layout.addLayout(self.navbar)
 
-        # add calculator views
+        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+        Calculator Displays
+        """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
         self.stack_layout.addWidget(BasicCalcDisplay(self.app))
         self.stack_layout.addWidget(GraphDisplay(self.app))
         self.stack_layout.addWidget(UnitConvDisplay(self.app))
@@ -81,5 +71,6 @@ class MvgCalcMainWindow(QMainWindow):
         
 
     def activate_tab(self, display_mode : DisplayMode):
+
         self.app.display_mode = display_mode
         self.stack_layout.setCurrentIndex(display_mode.index)
