@@ -44,7 +44,7 @@ class Ui_unit_converter(object):
         _translate = QtCore.QCoreApplication.translate
         unit_converter.setWindowTitle(_translate("unit_converter", "Form"))
         self.label.setText(_translate("unit_converter", "From:"))
-        self.unit_listbox_2.setText(_translate("unit_converter", "Units"))
-        self.unit_listbox_1.setText(_translate("unit_converter", "Units"))
+        self.unit_listbox_2.setText(_translate("unit_converter", "km"))
+        self.unit_listbox_1.setText(_translate("unit_converter", "m"))
         self.label_2.setText(_translate("unit_converter", "To:"))
         self.measures_listbox.setText(_translate("unit_converter", "Length"))

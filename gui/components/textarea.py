@@ -11,7 +11,7 @@ from lib.enums.keys import ActionKey
 from lib.models.user_input import UserInput
 
 from lib.util.constants import WINDOW_WIDTH
-PRECISION  = 4
+PRECISION  = 10
 
 class MvgCalcExpressionTextField(QTextEdit):
     def __init__(self, parent = None):
