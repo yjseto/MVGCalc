@@ -69,8 +69,8 @@ def component_pale_gray(component_name, **kwargs: Dict[str, str]) -> str:
         component_name, 
         background_color= COLORS.PALE_GRAY.value, 
         color=COLORS.BLACK.value, 
-        border_radius="15px",
-        font_size = "17px",
+        border_radius="12px",
+        font_size = "14px",
         **kwargs
     )
 
@@ -81,7 +81,6 @@ def component_black(component_name, **kwargs: Dict[str, str]) -> str:
         background_color= COLORS.BLACK.value, 
         color=COLORS.WHITE.value, 
         border_radius="15px",
-
         font_size = "17px",
         **kwargs
     )

@@ -1,19 +1,14 @@
-from functools import partial
-
 from PyQt5.QtWidgets import (
     QMainWindow,
     QStackedWidget,
     QVBoxLayout,
-    QWidget,
-    QHBoxLayout
+    QWidget
 )
-from gui.components.navigation import NavBar
 
 from lib.enums.modes import DisplayMode
-from gui.view.displays import BasicCalcDisplay, GraphDisplay, UnitConvDisplay
-from gui.components.button import MvgCalcNavButton
-from gui.util.css import *
-from gui.util.setup import *
+
+from gui.components.navigation import NavBar
+from gui.components.display import BasicCalcDisplay, GraphDisplay, UnitConvDisplay
 
 class MvgCalcMainWindow(QMainWindow):
     def __init__(self, app):
@@ -46,7 +41,6 @@ class MvgCalcMainWindow(QMainWindow):
         self.stack_layout = QStackedWidget()
         central_widget.setLayout(self.main_layout)
         
-
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
         Navbar
         """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""        

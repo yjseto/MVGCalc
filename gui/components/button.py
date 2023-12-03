@@ -1,8 +1,9 @@
 from PyQt5.QtWidgets import QPushButton
+
+from lib.util.constants import WINDOW_HEIGHT, WINDOW_WIDTH
+
 from gui.enums.styles import COLORS
 from gui.util.css import build_css_string, component_pale_gray
-from lib.util.constants import WINDOW_HEIGHT, WINDOW_WIDTH
-        
         
 class MvgCalcInputButton(QPushButton):
     def __init__(self, text: str, width: int, height: int, parent = None):
@@ -16,6 +17,7 @@ class MvgCalcNavButton(MvgCalcInputButton):
         #give nav button the same behavior as a checkbox
         self.setCheckable(True)
         self.clicked.connect(self.set_pressed)
+
         self.setStyleSheet(component_pale_gray("QPushButton"))
 
     def set_pressed(self):
@@ -25,8 +27,8 @@ class MvgCalcNavButton(MvgCalcInputButton):
                     "QPushButton",
                     background_color= COLORS.BLUE.value, 
                     color=COLORS.WHITE.value, 
-                    border_radius="15px",
-                    font_size = "17px"
+                    border_radius="12px",
+                    font_size = "14px",
                 )
             )
     

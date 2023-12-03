@@ -1,14 +1,15 @@
 from enum import Enum
 from functools import partial
 
+from PyQt5 import QtGui
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import  QHBoxLayout
+
+from lib.enums.base import IconEnum
 
 from gui.components.button import MvgCalcNavButton
 from gui.util.css import *
 from gui.util.setup import width_nav_multiplier, height_nav_multiplier
-from PyQt5 import QtGui
-from lib.enums.base import IconEnum
 
 class NavBar(QHBoxLayout):
 
@@ -18,7 +19,7 @@ class NavBar(QHBoxLayout):
         super().__init__()
 
         for arg  in args:
-            button = MvgCalcNavButton(arg.textSymbol, width_nav_multiplier, height_nav_multiplier)
+            button = MvgCalcNavButton(arg.textSymbol, width_nav_multiplier, (height_nav_multiplier * 0.7))
             if arg.iconPath is not None:
                 button.setIcon(QtGui.QIcon(arg.iconPath))
             button.clicked.connect(partial(self.handle_button_click, arg))
