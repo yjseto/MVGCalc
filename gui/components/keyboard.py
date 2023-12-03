@@ -7,6 +7,7 @@ from PyQt5.QtCore import Qt
 from PyQt5 import QtGui
 from gui.components.listbox import HistoricExpressionListWidget
 
+from lib.enums.base import BaseEnum
 from lib.enums.keys import *
 from lib.util.constants import *
 from lib.enums.modes import *

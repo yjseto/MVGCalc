@@ -1,11 +1,11 @@
 from PyQt5.QtWidgets import QListWidget, QListWidgetItem
-from PyQt5.QtGui import QColor
-from gui.enums.styles import COLORS
-from lib.enums.keys import ActionKey
 
+from lib.enums.keys import ActionKey
 from lib.enums.modes import DisplayMode
 from lib.util.persistence import MvgCalcDataBuffer
 from lib.models.user_input import UserInput
+
+from gui.enums.styles import COLORS
 
 class HistoricExpressionListWidget(QListWidget):
     def __init__(self, display_mode : DisplayMode, parent=None):
@@ -43,13 +43,13 @@ class HistoricExpressionListWidget(QListWidget):
 
         #set default list item to No History
         self.insertItem(0,"No history")
+        self.v_pos = 0
 
         historic_expr_list = self.mvg_calc_buffer.load_all()
 
         if len(historic_expr_list) > 0:
             self.populate_historic_expr_listbox_from_disk(historic_expr_list)
-            self.item(0).setSelected(True) 
-            self.v_pos = 0
+            self.select_item_by_pos(self.v_pos)
             
     def populate_historic_expr_listbox_from_disk(self, historic_expr_list : list[UserInput]):
 
@@ -86,14 +86,16 @@ class HistoricExpressionListWidget(QListWidget):
             self.v_pos = 0
         
         if ActionKey.UP == action:
-            if self.v_pos > 0:
+            if self.v_pos >= 0:
                 self.v_pos = self.v_pos - 1 
-            if self.v_pos >= (self.count() - 1):  
-                self.v_pos = self.v_pos - 1
+            if self.v_pos > (self.count()):  
+                self.v_pos = 0
             return self.v_pos
         elif ActionKey.DOWN == action: 
-            if self.v_pos < (self.count() - 1):
+            if self.v_pos < (self.count()):
                 self.v_pos = self.v_pos + 1 
+            if self.v_pos == (self.count()):
+                self.v_pos = 0
             return self.v_pos
 
     def delete_all(self):
@@ -112,3 +114,7 @@ class HistoricExpressionListWidget(QListWidget):
 
     def reset_pos(self):
         self.v_pos = None
+    
+    def refresh_listbox(self):
+        self.reset_pos()
+        # self.select_item_by_pos(0)

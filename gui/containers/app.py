@@ -16,6 +16,5 @@ class MvgCalcApplication(QApplication):
         "QWidget",
         background_color = "#161A20",
         font_family = "roboto", 
-        font_size = "28px",
         color = "white"
-    ))
+        ))

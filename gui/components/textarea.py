@@ -1,17 +1,19 @@
 from io import StringIO
 from typing import Optional
+
+from PyQt5 import QtCore
 from PyQt5.QtWidgets import QTextEdit
 from PyQt5.QtGui import QFont
-from gui.enums.styles import COLORS
-from gui.util.css import build_css_string
+
 from lib.enums.base import BaseEnum, UnitEnum
 from lib.enums.converter_enums import Measure
-
 from lib.enums.keys import ActionKey
 from lib.models.user_input import UserInput
-
 from lib.util.constants import WINDOW_WIDTH
-PRECISION  = 10
+
+from gui.enums.styles import COLORS
+
+PRECISION  = 4
 
 class MvgCalcExpressionTextField(QTextEdit):
     def __init__(self, parent = None):
@@ -19,11 +21,18 @@ class MvgCalcExpressionTextField(QTextEdit):
         
         self.h_pos = None
 
-        custom_font = QFont("roboto", 24)
+        custom_font = QFont("roboto", 18)
         self.setFont(custom_font)
-        self.setMinimumHeight(self.fontMetrics().height() * 2)
         self.setMaximumWidth(int(WINDOW_WIDTH) - 4)
         self.setReadOnly(True)
+        self.setFixedHeight(int(self.fontMetrics().height() * 1.5)) 
+        self.setAlignment(QtCore.Qt.AlignRight)       
+        self.setStyleSheet(f"""
+                           border:none;
+                           background-color:{COLORS.DARK_GREY.value};
+                           padding-right:15px;
+                           padding-left:15px;
+                           """)
 
     def display_usr_inp_expr_as_str(self, user_input: UserInput, pos : int) -> str:
 

@@ -1,12 +1,11 @@
 from dataclasses import dataclass, field
-from enum import Enum
 from typing import List, Optional
 from io import StringIO
-from lib.enums.base import EvalEnum
-from lib.enums.keys import CharacterInput, MathFunction, NumericInput, Operator
 import sympy as sp
 from sympy.parsing.sympy_parser import parse_expr
 
+from lib.enums.base import EvalEnum
+from lib.enums.keys import CharacterInput, MathFunction, NumericInput, Operator
 
 @dataclass
 class UserInput:
@@ -16,8 +15,6 @@ class UserInput:
     
     def get_user_input_list(self):
         return self.user_input_list
-    
-
 
     def format_usr_inp_expr_as_str(self, display_to_user=False) -> str:
 

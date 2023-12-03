@@ -5,15 +5,14 @@ from typing import List
 
 from lib.enums.modes import DisplayMode
 from lib.models.user_input import UserInput
-from lib.util.utils import get_project_root
+
+from lib.util.utils import get_project_root, get_image_path
 
 class MvgCalcDataBuffer:
 
     def __init__(self, display_mode : DisplayMode):
 
-        project_context = get_project_root()
-
-        self.data_store_file_path =  Path(f"{project_context}\data\{display_mode.data_store_file_name}")
+        self.data_store_file_path =  Path(get_image_path(f"{get_project_root()}\\data\\{display_mode.data_store_file_name}"))
         
     def save_expression_to_disk(self, evaluated_expression : UserInput):
 

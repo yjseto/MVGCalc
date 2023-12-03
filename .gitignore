@@ -13,3 +13,7 @@ main_*
 
 # Ignore .pkl files created in development
 *.pkl
+
+#ignore build folders
+deployment/build/**
+deployment/dist/**

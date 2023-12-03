@@ -1,6 +1,6 @@
-from gui.util.setup import HISTORIC_EXPRESSION_ICON_FILE_PATH
+from gui.util.setup import BASIC_ICON_FILE_PATH, FUNCTION_ICON_FILE_PATH, HISTORIC_EXPRESSION_ICON_FILE_PATH
 
-from lib.enums.base import BaseEnum, IconEnum
+from lib.enums.base import IconEnum
 
 """ 
     added third property to Display mode enum to include file name for the pkl
@@ -24,6 +24,6 @@ class DisplayMode(IconEnum):
 
 
 class KeyboardDisplayMode(IconEnum):
-    BASIC                   = (0, "Basic", None) #do we want to add (1,"evaluator_algebra.py") or something like that?
-    FUNCTIONS               = (1, "Functions", None) #do we want to add (1,"evaluator_algebra.py") or something like that?
-    HISTORIC_EXPRESSIONS    = (2, "History", HISTORIC_EXPRESSION_ICON_FILE_PATH)
+    BASIC                   = (0, "", BASIC_ICON_FILE_PATH) #do we want to add (1,"evaluator_algebra.py") or something like that?
+    FUNCTIONS               = (1, "", FUNCTION_ICON_FILE_PATH) #do we want to add (1,"evaluator_algebra.py") or something like that?
+    HISTORIC_EXPRESSIONS    = (2, "", HISTORIC_EXPRESSION_ICON_FILE_PATH)

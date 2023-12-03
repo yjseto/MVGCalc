@@ -1,6 +1,6 @@
     
 from lib.util.constants import WINDOW_HEIGHT, WINDOW_WIDTH
-from lib.util.utils import get_project_root
+from lib.util.utils import get_image_path, get_project_root
 
 #height/width multiplier
 width_input_multiplier = 0.1739
@@ -23,11 +23,14 @@ def get_nav_button_width():
     return width_nav_multiplier * WINDOW_WIDTH
 
 #Image Paths
-HISTORIC_EXPRESSION_ICON_FILE_PATH = f"{get_project_root()}\\gui\\images\\history.png"
+HISTORIC_EXPRESSION_ICON_WHT_FILE_PATH = get_image_path(f"{get_project_root()}\\gui\\images\\history_wht.png")
+HISTORIC_EXPRESSION_ICON_FILE_PATH = get_image_path(f"{get_project_root()}\\gui\\images\\history.png")
+FUNCTION_ICON_FILE_PATH = get_image_path(f"{get_project_root()}\\gui\images\\function.png")
+# plus, minus, division, multiplication symbol, for basic
+BASIC_ICON_FILE_PATH = get_image_path(f"{get_project_root()}\\gui\images\\basic2.png")
 
 #Directional Arrows
-D_PAD_UP_ICON_FILE_PATH = f"{get_project_root()}\\gui\\images\\up_arrow.png"
-D_PAD_DOWN_ICON_FILE_PATH = f"{get_project_root()}\\gui\\images\\down_arrow.png"
-D_PAD_LEFT_ICON_FILE_PATH = f"{get_project_root()}\\gui\\images\\left_arrow.png"
-D_PAD_RIGHT_ICON_FILE_PATH = f"{get_project_root()}\\gui\\images\\right_arrow.png"
-
+D_PAD_UP_ICON_FILE_PATH =  get_image_path(f"{get_project_root()}\\gui\\images\\up_arrow.png")
+D_PAD_DOWN_ICON_FILE_PATH =  get_image_path(f"{get_project_root()}\\gui\\images\\down_arrow.png")
+D_PAD_LEFT_ICON_FILE_PATH =  get_image_path(f"{get_project_root()}\\gui\\images\\left_arrow.png") 
+D_PAD_RIGHT_ICON_FILE_PATH =  get_image_path(f"{get_project_root()}\\gui\\images\\right_arrow.png")

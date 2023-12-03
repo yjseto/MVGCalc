@@ -8,22 +8,7 @@ from lib.enums.keys import Operator
 class GraphParams:
     
     user_input_list: list = field(default_factory=list)
-    current_numeric_input: str = field(default="")
-
-
-    # output_expr: List [str] #good to hold onto in the class object for splicing equations together
-    # #takes an output expr list as a string
-    # def format_usr_inp_expr_as_str(self) -> str:
-    #     for item in self.user_input:
-    #         if isinstance(item, Enum): #if item is of type Enum, retrieve what is at said Enumeration
-    #             self.output_expr.append(item.value[1])
-    #         else:
-    #             self.output_expr.append(str(item))
-  
-    #     out_expr = "".join(self.output_expr)
-
-    #     return out_expr
-    
+    current_numeric_input: str = field(default="")   
 
     def format_usr_inp_expr_as_str(self) -> str:
 

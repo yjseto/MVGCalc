@@ -1,5 +1,5 @@
-from PyQt5.QtWidgets import *
 from PyQt5.QtCore import pyqtSignal
+from lib.enums.base import BaseEnum
 
 from lib.enums.keys import *
 from lib.models.result import ResultBase
@@ -9,7 +9,7 @@ from lib.util.evaluator import evaluate
 from gui.containers.app import MvgCalcApplication
 from gui.components.navigation import NavBar
 from gui.components.keyboard import *
-from lib.util.persistence import MvgCalcDataBuffer
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Keyboard
@@ -33,6 +33,7 @@ class KeyInputController(QWidget):
 
         self.app = app
         self.main_layout = QVBoxLayout()
+        self.setStyleSheet("font-size: 28px;")
 
         self.setLayout(self.main_layout)
         self.stack_layout = QStackedWidget()
@@ -78,29 +79,36 @@ class KeyInputController(QWidget):
         if key_type == ActionKey.CLEAR:
             if self.key_display == KeyboardDisplayMode.HISTORIC_EXPRESSIONS:
                 self.hist_expr_display.hist_expr_listbox.delete_all()
-            else:
-                self.app.user_input.clear_list()
-                self.app.h_pos = None
-                self.refresh_expr_screen.emit(key_type)
-                self.clear_graph.emit()
+
+            self.app.user_input.clear_list()
+            self.app.h_pos = None
+            self.refresh_expr_screen.emit(key_type)
+            self.clear_graph.emit()
+
         elif key_type == ActionKey.BACKSPACE:
             if self.key_display == KeyboardDisplayMode.HISTORIC_EXPRESSIONS:
                 self.hist_expr_display.hist_expr_listbox.delete_selected()
             else:
                 self.app.user_input.remove_from_list(self.app.h_pos)
                 self.refresh_expr_screen.emit(key_type)
+                
         elif key_type == ActionKey.ENTER:
             try:
                 if not self.app.user_input.is_empty():
                     self.app.h_pos = None
-                    result = evaluate(self.app.display_mode, self.app.user_input) 
+                    result = evaluate(self.app.display_mode, self.app.user_input)
+
+                    if (len(result.get_result_as_list()) > 0): 
+                        self.app.user_input.user_input_list = result.get_result_as_list()
+
                     self.return_result.emit(result)
             except TypeError as e:
                 pass
         elif isinstance(key_type, ActionKey):
             self.refresh_expr_screen.emit(key_type)
         # block for all value key inputs
-        elif isinstance(key_type, EvalEnum): 
+        elif isinstance(key_type, EvalEnum):
+
             if DisplayMode.BASIC == self.app.display_mode and key_type == CharacterInput.XVAR:
                 return
             
@@ -111,5 +119,8 @@ class KeyInputController(QWidget):
 
         self.key_display = display_type
         if display_type == KeyboardDisplayMode.HISTORIC_EXPRESSIONS:
-            self.hist_expr_display.hist_expr_listbox.populate_historic_expr_listbox(self.app.display_mode) #reload with updated expressions
+            #reload with updated expressions
+            self.hist_expr_display.hist_expr_listbox.populate_historic_expr_listbox(self.app.display_mode) 
+            #self.hist_expr_display.hist_expr_listbox.refresh_listbox()
+
         self.stack_layout.setCurrentIndex(display_type.index)

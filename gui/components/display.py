@@ -1,14 +1,21 @@
 from typing import Optional
 
-from PyQt5.QtWidgets import *
+from PyQt5 import QtCore
+from PyQt5 import QtGui
+from PyQt5.QtGui import QFont
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QStackedWidget, QLabel, QPushButton
 
 import pyqtgraph as pg
 import numpy as np
+
 from lib.enums.base import UnitEnum
 from lib.enums.converter_enums import Length, Measure
 from lib.enums.keys import ActionKey
 from lib.models.result import GraphResult, ResultBase
+from lib.util.constants import WINDOW_HEIGHT
 
+from gui.util.setup import HISTORIC_EXPRESSION_ICON_WHT_FILE_PATH
+from gui.enums.styles import COLORS
 from gui.components.textarea import MvgCalcExpressionTextField
 from gui.containers.app import MvgCalcApplication
 from gui.containers.controller import KeyInputController
@@ -31,7 +38,33 @@ class MvgCalcDisplayBase(QWidget):
         self.layout_main = QVBoxLayout()
         self.layout_main.setContentsMargins(2, 0, 2, 0)
 
+        #make screen 50% of window height
+        self.screen_container = QWidget()
+        self.screen_container.setFixedHeight(int(WINDOW_HEIGHT * 0.35))
+        self.screen_layout = QVBoxLayout(self.screen_container)
+        
+        self.textfield_result = QLabel()
+        self.textfield_result.setFont(QFont("roboto", 32))
+        self.textfield_result.setFixedHeight(self.textfield_result.fontMetrics().height() * 3)
+        self.textfield_result.setWordWrap(True)
+        self.textfield_result.setAlignment(QtCore.Qt.AlignRight)
+        self.textfield_result.setStyleSheet("border: none;")
+
+        self.textfield_previous_result = QPushButton("")
+        self.textfield_previous_result.setFont(QFont("roboto", 16))
+        self.textfield_previous_result.setFixedHeight(int(self.textfield_previous_result.fontMetrics().height() * 1.1))       
+        self.textfield_previous_result.setIcon(QtGui.QIcon(HISTORIC_EXPRESSION_ICON_WHT_FILE_PATH))
+        self.textfield_previous_result.setEnabled(False)
+        self.textfield_previous_result.setStyleSheet(f"""
+                        border:none;
+                        background-color:{COLORS.DARK_GREY.value};
+                        border-radius:10px;
+                        color={COLORS.WHITE.value}; 
+                        padding: 5px;                           
+                        """)   
+
         self.textfield_expression = MvgCalcExpressionTextField()
+
         self.keyboard = KeyInputController(self.app)
 
         self.keyboard.refresh_expr_screen.connect(self.refresh_expr_screen)  
@@ -41,32 +74,39 @@ class MvgCalcDisplayBase(QWidget):
         if action == ActionKey.UP or action == ActionKey.DOWN:
             self.app.user_input = self.keyboard.hist_expr_display.hist_expr_listbox.update(action)
             self.textfield_expression.setText(self.app.user_input.format_usr_inp_expr_as_str(True))
+        elif action == ActionKey.ENTER:
+            self.textfield_expression.setText("")
+        elif action == ActionKey.CLEAR:
+            self.textfield_result.setText("")
+            self.textfield_previous_result.setText("")
+            self.textfield_expression.setText("")
         else:
+            self.textfield_result.setText("")
             self.app.h_pos = self.textfield_expression.update(self.app.user_input, action)
+
 
 class BasicCalcDisplay(MvgCalcDisplayBase):
     def __init__(self, app : MvgCalcApplication):
         super().__init__(app)
-        
-        self.display_result_text = QTextEdit()
-        self.display_result_text.setReadOnly(True)
-        
-        self.display_expression_text = MvgCalcExpressionTextField()
-        
+
         self.keyboard.return_result.connect(self.retrieve_result_object)  
 
-        self.layout_main.addWidget(self.display_result_text)
-        self.layout_main.addWidget(self.textfield_expression)
+        self.screen_layout.addWidget(self.textfield_previous_result, alignment=QtCore.Qt.AlignRight)
+        self.screen_layout.addWidget(self.textfield_result)
+        self.screen_layout.addWidget(self.textfield_expression)
+
+        self.layout_main.addWidget(self.screen_container)
+
         self.layout_main.addWidget(self.keyboard)
 
         self.setLayout(self.layout_main)
 
     def retrieve_result_object(self, result : ResultBase):
-        if result.success == False:
-            self.display_result_text.setText(result.get_formatted_error_msg_list())
+        if result.success == True:
+            self.textfield_result.setText(result.value)
+            self.textfield_previous_result.setText(" " + result.value)
         else:
-            self.display_result_text.setText(result.value)
-            self.textfield_expression.setText(result.expression)
+            self.textfield_result.setText(result.get_formatted_error_msg_list())
 
 
 '''
@@ -97,8 +137,10 @@ class GraphDisplay(MvgCalcDisplayBase):
         self.keyboard.return_result.connect(self.retrieve_result_object)
         self.keyboard.clear_graph.connect(self.clear_graph_screen)
 
-        self.layout_main.addWidget(self.graph_screen)
-        self.layout_main.addWidget(self.textfield_expression)
+        self.screen_layout.addWidget(self.graph_screen)
+        self.screen_layout.addWidget(self.textfield_expression)
+
+        self.layout_main.addWidget(self.screen_container)
         self.layout_main.addWidget(self.keyboard)
 
         self.setLayout(self.layout_main)
@@ -142,8 +184,11 @@ class UnitConvDisplay(MvgCalcDisplayBase):
         self.stacked_widget.addWidget(self.length_listbox)
         self.stacked_widget.addWidget(self.weight_listbox)
 
-        self.layout_main.addWidget(self.stacked_widget)
+        self.screen_layout.addWidget(self.stacked_widget)
+        self.layout_main.addWidget(self.screen_container)
+        
         self.layout_main.addWidget(self.keyboard)
+
         self.setLayout(self.layout_main)
 
         self.unit_conv_window.display_listbox.connect(self.switch_window_measure)
@@ -176,8 +221,8 @@ class UnitConvDisplay(MvgCalcDisplayBase):
 
 
     def refresh_expr(self, action : Optional[ActionKey] = None): #will have to modify this to make it connect to unit 1 and keyboard
-        self.app.h_pos = self.unit_1_text.update(self.app.user_input, action)
-        self.app.h_pos = self.unit_2_text.convert(self.app.user_input,self.current_measure, self.unit_1, self.unit_2)
+        self.unit_1_text.update(self.app.user_input, action)
+        self.unit_2_text.convert(self.app.user_input,self.current_measure, self.unit_1, self.unit_2)
         #immediately evaluate for unit 2 and insert the number
         #like some util file, custom enum -> string -> eval to number -> convert -> display
     
